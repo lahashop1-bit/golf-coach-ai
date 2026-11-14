@@ -1,0 +1,50 @@
+# Golf Coach AI
+
+Ứng dụng huấn luyện golf cá nhân trên iPhone, hỗ trợ đa ngôn ngữ, ưu tiên trải nghiệm tiếng Việt tự nhiên cho người mới chơi.
+
+> **Mục tiêu:** giúp người chơi hiểu cú swing của mình, biết lỗi nào nên sửa trước và có bài tập cụ thể để cải thiện an toàn, có hệ thống.
+
+## Trạng thái dự án
+
+- Giai đoạn: Product discovery / đặc tả và chuẩn bị triển khai.
+- Nền tảng ưu tiên: iOS (iPhone).
+- Ngôn ngữ ra mắt dự kiến: Tiếng Việt (vi-VN), English (en), 한국어 (ko-KR).
+- Đối tượng đầu tiên: người mới chơi golf; hỗ trợ người chơi trung cấp ở các giai đoạn sau.
+- Tên Golf Coach AI là tên làm việc, chưa phải quyết định thương hiệu cuối cùng.
+
+## Tài liệu dành cho Claude Code
+
+Đọc theo thứ tự:
+
+1. [CLAUDE.md](CLAUDE.md) — quy tắc làm việc bắt buộc cho AI coding agent.
+2. [PRD](docs/PRODUCT_REQUIREMENTS.md) — yêu cầu sản phẩm và phạm vi MVP.
+3. [UI/UX Spec](docs/UI_UX_SPEC.md) — luồng và màn hình ứng dụng.
+4. [Golf Features](docs/GOLF_FEATURES.md) — chức năng golf và quay swing.
+5. [AI Analysis](docs/AI_ANALYSIS_SPEC.md) — phân tích video, giới hạn và cách phản hồi.
+6. [Localization](docs/I18N_L10N_SPEC.md) — kiến trúc đa ngôn ngữ và quy chuẩn tiếng Việt.
+7. [Vietnamese Golf Glossary](docs/VIETNAMESE_GOLF_GLOSSARY.md) — thuật ngữ Anh–Việt thống nhất.
+8. [Architecture](docs/TECHNICAL_ARCHITECTURE.md) — kiến trúc kỹ thuật đề xuất.
+9. [Database Schema](docs/DATABASE_SCHEMA.md) — mô hình dữ liệu.
+10. [Roadmap](docs/DEVELOPMENT_ROADMAP.md) — thứ tự triển khai.
+11. [Acceptance Criteria](docs/ACCEPTANCE_CRITERIA.md) — tiêu chí nghiệm thu.
+
+## Nguyên tắc sản phẩm
+
+- Thiết kế độc lập; không sao chép mã nguồn, hình ảnh, nhận diện thương hiệu hoặc bố cục độc quyền của ứng dụng khác.
+- Mọi hướng dẫn phải dễ hiểu, thực hành được và phù hợp trình độ người chơi.
+- AI không được khẳng định chắc chắn khi góc quay, ánh sáng hoặc chất lượng video không đủ.
+- Không chẩn đoán bệnh hoặc đưa ra lời khuyên y tế.
+- Không mặc định rằng một kiểu swing duy nhất phù hợp với mọi người.
+- Người dùng phải kiểm soát video, dữ liệu cá nhân và việc tải dữ liệu lên máy chủ.
+
+## Tham chiếu nghiên cứu ban đầu
+
+Người dùng cung cấp hai ảnh chụp GolfFix trên iPhone:
+- Màn hình ghi hình: lựa chọn Face-on / DTL, Iron / Driver, Orientation Right, FPS 60, Timer OFF, My Swing / Other Swing, Guide, Start Recording, Flip.
+- Màn hình thiết lập chế độ: Swing Analysis Mode / Self Record Mode, số lần swing, bật/tắt phản hồi ngay sau từng cú đánh và thiết lập thời lượng phản hồi.
+
+Đây là tham chiếu về nhu cầu và luồng sử dụng, không phải yêu cầu sao chép giao diện. Xem [UI/UX Spec](docs/UI_UX_SPEC.md).
+
+## Bảo mật repository
+
+Repository hiện đang để Public theo lựa chọn tạm thời của chủ dự án. Trước khi đưa API key, thông tin cá nhân, dữ liệu người dùng, cấu hình môi trường hoặc tài liệu nhạy cảm vào đây, hãy chuyển repository sang Private và kiểm tra lịch sử commit. Không bao giờ commit secrets.
