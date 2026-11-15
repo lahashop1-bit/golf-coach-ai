@@ -15,11 +15,7 @@ import '../analysis/posture_tab.dart';
 import '../analysis/tempo_tab.dart';
 import 'swing_player.dart';
 
-final _sessionProvider = FutureProvider.family<SwingSession, String>(
-    (ref, id) => ref.watch(swingRepositoryProvider).getSession(id));
-
 /// Swing detail with 3 tabs: Tư thế · Toàn bộ swing · Nhịp (GOLF_FEATURES §8).
-/// Posture and tempo stay empty until real analysis exists (Phase 3–4).
 class SwingDetailScreen extends ConsumerWidget {
   const SwingDetailScreen({super.key, required this.swingId});
 
@@ -134,7 +130,7 @@ class _FullSwingTab extends ConsumerWidget {
     final l = context.l10n;
     final theme = Theme.of(context);
     final repo = ref.read(swingRepositoryProvider);
-    final session = ref.watch(_sessionProvider(swing.sessionId)).value;
+    final session = ref.watch(sessionProvider(swing.sessionId)).value;
     final file = File(ref.watch(videoStoreProvider).absolute(swing.localFilePath));
     final analysis = ref.watch(analysisProvider(swing.id)).value;
     final done = analysis?.row.status == AnalysisStatus.completed;

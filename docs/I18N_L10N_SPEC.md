@@ -116,4 +116,6 @@ Hai loại nội dung, hai cơ chế:
 - **Nội dung hướng dẫn dài** (IssueGuide, Drill, ShotTroubleGuide): file JSON có version theo locale trong assets (DATABASE_SCHEMA mục 7). Khóa `issue.<issue_id>.*` ở trên là trường trong file JSON này, không phải ARB.
 - `evidence_key` trong kết quả phân tích trỏ tới `issue.<issue_id>.what_we_see` hoặc biến thể của nó.
 
+Hiện thực (lát 2b): tên lỗi lấy từ trường `title` của IssueGuide JSON (`assets/content/issue_guides_<vi|en|ko>.json`) thay vì ARB, để một lỗi chỉ có một nguồn tên. Các file này là bản nháp (`reviewed_by: null`), giao diện ghi "Nội dung nháp, đang chờ huấn luyện viên duyệt".
+
 Không dịch máy nội dung kỹ thuật khi chưa review.

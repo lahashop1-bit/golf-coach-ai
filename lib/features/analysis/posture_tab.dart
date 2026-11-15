@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../app/flags.dart';
 import '../../app/labels.dart';
 import '../../app/providers.dart';
 import '../../app/theme.dart';
 import '../../data/db/database.dart';
 import '../../domain/enums.dart';
 import 'analysis_status.dart';
+import 'issue_widgets.dart';
 
-/// Tab Tư thế. Slice 2a: which phases were found ("diễn biến theo pha"
-/// without fault levels yet). Fault detection arrives in slice 2b.
+/// Tab Tư thế: priority issue, other issues, what was checked, and the
+/// phases found. Issue feedback is experimental and only shown when
+/// [experimentalIssues] is on (internal builds).
 class PostureTab extends ConsumerWidget {
   const PostureTab({super.key, required this.swing});
 
@@ -26,6 +29,7 @@ class PostureTab extends ConsumerWidget {
         AnalysisStatusCard(swingId: swing.id),
       ]);
     }
+    final angle = ref.watch(sessionProvider(swing.sessionId)).value?.cameraAngle;
 
     return ListView(padding: const EdgeInsets.all(Gap.m), children: [
       Card(
@@ -33,10 +37,14 @@ class PostureTab extends ConsumerWidget {
         child: ListTile(
           leading: const Icon(Icons.science_outlined),
           title: Text(l.postureTrialTitle),
-          subtitle: Text(l.postureTrialBody),
+          subtitle: Text(experimentalIssues ? l.postureTrialIssuesBody : l.postureTrialBody),
         ),
       ),
       const SizedBox(height: Gap.m),
+      if (experimentalIssues) ...[
+        IssueSections(swingId: swing.id, result: result!, angle: angle),
+        const SizedBox(height: Gap.m),
+      ],
       Text(l.phasesTitle, style: theme.textTheme.titleMedium),
       for (final p in SwingPhase.values)
         () {

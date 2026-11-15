@@ -3532,6 +3532,1184 @@ class SwingAnalysesCompanion extends UpdateCompanion<SwingAnalysis> {
   }
 }
 
+class $IssueObservationsTable extends IssueObservations
+    with TableInfo<$IssueObservationsTable, IssueObservation> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $IssueObservationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _analysisIdMeta = const VerificationMeta(
+    'analysisId',
+  );
+  @override
+  late final GeneratedColumn<String> analysisId = GeneratedColumn<String>(
+    'analysis_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES swing_analyses (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _issueIdMeta = const VerificationMeta(
+    'issueId',
+  );
+  @override
+  late final GeneratedColumn<String> issueId = GeneratedColumn<String>(
+    'issue_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<SwingPhase, String> phase =
+      GeneratedColumn<String>(
+        'phase',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<SwingPhase>($IssueObservationsTable.$converterphase);
+  @override
+  late final GeneratedColumnWithTypeConverter<Level, String> level =
+      GeneratedColumn<String>(
+        'level',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<Level>($IssueObservationsTable.$converterlevel);
+  @override
+  late final GeneratedColumnWithTypeConverter<Confidence, String> confidence =
+      GeneratedColumn<String>(
+        'confidence',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<Confidence>($IssueObservationsTable.$converterconfidence);
+  static const VerificationMeta _hiddenFromUserMeta = const VerificationMeta(
+    'hiddenFromUser',
+  );
+  @override
+  late final GeneratedColumn<bool> hiddenFromUser = GeneratedColumn<bool>(
+    'hidden_from_user',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("hidden_from_user" IN (0, 1))',
+    ),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<CameraAngle, String> cameraAngle =
+      GeneratedColumn<String>(
+        'camera_angle',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<CameraAngle>(
+        $IssueObservationsTable.$convertercameraAngle,
+      );
+  static const VerificationMeta _evidenceKeyMeta = const VerificationMeta(
+    'evidenceKey',
+  );
+  @override
+  late final GeneratedColumn<String> evidenceKey = GeneratedColumn<String>(
+    'evidence_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _evidenceFrameMsMeta = const VerificationMeta(
+    'evidenceFrameMs',
+  );
+  @override
+  late final GeneratedColumn<int> evidenceFrameMs = GeneratedColumn<int>(
+    'evidence_frame_ms',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isPriorityFocusMeta = const VerificationMeta(
+    'isPriorityFocus',
+  );
+  @override
+  late final GeneratedColumn<bool> isPriorityFocus = GeneratedColumn<bool>(
+    'is_priority_focus',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_priority_focus" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _metricValueMeta = const VerificationMeta(
+    'metricValue',
+  );
+  @override
+  late final GeneratedColumn<double> metricValue = GeneratedColumn<double>(
+    'metric_value',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    analysisId,
+    issueId,
+    phase,
+    level,
+    confidence,
+    hiddenFromUser,
+    cameraAngle,
+    evidenceKey,
+    evidenceFrameMs,
+    isPriorityFocus,
+    metricValue,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'issue_observations';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<IssueObservation> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('analysis_id')) {
+      context.handle(
+        _analysisIdMeta,
+        analysisId.isAcceptableOrUnknown(data['analysis_id']!, _analysisIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_analysisIdMeta);
+    }
+    if (data.containsKey('issue_id')) {
+      context.handle(
+        _issueIdMeta,
+        issueId.isAcceptableOrUnknown(data['issue_id']!, _issueIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_issueIdMeta);
+    }
+    if (data.containsKey('hidden_from_user')) {
+      context.handle(
+        _hiddenFromUserMeta,
+        hiddenFromUser.isAcceptableOrUnknown(
+          data['hidden_from_user']!,
+          _hiddenFromUserMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_hiddenFromUserMeta);
+    }
+    if (data.containsKey('evidence_key')) {
+      context.handle(
+        _evidenceKeyMeta,
+        evidenceKey.isAcceptableOrUnknown(
+          data['evidence_key']!,
+          _evidenceKeyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_evidenceKeyMeta);
+    }
+    if (data.containsKey('evidence_frame_ms')) {
+      context.handle(
+        _evidenceFrameMsMeta,
+        evidenceFrameMs.isAcceptableOrUnknown(
+          data['evidence_frame_ms']!,
+          _evidenceFrameMsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_priority_focus')) {
+      context.handle(
+        _isPriorityFocusMeta,
+        isPriorityFocus.isAcceptableOrUnknown(
+          data['is_priority_focus']!,
+          _isPriorityFocusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('metric_value')) {
+      context.handle(
+        _metricValueMeta,
+        metricValue.isAcceptableOrUnknown(
+          data['metric_value']!,
+          _metricValueMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  IssueObservation map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return IssueObservation(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      analysisId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}analysis_id'],
+      )!,
+      issueId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}issue_id'],
+      )!,
+      phase: $IssueObservationsTable.$converterphase.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}phase'],
+        )!,
+      ),
+      level: $IssueObservationsTable.$converterlevel.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}level'],
+        )!,
+      ),
+      confidence: $IssueObservationsTable.$converterconfidence.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}confidence'],
+        )!,
+      ),
+      hiddenFromUser: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}hidden_from_user'],
+      )!,
+      cameraAngle: $IssueObservationsTable.$convertercameraAngle.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}camera_angle'],
+        )!,
+      ),
+      evidenceKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}evidence_key'],
+      )!,
+      evidenceFrameMs: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}evidence_frame_ms'],
+      ),
+      isPriorityFocus: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_priority_focus'],
+      )!,
+      metricValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}metric_value'],
+      ),
+    );
+  }
+
+  @override
+  $IssueObservationsTable createAlias(String alias) {
+    return $IssueObservationsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<SwingPhase, String> $converterphase =
+      const WireConverter(SwingPhase.values);
+  static TypeConverter<Level, String> $converterlevel = const WireConverter(
+    Level.values,
+  );
+  static TypeConverter<Confidence, String> $converterconfidence =
+      const WireConverter(Confidence.values);
+  static TypeConverter<CameraAngle, String> $convertercameraAngle =
+      const WireConverter(CameraAngle.values);
+}
+
+class IssueObservation extends DataClass
+    implements Insertable<IssueObservation> {
+  final String id;
+  final String analysisId;
+
+  /// AI_ANALYSIS_SPEC §10 `issue_id`.
+  final String issueId;
+  final SwingPhase phase;
+
+  /// `ok` | `attention` | `review`.
+  final Level level;
+  final Confidence confidence;
+
+  /// Low-confidence results are kept for evaluation but never shown.
+  final bool hiddenFromUser;
+  final CameraAngle cameraAngle;
+  final String evidenceKey;
+  final int? evidenceFrameMs;
+  final bool isPriorityFocus;
+
+  /// Raw rule measurement, for threshold tuning only (never shown).
+  final double? metricValue;
+  const IssueObservation({
+    required this.id,
+    required this.analysisId,
+    required this.issueId,
+    required this.phase,
+    required this.level,
+    required this.confidence,
+    required this.hiddenFromUser,
+    required this.cameraAngle,
+    required this.evidenceKey,
+    this.evidenceFrameMs,
+    required this.isPriorityFocus,
+    this.metricValue,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['analysis_id'] = Variable<String>(analysisId);
+    map['issue_id'] = Variable<String>(issueId);
+    {
+      map['phase'] = Variable<String>(
+        $IssueObservationsTable.$converterphase.toSql(phase),
+      );
+    }
+    {
+      map['level'] = Variable<String>(
+        $IssueObservationsTable.$converterlevel.toSql(level),
+      );
+    }
+    {
+      map['confidence'] = Variable<String>(
+        $IssueObservationsTable.$converterconfidence.toSql(confidence),
+      );
+    }
+    map['hidden_from_user'] = Variable<bool>(hiddenFromUser);
+    {
+      map['camera_angle'] = Variable<String>(
+        $IssueObservationsTable.$convertercameraAngle.toSql(cameraAngle),
+      );
+    }
+    map['evidence_key'] = Variable<String>(evidenceKey);
+    if (!nullToAbsent || evidenceFrameMs != null) {
+      map['evidence_frame_ms'] = Variable<int>(evidenceFrameMs);
+    }
+    map['is_priority_focus'] = Variable<bool>(isPriorityFocus);
+    if (!nullToAbsent || metricValue != null) {
+      map['metric_value'] = Variable<double>(metricValue);
+    }
+    return map;
+  }
+
+  IssueObservationsCompanion toCompanion(bool nullToAbsent) {
+    return IssueObservationsCompanion(
+      id: Value(id),
+      analysisId: Value(analysisId),
+      issueId: Value(issueId),
+      phase: Value(phase),
+      level: Value(level),
+      confidence: Value(confidence),
+      hiddenFromUser: Value(hiddenFromUser),
+      cameraAngle: Value(cameraAngle),
+      evidenceKey: Value(evidenceKey),
+      evidenceFrameMs: evidenceFrameMs == null && nullToAbsent
+          ? const Value.absent()
+          : Value(evidenceFrameMs),
+      isPriorityFocus: Value(isPriorityFocus),
+      metricValue: metricValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(metricValue),
+    );
+  }
+
+  factory IssueObservation.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return IssueObservation(
+      id: serializer.fromJson<String>(json['id']),
+      analysisId: serializer.fromJson<String>(json['analysisId']),
+      issueId: serializer.fromJson<String>(json['issueId']),
+      phase: serializer.fromJson<SwingPhase>(json['phase']),
+      level: serializer.fromJson<Level>(json['level']),
+      confidence: serializer.fromJson<Confidence>(json['confidence']),
+      hiddenFromUser: serializer.fromJson<bool>(json['hiddenFromUser']),
+      cameraAngle: serializer.fromJson<CameraAngle>(json['cameraAngle']),
+      evidenceKey: serializer.fromJson<String>(json['evidenceKey']),
+      evidenceFrameMs: serializer.fromJson<int?>(json['evidenceFrameMs']),
+      isPriorityFocus: serializer.fromJson<bool>(json['isPriorityFocus']),
+      metricValue: serializer.fromJson<double?>(json['metricValue']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'analysisId': serializer.toJson<String>(analysisId),
+      'issueId': serializer.toJson<String>(issueId),
+      'phase': serializer.toJson<SwingPhase>(phase),
+      'level': serializer.toJson<Level>(level),
+      'confidence': serializer.toJson<Confidence>(confidence),
+      'hiddenFromUser': serializer.toJson<bool>(hiddenFromUser),
+      'cameraAngle': serializer.toJson<CameraAngle>(cameraAngle),
+      'evidenceKey': serializer.toJson<String>(evidenceKey),
+      'evidenceFrameMs': serializer.toJson<int?>(evidenceFrameMs),
+      'isPriorityFocus': serializer.toJson<bool>(isPriorityFocus),
+      'metricValue': serializer.toJson<double?>(metricValue),
+    };
+  }
+
+  IssueObservation copyWith({
+    String? id,
+    String? analysisId,
+    String? issueId,
+    SwingPhase? phase,
+    Level? level,
+    Confidence? confidence,
+    bool? hiddenFromUser,
+    CameraAngle? cameraAngle,
+    String? evidenceKey,
+    Value<int?> evidenceFrameMs = const Value.absent(),
+    bool? isPriorityFocus,
+    Value<double?> metricValue = const Value.absent(),
+  }) => IssueObservation(
+    id: id ?? this.id,
+    analysisId: analysisId ?? this.analysisId,
+    issueId: issueId ?? this.issueId,
+    phase: phase ?? this.phase,
+    level: level ?? this.level,
+    confidence: confidence ?? this.confidence,
+    hiddenFromUser: hiddenFromUser ?? this.hiddenFromUser,
+    cameraAngle: cameraAngle ?? this.cameraAngle,
+    evidenceKey: evidenceKey ?? this.evidenceKey,
+    evidenceFrameMs: evidenceFrameMs.present
+        ? evidenceFrameMs.value
+        : this.evidenceFrameMs,
+    isPriorityFocus: isPriorityFocus ?? this.isPriorityFocus,
+    metricValue: metricValue.present ? metricValue.value : this.metricValue,
+  );
+  IssueObservation copyWithCompanion(IssueObservationsCompanion data) {
+    return IssueObservation(
+      id: data.id.present ? data.id.value : this.id,
+      analysisId: data.analysisId.present
+          ? data.analysisId.value
+          : this.analysisId,
+      issueId: data.issueId.present ? data.issueId.value : this.issueId,
+      phase: data.phase.present ? data.phase.value : this.phase,
+      level: data.level.present ? data.level.value : this.level,
+      confidence: data.confidence.present
+          ? data.confidence.value
+          : this.confidence,
+      hiddenFromUser: data.hiddenFromUser.present
+          ? data.hiddenFromUser.value
+          : this.hiddenFromUser,
+      cameraAngle: data.cameraAngle.present
+          ? data.cameraAngle.value
+          : this.cameraAngle,
+      evidenceKey: data.evidenceKey.present
+          ? data.evidenceKey.value
+          : this.evidenceKey,
+      evidenceFrameMs: data.evidenceFrameMs.present
+          ? data.evidenceFrameMs.value
+          : this.evidenceFrameMs,
+      isPriorityFocus: data.isPriorityFocus.present
+          ? data.isPriorityFocus.value
+          : this.isPriorityFocus,
+      metricValue: data.metricValue.present
+          ? data.metricValue.value
+          : this.metricValue,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('IssueObservation(')
+          ..write('id: $id, ')
+          ..write('analysisId: $analysisId, ')
+          ..write('issueId: $issueId, ')
+          ..write('phase: $phase, ')
+          ..write('level: $level, ')
+          ..write('confidence: $confidence, ')
+          ..write('hiddenFromUser: $hiddenFromUser, ')
+          ..write('cameraAngle: $cameraAngle, ')
+          ..write('evidenceKey: $evidenceKey, ')
+          ..write('evidenceFrameMs: $evidenceFrameMs, ')
+          ..write('isPriorityFocus: $isPriorityFocus, ')
+          ..write('metricValue: $metricValue')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    analysisId,
+    issueId,
+    phase,
+    level,
+    confidence,
+    hiddenFromUser,
+    cameraAngle,
+    evidenceKey,
+    evidenceFrameMs,
+    isPriorityFocus,
+    metricValue,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is IssueObservation &&
+          other.id == this.id &&
+          other.analysisId == this.analysisId &&
+          other.issueId == this.issueId &&
+          other.phase == this.phase &&
+          other.level == this.level &&
+          other.confidence == this.confidence &&
+          other.hiddenFromUser == this.hiddenFromUser &&
+          other.cameraAngle == this.cameraAngle &&
+          other.evidenceKey == this.evidenceKey &&
+          other.evidenceFrameMs == this.evidenceFrameMs &&
+          other.isPriorityFocus == this.isPriorityFocus &&
+          other.metricValue == this.metricValue);
+}
+
+class IssueObservationsCompanion extends UpdateCompanion<IssueObservation> {
+  final Value<String> id;
+  final Value<String> analysisId;
+  final Value<String> issueId;
+  final Value<SwingPhase> phase;
+  final Value<Level> level;
+  final Value<Confidence> confidence;
+  final Value<bool> hiddenFromUser;
+  final Value<CameraAngle> cameraAngle;
+  final Value<String> evidenceKey;
+  final Value<int?> evidenceFrameMs;
+  final Value<bool> isPriorityFocus;
+  final Value<double?> metricValue;
+  final Value<int> rowid;
+  const IssueObservationsCompanion({
+    this.id = const Value.absent(),
+    this.analysisId = const Value.absent(),
+    this.issueId = const Value.absent(),
+    this.phase = const Value.absent(),
+    this.level = const Value.absent(),
+    this.confidence = const Value.absent(),
+    this.hiddenFromUser = const Value.absent(),
+    this.cameraAngle = const Value.absent(),
+    this.evidenceKey = const Value.absent(),
+    this.evidenceFrameMs = const Value.absent(),
+    this.isPriorityFocus = const Value.absent(),
+    this.metricValue = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  IssueObservationsCompanion.insert({
+    required String id,
+    required String analysisId,
+    required String issueId,
+    required SwingPhase phase,
+    required Level level,
+    required Confidence confidence,
+    required bool hiddenFromUser,
+    required CameraAngle cameraAngle,
+    required String evidenceKey,
+    this.evidenceFrameMs = const Value.absent(),
+    this.isPriorityFocus = const Value.absent(),
+    this.metricValue = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       analysisId = Value(analysisId),
+       issueId = Value(issueId),
+       phase = Value(phase),
+       level = Value(level),
+       confidence = Value(confidence),
+       hiddenFromUser = Value(hiddenFromUser),
+       cameraAngle = Value(cameraAngle),
+       evidenceKey = Value(evidenceKey);
+  static Insertable<IssueObservation> custom({
+    Expression<String>? id,
+    Expression<String>? analysisId,
+    Expression<String>? issueId,
+    Expression<String>? phase,
+    Expression<String>? level,
+    Expression<String>? confidence,
+    Expression<bool>? hiddenFromUser,
+    Expression<String>? cameraAngle,
+    Expression<String>? evidenceKey,
+    Expression<int>? evidenceFrameMs,
+    Expression<bool>? isPriorityFocus,
+    Expression<double>? metricValue,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (analysisId != null) 'analysis_id': analysisId,
+      if (issueId != null) 'issue_id': issueId,
+      if (phase != null) 'phase': phase,
+      if (level != null) 'level': level,
+      if (confidence != null) 'confidence': confidence,
+      if (hiddenFromUser != null) 'hidden_from_user': hiddenFromUser,
+      if (cameraAngle != null) 'camera_angle': cameraAngle,
+      if (evidenceKey != null) 'evidence_key': evidenceKey,
+      if (evidenceFrameMs != null) 'evidence_frame_ms': evidenceFrameMs,
+      if (isPriorityFocus != null) 'is_priority_focus': isPriorityFocus,
+      if (metricValue != null) 'metric_value': metricValue,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  IssueObservationsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? analysisId,
+    Value<String>? issueId,
+    Value<SwingPhase>? phase,
+    Value<Level>? level,
+    Value<Confidence>? confidence,
+    Value<bool>? hiddenFromUser,
+    Value<CameraAngle>? cameraAngle,
+    Value<String>? evidenceKey,
+    Value<int?>? evidenceFrameMs,
+    Value<bool>? isPriorityFocus,
+    Value<double?>? metricValue,
+    Value<int>? rowid,
+  }) {
+    return IssueObservationsCompanion(
+      id: id ?? this.id,
+      analysisId: analysisId ?? this.analysisId,
+      issueId: issueId ?? this.issueId,
+      phase: phase ?? this.phase,
+      level: level ?? this.level,
+      confidence: confidence ?? this.confidence,
+      hiddenFromUser: hiddenFromUser ?? this.hiddenFromUser,
+      cameraAngle: cameraAngle ?? this.cameraAngle,
+      evidenceKey: evidenceKey ?? this.evidenceKey,
+      evidenceFrameMs: evidenceFrameMs ?? this.evidenceFrameMs,
+      isPriorityFocus: isPriorityFocus ?? this.isPriorityFocus,
+      metricValue: metricValue ?? this.metricValue,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (analysisId.present) {
+      map['analysis_id'] = Variable<String>(analysisId.value);
+    }
+    if (issueId.present) {
+      map['issue_id'] = Variable<String>(issueId.value);
+    }
+    if (phase.present) {
+      map['phase'] = Variable<String>(
+        $IssueObservationsTable.$converterphase.toSql(phase.value),
+      );
+    }
+    if (level.present) {
+      map['level'] = Variable<String>(
+        $IssueObservationsTable.$converterlevel.toSql(level.value),
+      );
+    }
+    if (confidence.present) {
+      map['confidence'] = Variable<String>(
+        $IssueObservationsTable.$converterconfidence.toSql(confidence.value),
+      );
+    }
+    if (hiddenFromUser.present) {
+      map['hidden_from_user'] = Variable<bool>(hiddenFromUser.value);
+    }
+    if (cameraAngle.present) {
+      map['camera_angle'] = Variable<String>(
+        $IssueObservationsTable.$convertercameraAngle.toSql(cameraAngle.value),
+      );
+    }
+    if (evidenceKey.present) {
+      map['evidence_key'] = Variable<String>(evidenceKey.value);
+    }
+    if (evidenceFrameMs.present) {
+      map['evidence_frame_ms'] = Variable<int>(evidenceFrameMs.value);
+    }
+    if (isPriorityFocus.present) {
+      map['is_priority_focus'] = Variable<bool>(isPriorityFocus.value);
+    }
+    if (metricValue.present) {
+      map['metric_value'] = Variable<double>(metricValue.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('IssueObservationsCompanion(')
+          ..write('id: $id, ')
+          ..write('analysisId: $analysisId, ')
+          ..write('issueId: $issueId, ')
+          ..write('phase: $phase, ')
+          ..write('level: $level, ')
+          ..write('confidence: $confidence, ')
+          ..write('hiddenFromUser: $hiddenFromUser, ')
+          ..write('cameraAngle: $cameraAngle, ')
+          ..write('evidenceKey: $evidenceKey, ')
+          ..write('evidenceFrameMs: $evidenceFrameMs, ')
+          ..write('isPriorityFocus: $isPriorityFocus, ')
+          ..write('metricValue: $metricValue, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $AnalysisFeedbacksTable extends AnalysisFeedbacks
+    with TableInfo<$AnalysisFeedbacksTable, AnalysisFeedback> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AnalysisFeedbacksTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _observationIdMeta = const VerificationMeta(
+    'observationId',
+  );
+  @override
+  late final GeneratedColumn<String> observationId = GeneratedColumn<String>(
+    'observation_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES issue_observations (id) ON DELETE CASCADE',
+    ),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<FeedbackValue, String> value =
+      GeneratedColumn<String>(
+        'value',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<FeedbackValue>($AnalysisFeedbacksTable.$convertervalue);
+  static const VerificationMeta _commentMeta = const VerificationMeta(
+    'comment',
+  );
+  @override
+  late final GeneratedColumn<String> comment = GeneratedColumn<String>(
+    'comment',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    observationId,
+    value,
+    comment,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'analysis_feedbacks';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AnalysisFeedback> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('observation_id')) {
+      context.handle(
+        _observationIdMeta,
+        observationId.isAcceptableOrUnknown(
+          data['observation_id']!,
+          _observationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_observationIdMeta);
+    }
+    if (data.containsKey('comment')) {
+      context.handle(
+        _commentMeta,
+        comment.isAcceptableOrUnknown(data['comment']!, _commentMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AnalysisFeedback map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AnalysisFeedback(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      observationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}observation_id'],
+      )!,
+      value: $AnalysisFeedbacksTable.$convertervalue.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}value'],
+        )!,
+      ),
+      comment: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}comment'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $AnalysisFeedbacksTable createAlias(String alias) {
+    return $AnalysisFeedbacksTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<FeedbackValue, String> $convertervalue =
+      const WireConverter(FeedbackValue.values);
+}
+
+class AnalysisFeedback extends DataClass
+    implements Insertable<AnalysisFeedback> {
+  final String id;
+  final String userId;
+  final String observationId;
+  final FeedbackValue value;
+  final String? comment;
+  final DateTime createdAt;
+  const AnalysisFeedback({
+    required this.id,
+    required this.userId,
+    required this.observationId,
+    required this.value,
+    this.comment,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['observation_id'] = Variable<String>(observationId);
+    {
+      map['value'] = Variable<String>(
+        $AnalysisFeedbacksTable.$convertervalue.toSql(value),
+      );
+    }
+    if (!nullToAbsent || comment != null) {
+      map['comment'] = Variable<String>(comment);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  AnalysisFeedbacksCompanion toCompanion(bool nullToAbsent) {
+    return AnalysisFeedbacksCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      observationId: Value(observationId),
+      value: Value(value),
+      comment: comment == null && nullToAbsent
+          ? const Value.absent()
+          : Value(comment),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory AnalysisFeedback.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AnalysisFeedback(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      observationId: serializer.fromJson<String>(json['observationId']),
+      value: serializer.fromJson<FeedbackValue>(json['value']),
+      comment: serializer.fromJson<String?>(json['comment']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'observationId': serializer.toJson<String>(observationId),
+      'value': serializer.toJson<FeedbackValue>(value),
+      'comment': serializer.toJson<String?>(comment),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  AnalysisFeedback copyWith({
+    String? id,
+    String? userId,
+    String? observationId,
+    FeedbackValue? value,
+    Value<String?> comment = const Value.absent(),
+    DateTime? createdAt,
+  }) => AnalysisFeedback(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    observationId: observationId ?? this.observationId,
+    value: value ?? this.value,
+    comment: comment.present ? comment.value : this.comment,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  AnalysisFeedback copyWithCompanion(AnalysisFeedbacksCompanion data) {
+    return AnalysisFeedback(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      observationId: data.observationId.present
+          ? data.observationId.value
+          : this.observationId,
+      value: data.value.present ? data.value.value : this.value,
+      comment: data.comment.present ? data.comment.value : this.comment,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AnalysisFeedback(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('observationId: $observationId, ')
+          ..write('value: $value, ')
+          ..write('comment: $comment, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, userId, observationId, value, comment, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AnalysisFeedback &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.observationId == this.observationId &&
+          other.value == this.value &&
+          other.comment == this.comment &&
+          other.createdAt == this.createdAt);
+}
+
+class AnalysisFeedbacksCompanion extends UpdateCompanion<AnalysisFeedback> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> observationId;
+  final Value<FeedbackValue> value;
+  final Value<String?> comment;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const AnalysisFeedbacksCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.observationId = const Value.absent(),
+    this.value = const Value.absent(),
+    this.comment = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  AnalysisFeedbacksCompanion.insert({
+    required String id,
+    required String userId,
+    required String observationId,
+    required FeedbackValue value,
+    this.comment = const Value.absent(),
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
+       observationId = Value(observationId),
+       value = Value(value),
+       createdAt = Value(createdAt);
+  static Insertable<AnalysisFeedback> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<String>? observationId,
+    Expression<String>? value,
+    Expression<String>? comment,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (observationId != null) 'observation_id': observationId,
+      if (value != null) 'value': value,
+      if (comment != null) 'comment': comment,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  AnalysisFeedbacksCompanion copyWith({
+    Value<String>? id,
+    Value<String>? userId,
+    Value<String>? observationId,
+    Value<FeedbackValue>? value,
+    Value<String?>? comment,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return AnalysisFeedbacksCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      observationId: observationId ?? this.observationId,
+      value: value ?? this.value,
+      comment: comment ?? this.comment,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (observationId.present) {
+      map['observation_id'] = Variable<String>(observationId.value);
+    }
+    if (value.present) {
+      map['value'] = Variable<String>(
+        $AnalysisFeedbacksTable.$convertervalue.toSql(value.value),
+      );
+    }
+    if (comment.present) {
+      map['comment'] = Variable<String>(comment.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AnalysisFeedbacksCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('observationId: $observationId, ')
+          ..write('value: $value, ')
+          ..write('comment: $comment, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -3539,6 +4717,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $SwingSessionsTable swingSessions = $SwingSessionsTable(this);
   late final $SwingsTable swings = $SwingsTable(this);
   late final $SwingAnalysesTable swingAnalyses = $SwingAnalysesTable(this);
+  late final $IssueObservationsTable issueObservations =
+      $IssueObservationsTable(this);
+  late final $AnalysisFeedbacksTable analysisFeedbacks =
+      $AnalysisFeedbacksTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3548,7 +4730,26 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     swingSessions,
     swings,
     swingAnalyses,
+    issueObservations,
+    analysisFeedbacks,
   ];
+  @override
+  StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'swing_analyses',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('issue_observations', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'issue_observations',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('analysis_feedbacks', kind: UpdateKind.delete)],
+    ),
+  ]);
 }
 
 typedef $$UserProfilesTableCreateCompanionBuilder =
@@ -5370,6 +6571,27 @@ final class $$SwingAnalysesTableReferences
       manager.$state.copyWith(prefetchedData: [item]),
     );
   }
+
+  static MultiTypedResultKey<$IssueObservationsTable, List<IssueObservation>>
+  _issueObservationsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.issueObservations,
+        aliasName: 'swing_analyses__id__issue_observations__analysis_id',
+      );
+
+  $$IssueObservationsTableProcessedTableManager get issueObservationsRefs {
+    final manager = $$IssueObservationsTableTableManager(
+      $_db,
+      $_db.issueObservations,
+    ).filter((f) => f.analysisId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _issueObservationsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$SwingAnalysesTableFilterComposer
@@ -5468,6 +6690,31 @@ class $$SwingAnalysesTableFilterComposer
           ),
     );
     return composer;
+  }
+
+  Expression<bool> issueObservationsRefs(
+    Expression<bool> Function($$IssueObservationsTableFilterComposer f) f,
+  ) {
+    final $$IssueObservationsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.issueObservations,
+      getReferencedColumn: (t) => t.analysisId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$IssueObservationsTableFilterComposer(
+            $db: $db,
+            $table: $db.issueObservations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
   }
 }
 
@@ -5651,6 +6898,32 @@ class $$SwingAnalysesTableAnnotationComposer
     );
     return composer;
   }
+
+  Expression<T> issueObservationsRefs<T extends Object>(
+    Expression<T> Function($$IssueObservationsTableAnnotationComposer a) f,
+  ) {
+    final $$IssueObservationsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.issueObservations,
+          getReferencedColumn: (t) => t.analysisId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$IssueObservationsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.issueObservations,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$SwingAnalysesTableTableManager
@@ -5666,7 +6939,7 @@ class $$SwingAnalysesTableTableManager
           $$SwingAnalysesTableUpdateCompanionBuilder,
           (SwingAnalysis, $$SwingAnalysesTableReferences),
           SwingAnalysis,
-          PrefetchHooks Function({bool swingId})
+          PrefetchHooks Function({bool swingId, bool issueObservationsRefs})
         > {
   $$SwingAnalysesTableTableManager(_$AppDatabase db, $SwingAnalysesTable table)
     : super(
@@ -5755,7 +7028,962 @@ class $$SwingAnalysesTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({swingId = false}) {
+          prefetchHooksCallback:
+              ({swingId = false, issueObservationsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (issueObservationsRefs) db.issueObservations,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (swingId) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.swingId,
+                            referencedTable: $$SwingAnalysesTableReferences
+                                ._swingIdTable(db),
+                            referencedColumn: $$SwingAnalysesTableReferences
+                                ._swingIdTable(db)
+                                .id,
+                          ) as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (issueObservationsRefs)
+                        await $_getPrefetchedDataByColumns<
+                          SwingAnalysis,
+                          $SwingAnalysesTable,
+                          IssueObservation,
+                          $IssueObservationsTable
+                        >(
+                          currentTable: table,
+                          referencedTable: $$SwingAnalysesTableReferences
+                              ._issueObservationsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$SwingAnalysesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).issueObservationsRefs,
+                          currentColumn: 'id',
+                          referencedColumn: 'analysis_id',
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$SwingAnalysesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SwingAnalysesTable,
+      SwingAnalysis,
+      $$SwingAnalysesTableFilterComposer,
+      $$SwingAnalysesTableOrderingComposer,
+      $$SwingAnalysesTableAnnotationComposer,
+      $$SwingAnalysesTableCreateCompanionBuilder,
+      $$SwingAnalysesTableUpdateCompanionBuilder,
+      (SwingAnalysis, $$SwingAnalysesTableReferences),
+      SwingAnalysis,
+      PrefetchHooks Function({bool swingId, bool issueObservationsRefs})
+    >;
+typedef $$IssueObservationsTableCreateCompanionBuilder =
+    IssueObservationsCompanion Function({
+      required String id,
+      required String analysisId,
+      required String issueId,
+      required SwingPhase phase,
+      required Level level,
+      required Confidence confidence,
+      required bool hiddenFromUser,
+      required CameraAngle cameraAngle,
+      required String evidenceKey,
+      Value<int?> evidenceFrameMs,
+      Value<bool> isPriorityFocus,
+      Value<double?> metricValue,
+      Value<int> rowid,
+    });
+typedef $$IssueObservationsTableUpdateCompanionBuilder =
+    IssueObservationsCompanion Function({
+      Value<String> id,
+      Value<String> analysisId,
+      Value<String> issueId,
+      Value<SwingPhase> phase,
+      Value<Level> level,
+      Value<Confidence> confidence,
+      Value<bool> hiddenFromUser,
+      Value<CameraAngle> cameraAngle,
+      Value<String> evidenceKey,
+      Value<int?> evidenceFrameMs,
+      Value<bool> isPriorityFocus,
+      Value<double?> metricValue,
+      Value<int> rowid,
+    });
+
+final class $$IssueObservationsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $IssueObservationsTable,
+          IssueObservation
+        > {
+  $$IssueObservationsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $SwingAnalysesTable _analysisIdTable(_$AppDatabase db) => db
+      .swingAnalyses
+      .createAlias('issue_observations__analysis_id__swing_analyses__id');
+
+  $$SwingAnalysesTableProcessedTableManager get analysisId {
+    final $_column = $_itemColumn<String>('analysis_id')!;
+
+    final manager = $$SwingAnalysesTableTableManager(
+      $_db,
+      $_db.swingAnalyses,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_analysisIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$AnalysisFeedbacksTable, List<AnalysisFeedback>>
+  _analysisFeedbacksRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.analysisFeedbacks,
+        aliasName: 'issue_observations__id__analysis_feedbacks__observation_id',
+      );
+
+  $$AnalysisFeedbacksTableProcessedTableManager get analysisFeedbacksRefs {
+    final manager = $$AnalysisFeedbacksTableTableManager(
+      $_db,
+      $_db.analysisFeedbacks,
+    ).filter((f) => f.observationId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _analysisFeedbacksRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$IssueObservationsTableFilterComposer
+    extends Composer<_$AppDatabase, $IssueObservationsTable> {
+  $$IssueObservationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get issueId => $composableBuilder(
+    column: $table.issueId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SwingPhase, SwingPhase, String> get phase =>
+      $composableBuilder(
+        column: $table.phase,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnWithTypeConverterFilters<Level, Level, String> get level =>
+      $composableBuilder(
+        column: $table.level,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnWithTypeConverterFilters<Confidence, Confidence, String>
+  get confidence => $composableBuilder(
+    column: $table.confidence,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<bool> get hiddenFromUser => $composableBuilder(
+    column: $table.hiddenFromUser,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<CameraAngle, CameraAngle, String>
+  get cameraAngle => $composableBuilder(
+    column: $table.cameraAngle,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get evidenceKey => $composableBuilder(
+    column: $table.evidenceKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get evidenceFrameMs => $composableBuilder(
+    column: $table.evidenceFrameMs,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isPriorityFocus => $composableBuilder(
+    column: $table.isPriorityFocus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get metricValue => $composableBuilder(
+    column: $table.metricValue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$SwingAnalysesTableFilterComposer get analysisId {
+    final $$SwingAnalysesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.analysisId,
+      referencedTable: $db.swingAnalyses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SwingAnalysesTableFilterComposer(
+            $db: $db,
+            $table: $db.swingAnalyses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> analysisFeedbacksRefs(
+    Expression<bool> Function($$AnalysisFeedbacksTableFilterComposer f) f,
+  ) {
+    final $$AnalysisFeedbacksTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.analysisFeedbacks,
+      getReferencedColumn: (t) => t.observationId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AnalysisFeedbacksTableFilterComposer(
+            $db: $db,
+            $table: $db.analysisFeedbacks,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$IssueObservationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $IssueObservationsTable> {
+  $$IssueObservationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get issueId => $composableBuilder(
+    column: $table.issueId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get phase => $composableBuilder(
+    column: $table.phase,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get level => $composableBuilder(
+    column: $table.level,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get confidence => $composableBuilder(
+    column: $table.confidence,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get hiddenFromUser => $composableBuilder(
+    column: $table.hiddenFromUser,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get cameraAngle => $composableBuilder(
+    column: $table.cameraAngle,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get evidenceKey => $composableBuilder(
+    column: $table.evidenceKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get evidenceFrameMs => $composableBuilder(
+    column: $table.evidenceFrameMs,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isPriorityFocus => $composableBuilder(
+    column: $table.isPriorityFocus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get metricValue => $composableBuilder(
+    column: $table.metricValue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$SwingAnalysesTableOrderingComposer get analysisId {
+    final $$SwingAnalysesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.analysisId,
+      referencedTable: $db.swingAnalyses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SwingAnalysesTableOrderingComposer(
+            $db: $db,
+            $table: $db.swingAnalyses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$IssueObservationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $IssueObservationsTable> {
+  $$IssueObservationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get issueId =>
+      $composableBuilder(column: $table.issueId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SwingPhase, String> get phase =>
+      $composableBuilder(column: $table.phase, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Level, String> get level =>
+      $composableBuilder(column: $table.level, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Confidence, String> get confidence =>
+      $composableBuilder(
+        column: $table.confidence,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<bool> get hiddenFromUser => $composableBuilder(
+    column: $table.hiddenFromUser,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<CameraAngle, String> get cameraAngle =>
+      $composableBuilder(
+        column: $table.cameraAngle,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<String> get evidenceKey => $composableBuilder(
+    column: $table.evidenceKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get evidenceFrameMs => $composableBuilder(
+    column: $table.evidenceFrameMs,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isPriorityFocus => $composableBuilder(
+    column: $table.isPriorityFocus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get metricValue => $composableBuilder(
+    column: $table.metricValue,
+    builder: (column) => column,
+  );
+
+  $$SwingAnalysesTableAnnotationComposer get analysisId {
+    final $$SwingAnalysesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.analysisId,
+      referencedTable: $db.swingAnalyses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SwingAnalysesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.swingAnalyses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> analysisFeedbacksRefs<T extends Object>(
+    Expression<T> Function($$AnalysisFeedbacksTableAnnotationComposer a) f,
+  ) {
+    final $$AnalysisFeedbacksTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.analysisFeedbacks,
+          getReferencedColumn: (t) => t.observationId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$AnalysisFeedbacksTableAnnotationComposer(
+                $db: $db,
+                $table: $db.analysisFeedbacks,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$IssueObservationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $IssueObservationsTable,
+          IssueObservation,
+          $$IssueObservationsTableFilterComposer,
+          $$IssueObservationsTableOrderingComposer,
+          $$IssueObservationsTableAnnotationComposer,
+          $$IssueObservationsTableCreateCompanionBuilder,
+          $$IssueObservationsTableUpdateCompanionBuilder,
+          (IssueObservation, $$IssueObservationsTableReferences),
+          IssueObservation,
+          PrefetchHooks Function({bool analysisId, bool analysisFeedbacksRefs})
+        > {
+  $$IssueObservationsTableTableManager(
+    _$AppDatabase db,
+    $IssueObservationsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$IssueObservationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$IssueObservationsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$IssueObservationsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> analysisId = const Value.absent(),
+                Value<String> issueId = const Value.absent(),
+                Value<SwingPhase> phase = const Value.absent(),
+                Value<Level> level = const Value.absent(),
+                Value<Confidence> confidence = const Value.absent(),
+                Value<bool> hiddenFromUser = const Value.absent(),
+                Value<CameraAngle> cameraAngle = const Value.absent(),
+                Value<String> evidenceKey = const Value.absent(),
+                Value<int?> evidenceFrameMs = const Value.absent(),
+                Value<bool> isPriorityFocus = const Value.absent(),
+                Value<double?> metricValue = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => IssueObservationsCompanion(
+                id: id,
+                analysisId: analysisId,
+                issueId: issueId,
+                phase: phase,
+                level: level,
+                confidence: confidence,
+                hiddenFromUser: hiddenFromUser,
+                cameraAngle: cameraAngle,
+                evidenceKey: evidenceKey,
+                evidenceFrameMs: evidenceFrameMs,
+                isPriorityFocus: isPriorityFocus,
+                metricValue: metricValue,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String analysisId,
+                required String issueId,
+                required SwingPhase phase,
+                required Level level,
+                required Confidence confidence,
+                required bool hiddenFromUser,
+                required CameraAngle cameraAngle,
+                required String evidenceKey,
+                Value<int?> evidenceFrameMs = const Value.absent(),
+                Value<bool> isPriorityFocus = const Value.absent(),
+                Value<double?> metricValue = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => IssueObservationsCompanion.insert(
+                id: id,
+                analysisId: analysisId,
+                issueId: issueId,
+                phase: phase,
+                level: level,
+                confidence: confidence,
+                hiddenFromUser: hiddenFromUser,
+                cameraAngle: cameraAngle,
+                evidenceKey: evidenceKey,
+                evidenceFrameMs: evidenceFrameMs,
+                isPriorityFocus: isPriorityFocus,
+                metricValue: metricValue,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$IssueObservationsTable, IssueObservation>(table),
+                  $$IssueObservationsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({analysisId = false, analysisFeedbacksRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (analysisFeedbacksRefs) db.analysisFeedbacks,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (analysisId) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.analysisId,
+                            referencedTable: $$IssueObservationsTableReferences
+                                ._analysisIdTable(db),
+                            referencedColumn: $$IssueObservationsTableReferences
+                                ._analysisIdTable(db)
+                                .id,
+                          ) as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (analysisFeedbacksRefs)
+                        await $_getPrefetchedDataByColumns<
+                          IssueObservation,
+                          $IssueObservationsTable,
+                          AnalysisFeedback,
+                          $AnalysisFeedbacksTable
+                        >(
+                          currentTable: table,
+                          referencedTable: $$IssueObservationsTableReferences
+                              ._analysisFeedbacksRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$IssueObservationsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).analysisFeedbacksRefs,
+                          currentColumn: 'id',
+                          referencedColumn: 'observation_id',
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$IssueObservationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $IssueObservationsTable,
+      IssueObservation,
+      $$IssueObservationsTableFilterComposer,
+      $$IssueObservationsTableOrderingComposer,
+      $$IssueObservationsTableAnnotationComposer,
+      $$IssueObservationsTableCreateCompanionBuilder,
+      $$IssueObservationsTableUpdateCompanionBuilder,
+      (IssueObservation, $$IssueObservationsTableReferences),
+      IssueObservation,
+      PrefetchHooks Function({bool analysisId, bool analysisFeedbacksRefs})
+    >;
+typedef $$AnalysisFeedbacksTableCreateCompanionBuilder =
+    AnalysisFeedbacksCompanion Function({
+      required String id,
+      required String userId,
+      required String observationId,
+      required FeedbackValue value,
+      Value<String?> comment,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$AnalysisFeedbacksTableUpdateCompanionBuilder =
+    AnalysisFeedbacksCompanion Function({
+      Value<String> id,
+      Value<String> userId,
+      Value<String> observationId,
+      Value<FeedbackValue> value,
+      Value<String?> comment,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+final class $$AnalysisFeedbacksTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $AnalysisFeedbacksTable,
+          AnalysisFeedback
+        > {
+  $$AnalysisFeedbacksTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $IssueObservationsTable _observationIdTable(_$AppDatabase db) =>
+      db.issueObservations.createAlias(
+        'analysis_feedbacks__observation_id__issue_observations__id',
+      );
+
+  $$IssueObservationsTableProcessedTableManager get observationId {
+    final $_column = $_itemColumn<String>('observation_id')!;
+
+    final manager = $$IssueObservationsTableTableManager(
+      $_db,
+      $_db.issueObservations,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_observationIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$AnalysisFeedbacksTableFilterComposer
+    extends Composer<_$AppDatabase, $AnalysisFeedbacksTable> {
+  $$AnalysisFeedbacksTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<FeedbackValue, FeedbackValue, String>
+  get value => $composableBuilder(
+    column: $table.value,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get comment => $composableBuilder(
+    column: $table.comment,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$IssueObservationsTableFilterComposer get observationId {
+    final $$IssueObservationsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.observationId,
+      referencedTable: $db.issueObservations,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$IssueObservationsTableFilterComposer(
+            $db: $db,
+            $table: $db.issueObservations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$AnalysisFeedbacksTableOrderingComposer
+    extends Composer<_$AppDatabase, $AnalysisFeedbacksTable> {
+  $$AnalysisFeedbacksTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get value => $composableBuilder(
+    column: $table.value,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get comment => $composableBuilder(
+    column: $table.comment,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$IssueObservationsTableOrderingComposer get observationId {
+    final $$IssueObservationsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.observationId,
+      referencedTable: $db.issueObservations,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$IssueObservationsTableOrderingComposer(
+            $db: $db,
+            $table: $db.issueObservations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$AnalysisFeedbacksTableAnnotationComposer
+    extends Composer<_$AppDatabase, $AnalysisFeedbacksTable> {
+  $$AnalysisFeedbacksTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<FeedbackValue, String> get value =>
+      $composableBuilder(column: $table.value, builder: (column) => column);
+
+  GeneratedColumn<String> get comment =>
+      $composableBuilder(column: $table.comment, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$IssueObservationsTableAnnotationComposer get observationId {
+    final $$IssueObservationsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.observationId,
+          referencedTable: $db.issueObservations,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$IssueObservationsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.issueObservations,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$AnalysisFeedbacksTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $AnalysisFeedbacksTable,
+          AnalysisFeedback,
+          $$AnalysisFeedbacksTableFilterComposer,
+          $$AnalysisFeedbacksTableOrderingComposer,
+          $$AnalysisFeedbacksTableAnnotationComposer,
+          $$AnalysisFeedbacksTableCreateCompanionBuilder,
+          $$AnalysisFeedbacksTableUpdateCompanionBuilder,
+          (AnalysisFeedback, $$AnalysisFeedbacksTableReferences),
+          AnalysisFeedback,
+          PrefetchHooks Function({bool observationId})
+        > {
+  $$AnalysisFeedbacksTableTableManager(
+    _$AppDatabase db,
+    $AnalysisFeedbacksTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AnalysisFeedbacksTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AnalysisFeedbacksTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AnalysisFeedbacksTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> observationId = const Value.absent(),
+                Value<FeedbackValue> value = const Value.absent(),
+                Value<String?> comment = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AnalysisFeedbacksCompanion(
+                id: id,
+                userId: userId,
+                observationId: observationId,
+                value: value,
+                comment: comment,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String userId,
+                required String observationId,
+                required FeedbackValue value,
+                Value<String?> comment = const Value.absent(),
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => AnalysisFeedbacksCompanion.insert(
+                id: id,
+                userId: userId,
+                observationId: observationId,
+                value: value,
+                comment: comment,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$AnalysisFeedbacksTable, AnalysisFeedback>(table),
+                  $$AnalysisFeedbacksTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({observationId = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
@@ -5775,14 +8003,14 @@ class $$SwingAnalysesTableTableManager
                       dynamic
                     >
                   >(state) {
-                    if (swingId) {
+                    if (observationId) {
                       state = state.withJoin(
                         currentTable: table,
-                        currentColumn: table.swingId,
-                        referencedTable: $$SwingAnalysesTableReferences
-                            ._swingIdTable(db),
-                        referencedColumn: $$SwingAnalysesTableReferences
-                            ._swingIdTable(db)
+                        currentColumn: table.observationId,
+                        referencedTable: $$AnalysisFeedbacksTableReferences
+                            ._observationIdTable(db),
+                        referencedColumn: $$AnalysisFeedbacksTableReferences
+                            ._observationIdTable(db)
                             .id,
                       ) as T;
                     }
@@ -5798,19 +8026,19 @@ class $$SwingAnalysesTableTableManager
       );
 }
 
-typedef $$SwingAnalysesTableProcessedTableManager =
+typedef $$AnalysisFeedbacksTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $SwingAnalysesTable,
-      SwingAnalysis,
-      $$SwingAnalysesTableFilterComposer,
-      $$SwingAnalysesTableOrderingComposer,
-      $$SwingAnalysesTableAnnotationComposer,
-      $$SwingAnalysesTableCreateCompanionBuilder,
-      $$SwingAnalysesTableUpdateCompanionBuilder,
-      (SwingAnalysis, $$SwingAnalysesTableReferences),
-      SwingAnalysis,
-      PrefetchHooks Function({bool swingId})
+      $AnalysisFeedbacksTable,
+      AnalysisFeedback,
+      $$AnalysisFeedbacksTableFilterComposer,
+      $$AnalysisFeedbacksTableOrderingComposer,
+      $$AnalysisFeedbacksTableAnnotationComposer,
+      $$AnalysisFeedbacksTableCreateCompanionBuilder,
+      $$AnalysisFeedbacksTableUpdateCompanionBuilder,
+      (AnalysisFeedback, $$AnalysisFeedbacksTableReferences),
+      AnalysisFeedback,
+      PrefetchHooks Function({bool observationId})
     >;
 
 class $AppDatabaseManager {
@@ -5824,4 +8052,8 @@ class $AppDatabaseManager {
       $$SwingsTableTableManager(_db, _db.swings);
   $$SwingAnalysesTableTableManager get swingAnalyses =>
       $$SwingAnalysesTableTableManager(_db, _db.swingAnalyses);
+  $$IssueObservationsTableTableManager get issueObservations =>
+      $$IssueObservationsTableTableManager(_db, _db.issueObservations);
+  $$AnalysisFeedbacksTableTableManager get analysisFeedbacks =>
+      $$AnalysisFeedbacksTableTableManager(_db, _db.analysisFeedbacks);
 }

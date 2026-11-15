@@ -4,7 +4,7 @@
 import 'package:analysis_core/analysis_core.dart';
 
 export 'package:analysis_core/analysis_core.dart'
-    show Confidence, SwingPhase, WireEnum, wireValue;
+    show CameraAngle, Confidence, Level, SwingPhase, WireEnum, wireValue;
 
 enum Handedness with WireEnum {
   right('right'),
@@ -41,15 +41,6 @@ enum ClubType with WireEnum {
 
   /// Club types that take a number (e.g. iron + 7).
   bool get hasNumber => this == iron || this == wood || this == hybrid;
-}
-
-enum CameraAngle with WireEnum {
-  faceOn('face_on'),
-  downTheLine('down_the_line');
-
-  const CameraAngle(this.wire);
-  @override
-  final String wire;
 }
 
 enum SessionMode with WireEnum {
@@ -128,6 +119,16 @@ enum SessionStatus with WireEnum {
   cancelled('cancelled');
 
   const SessionStatus(this.wire);
+  @override
+  final String wire;
+}
+
+enum FeedbackValue with WireEnum {
+  helpful('helpful'),
+  unclear('unclear'),
+  notRelevant('not_relevant');
+
+  const FeedbackValue(this.wire);
   @override
   final String wire;
 }

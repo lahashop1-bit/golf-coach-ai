@@ -540,4 +540,107 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get experimentalLabel => 'Thử nghiệm';
+
+  @override
+  String get postureTrialIssuesBody =>
+      'Các nhận xét dưới đây dùng ngưỡng tạm, chưa được kiểm chứng với huấn luyện viên. Hãy xem như gợi ý để tự kiểm tra, không phải kết luận.';
+
+  @override
+  String get focusTitle => 'Nên sửa trước';
+
+  @override
+  String get otherIssuesTitle => 'Điểm khác nên xem';
+
+  @override
+  String get checkedTitle => 'Các điểm đã kiểm tra';
+
+  @override
+  String get noIssueFound => 'Chưa thấy điều cần sửa ở các điểm đã kiểm tra.';
+
+  @override
+  String get levelOk => 'Ổn';
+
+  @override
+  String get levelAttention => 'Nên chú ý';
+
+  @override
+  String get levelReview => 'Cần xem lại';
+
+  @override
+  String get confidenceMedium => 'Có vẻ có dấu hiệu này.';
+
+  @override
+  String get confidenceHigh => 'Dấu hiệu khá rõ.';
+
+  @override
+  String get seeHowToFix => 'Xem cách sửa';
+
+  @override
+  String issueSeenAt(String phase) {
+    return 'Thấy ở: $phase';
+  }
+
+  @override
+  String issueNeedsAngle(String angle) {
+    return 'Cần video quay ở góc $angle.';
+  }
+
+  @override
+  String get guideDraftNote => 'Nội dung nháp, đang chờ huấn luyện viên duyệt.';
+
+  @override
+  String get guideWhatWeSee => 'Điều AI quan sát thấy';
+
+  @override
+  String get guideWhyItMatters => 'Vì sao có thể quan trọng';
+
+  @override
+  String get guideOneThing => 'Một điều nên thử';
+
+  @override
+  String get guideFeel => 'Cảm giác cần tìm';
+
+  @override
+  String get guideSelfCheck => 'Cách tự kiểm tra';
+
+  @override
+  String get guideCommonMistakes => 'Lỗi thường gặp khi sửa';
+
+  @override
+  String get guidePreferredAngle => 'Góc quay nên dùng';
+
+  @override
+  String get guideDifficulty => 'Độ khó sửa';
+
+  @override
+  String get difficultyEasy => 'Dễ';
+
+  @override
+  String get difficultyMedium => 'Vừa';
+
+  @override
+  String get difficultyHard => 'Khó';
+
+  @override
+  String get feedbackQuestion => 'Nhận xét này có giúp bạn không?';
+
+  @override
+  String get feedbackHelpful => 'Hữu ích';
+
+  @override
+  String get feedbackUnclear => 'Không hiểu';
+
+  @override
+  String get feedbackNotRelevant => 'Không phù hợp';
+
+  @override
+  String get feedbackSaved => 'Cảm ơn bạn. Phản hồi chỉ được lưu trên máy này.';
+
+  @override
+  String get limitAngleMismatch =>
+      'Dáng người trong video không giống góc quay đã chọn, nên một số điểm chưa được kiểm tra. Hãy xem lại góc quay của phiên này.';
+
+  @override
+  String get issueNotSeen =>
+      'Chưa thấy dấu hiệu này ở cú này. Phần dưới để bạn tham khảo.';
 }

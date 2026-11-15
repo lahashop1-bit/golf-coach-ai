@@ -174,12 +174,32 @@ early_wrist_hinge, unfolded_wrist_address, scooping_impact, chicken_wing. Có th
 - Mỗi lỗi có tài liệu mô tả: định nghĩa, tín hiệu đo, điều kiện áp dụng, ngưỡng (do Phase 3 xác định), trường hợp thường nhầm.
 - Chưa đặt số ngưỡng trong tài liệu này vì chưa có dữ liệu.
 
+### 10a. Luật nhóm A (hiện thực v0, lát 2b — ngưỡng TẠM)
+
+Trong `packages/analysis_core` (`IssueDetector`). Keypoints đã lật cho người thuận tay trái. Khoảng cách tính theo chiều dài thân (vai → hông) lúc vào bóng, trung bình ±2 khung quanh mốc pha.
+
+| issue_id | Góc | Số đo | Nên chú ý | Cần xem lại |
+|---|---|---|---|---|
+| head_lift_at_impact | cả hai | đầu (mũi + tai) nâng lên từ vào bóng → tiếp xúc | ≥ 0,08 thân | ≥ 0,15 thân |
+| spine_angle_loss_top | DTL | độ nghiêng thân (hông → vai) giảm từ vào bóng → đỉnh | ≥ 7° | ≥ 13° |
+| early_extension | DTL | hông tiến về phía bóng từ vào bóng → tiếp xúc | ≥ 0,07 thân | ≥ 0,14 thân |
+| hanging_back_impact | Chính diện | hông dịch về phía mục tiêu từ vào bóng → tiếp xúc, theo độ rộng chân | < 0,08 chân | ≤ 0 |
+
+- Hướng mặt (DTL) suy từ vị trí tay so với hông lúc vào bóng; hướng mục tiêu (chính diện) suy từ hông trái/phải. Không giả định người chơi đứng bên nào của khung hình.
+- **Kiểm tra góc quay:** độ rộng vai / chiều dài thân lúc vào bóng ≥ 0,45 → giống chính diện, nhỏ hơn → giống DTL. Nếu không khớp góc đã chọn, bỏ các luật riêng theo góc và thêm giới hạn `analysis.limit.angle_mismatch`.
+- **Confidence** = min(mốc pha, visibility các điểm dùng: ≥ 0,7 high, ≥ 0,5 medium) và **tối đa medium** cho tới khi ngưỡng được kiểm chứng. Low → lưu ẩn.
+- Mỗi luật lưu `metricValue` để Phase 3 chỉnh ngưỡng trên video gán nhãn.
+- Các ngưỡng trên **chưa có dữ liệu chứng minh**. Chỉ hiển thị ở bản nội bộ (cờ `EXPERIMENTAL_ISSUES`), có nhãn thử nghiệm.
+- Đã thử trên 1 clip DTL thật (golfer giỏi): cả 3 luật DTL "Ổn" (đầu −0,09 thân, mất góc 3,5°, hông 0,04 thân). Một clip góc chéo sau lưng bị nhận đúng là không khớp chính diện.
+- Giới hạn đã biết: hông xoay mở ở tiếp xúc làm điểm giữa hông dịch trong ảnh 2D; vai xoay ở đỉnh làm đổi độ nghiêng nhìn thấy; quần áo rộng làm lệch điểm hông.
+
 ## 11. Chọn lỗi ưu tiên và tổng hợp theo phiên
 
 - Mỗi cú có thể có nhiều quan sát; chỉ hiển thị nổi bật **1–2 lỗi ưu tiên**, phần còn lại trong "Xem thêm".
 - Chỉ đưa lên kết quả lỗi có confidence ≥ vừa và chất lượng video ≥ trung bình. Lỗi confidence thấp không hiển thị như lỗi; tối đa ghi "chưa đủ dữ liệu".
 - Tổng hợp phiên: đếm số cú có mỗi lỗi ("Lặp lại nhiều nhất").
 - Lỗi ưu tiên = kết hợp (a) lặp lại ở nhiều cú trong phiên, (b) `editorialPriority` do biên tập viên gán trong IssueGuide (nền tảng/tư thế trước, kết quả sau), (c) mức tin cậy. Công thức cụ thể do Phase 4 quyết định và ghi lại; không dùng LLM để chọn.
+- Hiện thực v0 (`FocusSelector`): chỉ xét nhận xét hiển thị được ở mức `attention`/`review`; sắp theo mức (`review` trước) → số cú lặp lại → `editorialPriority` → confidence; lấy tối đa 2. Hiện chỉ chạy trong một cú (lặp lại = 1); tổng hợp phiên chưa làm.
 - Chỉ xem là "tiến bộ" khi có đủ số cú cùng góc/gậy; không kết luận từ một cú.
 
 ## 11b. Nhận diện pha (hiện thực v1)

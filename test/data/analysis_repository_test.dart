@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:analysis_core/analysis_core.dart' show IssueId;
 import 'package:analysis_core/testing.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,21 +14,23 @@ import 'package:golf_coach_ai/domain/enums.dart';
 import '../support/fakes.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized(); // guides are bundled assets
   late TestEnv env;
 
   setUp(() async => env = await TestEnv.create());
   tearDown(() => env.dispose());
 
-  Future<Swing> newSwing({Handedness handedness = Handedness.right}) async {
+  Future<Swing> newSwing(
+      {Handedness handedness = Handedness.right, CameraAngle angle = CameraAngle.faceOn}) async {
     final profile = await ProfileRepository(env.db, VideoStore(env.root))
         .create(handedness: handedness);
     final session = await env.repo.createSession(
         userId: profile.id,
         handedness: handedness,
         source: Source.recorded,
-        setup: const SessionSetup(
+        setup: SessionSetup(
             mode: SessionMode.guidedAnalysis,
-            cameraAngle: CameraAngle.faceOn,
+            cameraAngle: angle,
             clubType: ClubType.iron,
             clubNumber: 7));
     return env.repo.addSwing(session: session, file: await env.clip(), platform: AppPlatform.ios);
@@ -101,5 +104,74 @@ void main() {
     await env.repo.deleteSwing(swing.id);
     expect(await env.analysis.watchLatest(swing.id).first, isNull);
     expect(exists(row.keypointsFilePath), isFalse);
+  });
+
+  group('issues', () {
+    Future<AnalysisResult> analyse(Swing swing) async {
+      await env.analysis.run(swing.id);
+      return (await env.analysis.watchResult(swing.id).first)!;
+    }
+
+    test('rule results are stored with the priority focus', () async {
+      env.pose.sequence = syntheticSwing(headRise: 0.05, hipShift: 0.05);
+      final r = await analyse(await newSwing());
+      expect(r.observations, hasLength(2));
+      final head = r.observation(IssueId.headLiftAtImpact)!;
+      expect(head.level, Level.review);
+      expect(head.isPriorityFocus, isTrue);
+      expect(head.hiddenFromUser, isFalse);
+      expect(head.cameraAngle, CameraAngle.faceOn);
+      expect(head.phase, SwingPhase.impact);
+      expect(head.evidenceKey, 'issue.head_lift_at_impact.what_we_see');
+      expect(head.evidenceFrameMs, r.phase(SwingPhase.impact)!.timestampMs);
+      final back = r.observation(IssueId.hangingBackImpact)!;
+      expect(back.level, Level.ok);
+      expect(back.isPriorityFocus, isFalse);
+    });
+
+    test('a clip that does not match the session angle is flagged', () async {
+      env.pose.sequence = syntheticSwing(); // face-on body
+      final r = await analyse(await newSwing(angle: CameraAngle.downTheLine));
+      expect(r.limitations, contains('analysis.limit.angle_mismatch'));
+      expect(r.observations.map((o) => o.issueId), ['head_lift_at_impact']);
+    });
+
+    test('poorly visible landmarks are stored hidden and never focused', () async {
+      env.pose.sequence = syntheticSwing(visibility: 0.45, headRise: 0.05);
+      final r = await analyse(await newSwing());
+      expect(r.observations, isNotEmpty);
+      expect(r.visible, isEmpty);
+      expect(r.observations.any((o) => o.isPriorityFocus), isFalse);
+    });
+
+    test('feedback keeps the latest answer and goes away with the swing', () async {
+      env.pose.sequence = syntheticSwing(headRise: 0.05);
+      final swing = await newSwing();
+      final o = (await analyse(swing)).observation(IssueId.headLiftAtImpact)!;
+      await env.analysis.setFeedback(o.id, FeedbackValue.unclear);
+      await env.analysis.setFeedback(o.id, FeedbackValue.helpful);
+      expect(await env.analysis.watchFeedback(o.id).first, FeedbackValue.helpful);
+      expect(await env.db.select(env.db.analysisFeedbacks).get(), hasLength(1));
+
+      await env.repo.deleteSwing(swing.id);
+      expect(await env.db.select(env.db.issueObservations).get(), isEmpty);
+      expect(await env.db.select(env.db.analysisFeedbacks).get(), isEmpty);
+    });
+
+    test('re-running replaces old observations', () async {
+      final swing = await newSwing();
+      await env.analysis.run(swing.id);
+      final r = await analyse(swing);
+      final all = await env.db.select(env.db.issueObservations).get();
+      expect(all.map((o) => o.analysisId).toSet(), {r.row.id});
+    });
+
+    test('delete all data removes observations and feedback', () async {
+      final o = (await analyse(await newSwing())).observations.first;
+      await env.analysis.setFeedback(o.id, FeedbackValue.notRelevant);
+      await ProfileRepository(env.db, VideoStore(env.root)).deleteAllData();
+      expect(await env.db.select(env.db.issueObservations).get(), isEmpty);
+      expect(await env.db.select(env.db.analysisFeedbacks).get(), isEmpty);
+    });
   });
 }

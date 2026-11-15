@@ -1,0 +1,90 @@
+{
+  "content_version": "0.1.0-draft",
+  "locale": "en",
+  "guides": [
+    {
+      "issue_id": "spine_angle_loss_top",
+      "title": "Loss of spine angle at the top",
+      "what_we_see": "At the top of your swing, your upper body seems to stand up compared with address. Your spine angle (how far your upper body leans toward the ball) gets smaller.",
+      "why_it_matters": "If you stand up at the top, you have to dip back down in the downswing to reach the ball. That is hard to repeat. Fat and thin shots become more likely.",
+      "one_thing_to_try": "In the backswing, turn your shoulders around your spine. Keep your chest pointing down at the ball a little longer.",
+      "feel": "Your back keeps the same lean it had at address while your shoulders turn around it.",
+      "self_check": "Film a swing from down the line. Pause at the top. Compare the lean of your back with the address frame.",
+      "common_mistakes": [
+        "Holding the back so stiff that the shoulders cannot turn.",
+        "Bending lower than at address to make up for it.",
+        "Lifting the arms without turning the shoulders."
+      ],
+      "correction_difficulty": 2,
+      "preferred_camera_angle": "down_the_line",
+      "applicable_club_types": ["driver", "wood", "hybrid", "iron", "wedge"],
+      "editorial_priority": 1,
+      "drill_ids": [],
+      "reviewed_by": null,
+      "reviewed_at": null
+    },
+    {
+      "issue_id": "early_extension",
+      "title": "Early extension",
+      "what_we_see": "Between address and impact, your hips seem to move toward the ball. Your body loses its bend before the club reaches the ball.",
+      "why_it_matters": "When the hips move toward the ball, the arms and club have less room to swing through. You may have to save the shot with your hands. Contact and direction change more from swing to swing.",
+      "one_thing_to_try": "In the downswing, keep your backside near an object placed just behind you, such as your golf bag.",
+      "feel": "Your hips turn open while your backside stays back instead of pushing toward the ball.",
+      "self_check": "Film a swing from down the line. Draw a vertical line touching your backside at address. Pause at impact and check whether it still touches the line.",
+      "common_mistakes": [
+        "Freezing the hips instead of turning them.",
+        "Bending over too far at address.",
+        "Thrusting the hips up to hit harder."
+      ],
+      "correction_difficulty": 3,
+      "preferred_camera_angle": "down_the_line",
+      "applicable_club_types": ["driver", "wood", "hybrid", "iron", "wedge"],
+      "editorial_priority": 2,
+      "drill_ids": [],
+      "reviewed_by": null,
+      "reviewed_at": null
+    },
+    {
+      "issue_id": "hanging_back_impact",
+      "title": "Hanging back at impact",
+      "what_we_see": "At impact, your hips do not seem to have moved toward the target compared with address. Much of your weight may still be on your back foot.",
+      "why_it_matters": "With your weight left on the back foot, the low point of the swing tends to land behind the ball. Fat shots and scooped shots become more likely.",
+      "one_thing_to_try": "Start the downswing with a small shift of the hips toward the target, before your arms bring the club down.",
+      "feel": "At the finish, almost all your weight is on your front foot (the one nearer the target), with the back heel up.",
+      "self_check": "Hold your finish for 3 seconds. If you stay balanced on your front foot without stepping back, your weight shift is improving.",
+      "common_mistakes": [
+        "Sliding the whole body sideways instead of shifting and then turning.",
+        "Leaning the head far toward the target.",
+        "Trying to lift the ball with the hands."
+      ],
+      "correction_difficulty": 2,
+      "preferred_camera_angle": "face_on",
+      "applicable_club_types": ["driver", "wood", "hybrid", "iron", "wedge"],
+      "editorial_priority": 3,
+      "drill_ids": [],
+      "reviewed_by": null,
+      "reviewed_at": null
+    },
+    {
+      "issue_id": "head_lift_at_impact",
+      "title": "Head up at impact",
+      "what_we_see": "Between address and impact, your head seems to rise in the frame.",
+      "why_it_matters": "When the head rises, the upper body often rises with it. The distance from your shoulders to the ball changes, so thin shots become more likely.",
+      "one_thing_to_try": "Look at the back of the ball until the club has passed it. Then let your head turn with your body.",
+      "feel": "Your head stays fairly steady until impact. It does not have to be frozen and can turn naturally with your shoulders after the ball is gone.",
+      "self_check": "After the shot, check whether you can still see the spot where the ball was for a brief moment.",
+      "common_mistakes": [
+        "Locking the head and neck so the shoulders cannot turn.",
+        "Ducking the head lower than at address.",
+        "Looking up early to watch the ball fly."
+      ],
+      "correction_difficulty": 1,
+      "preferred_camera_angle": "face_on",
+      "applicable_club_types": ["driver", "wood", "hybrid", "iron", "wedge"],
+      "editorial_priority": 4,
+      "drill_ids": [],
+      "reviewed_by": null,
+      "reviewed_at": null
+    }
+  ]
+}

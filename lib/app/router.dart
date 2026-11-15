@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../data/swing_repository.dart';
+import '../features/analysis/issue_guide_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/log/log_screen.dart';
 import '../features/log/swing_detail_screen.dart';
@@ -49,6 +50,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/swing/:id',
         builder: (_, s) => SwingDetailScreen(swingId: s.pathParameters['id']!),
+        routes: [
+          GoRoute(
+            path: 'issue/:issue',
+            builder: (_, s) => IssueGuideScreen(
+                swingId: s.pathParameters['id']!, issueWire: s.pathParameters['issue']!),
+          ),
+        ],
       ),
       StatefulShellRoute.indexedStack(
         builder: (_, _, shell) => _TabShell(shell: shell),

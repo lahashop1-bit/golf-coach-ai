@@ -142,20 +142,71 @@ class SwingAnalyses extends Table {
   Set<Column> get primaryKey => {id};
 }
 
-@DriftDatabase(tables: [UserProfiles, SwingSessions, Swings, SwingAnalyses])
+/// DATABASE_SCHEMA §6. One rule result; removed with its analysis.
+@DataClassName('IssueObservation')
+class IssueObservations extends Table {
+  TextColumn get id => text()();
+  TextColumn get analysisId =>
+      text().references(SwingAnalyses, #id, onDelete: KeyAction.cascade)();
+  /// AI_ANALYSIS_SPEC §10 `issue_id`.
+  TextColumn get issueId => text()();
+  TextColumn get phase => text().map(const WireConverter(SwingPhase.values))();
+  /// `ok` | `attention` | `review`.
+  TextColumn get level => text().map(const WireConverter(Level.values))();
+  TextColumn get confidence => text().map(const WireConverter(Confidence.values))();
+  /// Low-confidence results are kept for evaluation but never shown.
+  BoolColumn get hiddenFromUser => boolean()();
+  TextColumn get cameraAngle => text().map(const WireConverter(CameraAngle.values))();
+  TextColumn get evidenceKey => text()();
+  IntColumn get evidenceFrameMs => integer().nullable()();
+  BoolColumn get isPriorityFocus => boolean().withDefault(const Constant(false))();
+  /// Raw rule measurement, for threshold tuning only (never shown).
+  RealColumn get metricValue => real().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+/// DATABASE_SCHEMA §9. One answer per observation (latest wins).
+@DataClassName('AnalysisFeedback')
+class AnalysisFeedbacks extends Table {
+  TextColumn get id => text()();
+  TextColumn get userId => text()();
+  TextColumn get observationId =>
+      text().references(IssueObservations, #id, onDelete: KeyAction.cascade)();
+  TextColumn get value => text().map(const WireConverter(FeedbackValue.values))();
+  TextColumn get comment => text().nullable()();
+  DateTimeColumn get createdAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+@DriftDatabase(tables: [
+  UserProfiles,
+  SwingSessions,
+  Swings,
+  SwingAnalyses,
+  IssueObservations,
+  AnalysisFeedbacks,
+])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor])
       : super(executor ?? driftDatabase(name: 'golf_coach'));
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (m) => m.createAll(),
         onUpgrade: (m, from, to) async {
-          // v2: swing analysis results. Existing rows are untouched.
+          // Each step only adds tables; existing rows are untouched.
           if (from < 2) await m.createTable(swingAnalyses);
+          if (from < 3) {
+            await m.createTable(issueObservations);
+            await m.createTable(analysisFeedbacks);
+          }
         },
         beforeOpen: (details) async {
           await customStatement('PRAGMA foreign_keys = ON');

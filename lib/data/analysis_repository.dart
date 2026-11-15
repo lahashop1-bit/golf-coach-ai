@@ -10,6 +10,7 @@ import 'package:uuid/uuid.dart';
 
 import '../domain/enums.dart';
 import 'db/database.dart';
+import 'guide_repository.dart';
 import 'video_store.dart';
 
 /// Native pose estimation, behind an interface so tests can fake it.
@@ -35,7 +36,7 @@ class MediaPipePoseEngine implements PoseEngine {
 
 /// Decoded view of a stored analysis.
 class AnalysisResult {
-  AnalysisResult(this.row)
+  AnalysisResult(this.row, [this.observations = const []])
       : phases = row.phasesJson == null
             ? const []
             : [
@@ -50,6 +51,19 @@ class AnalysisResult {
   final List<PhaseMark> phases;
   final Tempo? tempo;
 
+  /// All rule results, including hidden ones (filter with [visible]).
+  final List<IssueObservation> observations;
+
+  /// Observations the user may see (confidence medium or high).
+  Iterable<IssueObservation> get visible => observations.where((o) => !o.hiddenFromUser);
+
+  IssueObservation? observation(IssueId id) {
+    for (final o in observations) {
+      if (o.issueId == id.wire) return o;
+    }
+    return null;
+  }
+
   List<String> get limitations =>
       row.limitationKeys.isEmpty ? const [] : row.limitationKeys.split(',');
 
@@ -63,14 +77,15 @@ class AnalysisResult {
 
 /// Runs and stores on-device analysis (AI_ANALYSIS_SPEC §9, §14).
 class AnalysisRepository {
-  AnalysisRepository(this._db, this._videos, this._engine);
+  AnalysisRepository(this._db, this._videos, this._engine, this._guides);
 
   final AppDatabase _db;
   final VideoStore _videos;
   final PoseEngine _engine;
+  final GuideRepository _guides;
 
   static const schemaVersion = '1.0';
-  static const modelVersion = 'mediapipe_pose_landmarker_full+phases_v1';
+  static const modelVersion = 'mediapipe_pose_landmarker_full+phases_v1+issues_a_v0';
 
   /// Latest analysis of a swing (completed, failed or running).
   Stream<SwingAnalysis?> watchLatest(String swingId) => (_db.select(_db.swingAnalyses)
@@ -78,6 +93,41 @@ class AnalysisRepository {
         ..orderBy([(a) => OrderingTerm.desc(a.createdAt)])
         ..limit(1))
       .watchSingleOrNull();
+
+  /// [watchLatest] with its observations.
+  Stream<AnalysisResult?> watchResult(String swingId) =>
+      watchLatest(swingId).asyncMap((row) async => row == null
+          ? null
+          : AnalysisResult(
+              row,
+              await (_db.select(_db.issueObservations)
+                    ..where((o) => o.analysisId.equals(row.id)))
+                  .get()));
+
+  Stream<FeedbackValue?> watchFeedback(String observationId) =>
+      (_db.select(_db.analysisFeedbacks)
+            ..where((f) => f.observationId.equals(observationId))
+            ..orderBy([(f) => OrderingTerm.desc(f.createdAt)])
+            ..limit(1))
+          .watchSingleOrNull()
+          .map((f) => f?.value);
+
+  /// One answer per observation: a new answer replaces the old one.
+  Future<void> setFeedback(String observationId, FeedbackValue value) async {
+    final profile = await _db.select(_db.userProfiles).getSingleOrNull();
+    await _db.transaction(() async {
+      await (_db.delete(_db.analysisFeedbacks)
+            ..where((f) => f.observationId.equals(observationId)))
+          .go();
+      await _db.into(_db.analysisFeedbacks).insert(AnalysisFeedbacksCompanion.insert(
+            id: const Uuid().v4(),
+            userId: profile?.id ?? '',
+            observationId: observationId,
+            value: value,
+            createdAt: DateTime.now().toUtc(),
+          ));
+    });
+  }
 
   Future<KeypointSequence?> loadKeypoints(SwingAnalysis a) async {
     final rel = a.keypointsFilePath;
@@ -95,6 +145,7 @@ class AnalysisRepository {
           ..where((s) => s.id.equals(swing.sessionId)))
         .getSingle();
     final mirrored = session.handednessSnapshot == Handedness.left;
+    final angle = session.cameraAngle;
     final id = const Uuid().v4();
     final rel = 'swings/${swing.id}_$id.gckp';
     final row = await _db.into(_db.swingAnalyses).insertReturning(SwingAnalysesCompanion.insert(
@@ -112,17 +163,38 @@ class AnalysisRepository {
       final pose = await _engine.run(swing.id, _videos.absolute(swing.localFilePath),
           _videos.absolute(rel), onProgress ?? (_) {});
       final bytes = await File(_videos.absolute(rel)).readAsBytes();
-      final timing = await Isolate.run(() {
+      final (timing, issues) = await Isolate.run(() {
         var seq = KeypointSequence.decode(bytes);
         if (mirrored) seq = seq.mirrored();
-        return const PhaseDetector().detect(seq);
+        final timing = const PhaseDetector().detect(seq);
+        return (timing, timing == null ? null : const IssueDetector().detect(seq, timing, angle));
       });
       final limits = [
         'analysis.limit.single_2d_view',
         if (timing == null) 'analysis.limit.no_swing_detected',
         if (pose.fps < 50) 'analysis.limit.low_fps',
+        if (issues?.angleMismatch ?? false) 'analysis.limit.angle_mismatch',
       ];
-      await _finish(row, SwingAnalysesCompanion(
+      final findings = issues?.findings ?? const <IssueFinding>[];
+      final focus = const FocusSelector()
+          .select(findings, editorialPriority: await _guides.editorialPriority());
+      await _finish(row, [
+        for (final f in findings)
+          IssueObservationsCompanion.insert(
+            id: const Uuid().v4(),
+            analysisId: id,
+            issueId: f.issue.wire,
+            phase: f.issue.phase,
+            level: f.level,
+            confidence: f.confidence,
+            hiddenFromUser: f.hidden,
+            cameraAngle: angle,
+            evidenceKey: 'issue.${f.issue.wire}.what_we_see',
+            evidenceFrameMs: Value(f.evidenceFrameMs),
+            isPriorityFocus: Value(focus.contains(f.issue)),
+            metricValue: Value(f.metric),
+          ),
+      ], SwingAnalysesCompanion(
         status: Value(timing == null ? AnalysisStatus.insufficientQuality : AnalysisStatus.completed),
         phasesJson: Value(timing == null
             ? null
@@ -142,13 +214,16 @@ class AnalysisRepository {
     return (_db.select(_db.swingAnalyses)..where((a) => a.id.equals(id))).getSingle();
   }
 
-  /// Marks [row] done and current; older analyses of the swing are removed
-  /// with their keypoints files.
-  Future<void> _finish(SwingAnalysis row, SwingAnalysesCompanion data) async {
+  /// Stores [observations] and marks [row] done and current in one
+  /// transaction; older analyses of the swing are removed with their
+  /// keypoints files (observations and feedback cascade).
+  Future<void> _finish(SwingAnalysis row, List<IssueObservationsCompanion> observations,
+      SwingAnalysesCompanion data) async {
     final older = await (_db.select(_db.swingAnalyses)
           ..where((a) => a.swingId.equals(row.swingId) & a.id.equals(row.id).not()))
         .get();
     await _db.transaction(() async {
+      await _db.batch((b) => b.insertAll(_db.issueObservations, observations));
       await (_db.update(_db.swingAnalyses)..where((a) => a.id.equals(row.id))).write(
           data.copyWith(isCurrent: const Value(true), completedAt: Value(DateTime.now().toUtc())));
     });

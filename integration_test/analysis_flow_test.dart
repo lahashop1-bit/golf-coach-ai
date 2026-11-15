@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:analysis_core/analysis_core.dart' show IssueId;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golf_coach_ai/app/app.dart';
 import 'package:golf_coach_ai/app/providers.dart';
 import 'package:golf_coach_ai/data/db/database.dart';
+import 'package:golf_coach_ai/features/analysis/issue_guide_screen.dart';
 import 'package:golf_coach_ai/data/swing_repository.dart';
 import 'package:golf_coach_ai/data/video_store.dart';
 import 'package:golf_coach_ai/domain/enums.dart';
@@ -14,10 +16,12 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:video_player/video_player.dart';
 
 /// Full analysis loop on a simulator/device with real MediaPipe:
-/// saved swing → "Phân tích cú này" → phases, skeleton, tempo.
+/// saved swing → "Phân tích cú này" → phases, skeleton, tempo, issues, guide.
 ///   flutter test integration_test/analysis_flow_test.dart \
-///     --dart-define=POSE_VIDEO=/abs/real_swing.mp4 [--dart-define=HOLD_SECONDS=10]
+///     --dart-define=POSE_VIDEO=/abs/real_swing.mp4 \
+///     [--dart-define=POSE_ANGLE=down_the_line] [--dart-define=HOLD_SECONDS=10]
 const _video = String.fromEnvironment('POSE_VIDEO');
+const _angle = String.fromEnvironment('POSE_ANGLE', defaultValue: 'face_on');
 const _hold = int.fromEnvironment('HOLD_SECONDS');
 
 void main() {
@@ -48,9 +52,9 @@ void main() {
         userId: profile.id,
         handedness: profile.handedness,
         source: Source.imported,
-        setup: const SessionSetup(
+        setup: SessionSetup(
             mode: SessionMode.selfRecord,
-            cameraAngle: CameraAngle.faceOn,
+            cameraAngle: wireValue(CameraAngle.values, _angle),
             clubType: ClubType.iron,
             clubNumber: 7));
     final swing = await repo.addSwing(
@@ -94,7 +98,36 @@ void main() {
 
     await tester.tap(find.text('Tư thế'));
     await tester.pumpAndSettle();
-    expect(find.text('Các pha swing'), findsOneWidget);
+    final result = container.read(analysisProvider(swing.id)).value!;
+    for (final o in result.observations) {
+      debugPrint('issue ${o.issueId}: ${o.level.wire} ${o.confidence.wire} '
+          'metric=${o.metricValue?.toStringAsFixed(3)} focus=${o.isPriorityFocus}');
+    }
+    debugPrint('limitations: ${result.limitations}');
+    expect(find.text('Nên sửa trước'), findsOneWidget);
+    await tester.ensureVisible(find.text('Các pha swing'));
+    await tester.pumpAndSettle();
+    expect(find.text('Các điểm đã kiểm tra'), findsOneWidget);
+    if (_hold > 0) await tester.runAsync(() => Future.delayed(Duration(seconds: _hold)));
+
+    // Every checked issue opens its guide, with or without an observation.
+    await tester.ensureVisible(find.text('Ngẩng đầu lúc tiếp xúc bóng').last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Ngẩng đầu lúc tiếp xúc bóng').last);
+    await tester.pumpAndSettle();
+    expect(find.text('Một điều nên thử'), findsOneWidget);
+    expect(find.text('Nội dung nháp, đang chờ huấn luyện viên duyệt.'), findsOneWidget);
+    final head = result.observation(IssueId.headLiftAtImpact);
+    if (head != null && !head.hiddenFromUser) {
+      await tester.scrollUntilVisible(find.text('Hữu ích'), 300,
+          scrollable: find.descendant(
+              of: find.byType(IssueGuideScreen), matching: find.byType(Scrollable)));
+      await tester.ensureVisible(find.text('Hữu ích'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Hữu ích'));
+      await pumpUntil(tester, find.text('Cảm ơn bạn. Phản hồi chỉ được lưu trên máy này.'),
+          seconds: 5);
+    }
     if (_hold > 0) await tester.runAsync(() => Future.delayed(Duration(seconds: _hold)));
 
     await profiles.deleteAllData();

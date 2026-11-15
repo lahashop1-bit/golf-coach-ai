@@ -8,9 +8,10 @@
 
 ## Trạng thái dự án
 
-- Giai đoạn: lát 2a chạy trên iPhone (simulator).
+- Giai đoạn: lát 2b chạy trên iPhone (simulator).
   - Có: quay/nhập video; pose on-device (MediaPipe); nhận diện 8 pha; đo nhịp; khung xương.
-  - **Chưa có:** nhận xét lỗi tư thế và hướng dẫn sửa (lát 2b); bản Android của pose.
+  - **Thử nghiệm, chỉ bản nội bộ:** nhận xét 4 lỗi nhóm A với ngưỡng tạm chưa kiểm chứng, chọn lỗi ưu tiên, màn hướng dẫn sửa (nội dung nháp chờ HLV duyệt), phản hồi hữu ích / không hiểu / không phù hợp. Bật ở bản debug/profile; tắt ở bản release trừ khi build với `--dart-define=EXPERIMENTAL_ISSUES=true`.
+  - **Chưa có:** đánh giá độ chính xác trên video gán nhãn; bài tập; tổng kết phiên; bản Android của pose.
   - Xem [Roadmap](docs/DEVELOPMENT_ROADMAP.md).
 - Nền tảng: iOS và Android (Flutter + module native cho camera và AI). Xem [Platform Decision](docs/PLATFORM_DECISION.md).
 - Ngôn ngữ ra mắt dự kiến: Tiếng Việt (vi-VN), English (en), 한국어 (ko-KR).
@@ -39,9 +40,11 @@ Kiểm thử:
 flutter test                          # unit + widget
 ffmpeg -f lavfi -i testsrc=size=720x1280:rate=60 -t 3 -pix_fmt yuv420p /tmp/swing60.mp4
 flutter test integration_test -d "iPhone 17" --dart-define=PROBE_VIDEO=/tmp/swing60.mp4 \
-  --dart-define=POSE_VIDEO=/abs/path/real_swing.mp4   # video một người swing, thấy toàn thân
+  --dart-define=POSE_VIDEO=/abs/path/real_swing.mp4 \
+  --dart-define=POSE_ANGLE=down_the_line              # video một người swing, thấy toàn thân; góc quay của video
 (cd packages/analysis_core && dart test)               # logic phân tích thuần Dart
 dart run packages/analysis_core/tool/inspect.dart <file.gckp>   # xem tín hiệu tay và pha
+dart run packages/analysis_core/tool/issues.dart <file.gckp> down_the_line   # số đo của từng luật lỗi
 ```
 
 Integration test chạy plugin native thật, DB thật, MediaPipe thật và trình phát video thật trên simulator. Video có người thật không được commit vào repo; dùng video của bạn hoặc video có giấy phép.
@@ -57,8 +60,9 @@ Cấu trúc mã:
 | `lib/l10n/` | ARB vi/en/ko |
 | `packages/capture/` | Plugin native (Swift/Kotlin, Pigeon): đọc FPS thật, thời lượng, ảnh bìa |
 | `packages/pose/` | Plugin native: MediaPipe Pose trên file video → tệp keypoints (iOS; Android chưa làm) |
-| `packages/analysis_core/` | Dart thuần, dùng chung hai nền tảng: đọc keypoints, lật cho người thuận tay trái, pha, nhịp |
+| `packages/analysis_core/` | Dart thuần, dùng chung hai nền tảng: đọc keypoints, lật cho người thuận tay trái, pha, nhịp, luật lỗi nhóm A, chọn lỗi ưu tiên |
 | `assets/models/` | Model pose (Apache 2.0, xem NOTICE) |
+| `assets/content/` | IssueGuide JSON theo locale (bản nháp, chờ HLV duyệt) |
 
 ## Tài liệu dành cho Claude Code
 

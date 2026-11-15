@@ -1077,6 +1077,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Experimental'**
   String get experimentalLabel;
+
+  /// No description provided for @postureTrialIssuesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The comments below use provisional thresholds that coaches have not checked yet. Treat them as hints to check yourself, not as a verdict.'**
+  String get postureTrialIssuesBody;
+
+  /// No description provided for @focusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fix this first'**
+  String get focusTitle;
+
+  /// No description provided for @otherIssuesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Also worth a look'**
+  String get otherIssuesTitle;
+
+  /// No description provided for @checkedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What we checked'**
+  String get checkedTitle;
+
+  /// No description provided for @noIssueFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to fix among the points we checked.'**
+  String get noIssueFound;
+
+  /// No description provided for @levelOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks fine'**
+  String get levelOk;
+
+  /// No description provided for @levelAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Worth a look'**
+  String get levelAttention;
+
+  /// No description provided for @levelReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs review'**
+  String get levelReview;
+
+  /// No description provided for @confidenceMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'This seems likely.'**
+  String get confidenceMedium;
+
+  /// No description provided for @confidenceHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'This looks fairly clear.'**
+  String get confidenceHigh;
+
+  /// No description provided for @seeHowToFix.
+  ///
+  /// In en, this message translates to:
+  /// **'See how to fix'**
+  String get seeHowToFix;
+
+  /// No description provided for @issueSeenAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Seen at: {phase}'**
+  String issueSeenAt(String phase);
+
+  /// No description provided for @issueNeedsAngle.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs a video filmed from the {angle} angle.'**
+  String issueNeedsAngle(String angle);
+
+  /// No description provided for @guideDraftNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft content, waiting for coach review.'**
+  String get guideDraftNote;
+
+  /// No description provided for @guideWhatWeSee.
+  ///
+  /// In en, this message translates to:
+  /// **'What the AI saw'**
+  String get guideWhatWeSee;
+
+  /// No description provided for @guideWhyItMatters.
+  ///
+  /// In en, this message translates to:
+  /// **'Why it may matter'**
+  String get guideWhyItMatters;
+
+  /// No description provided for @guideOneThing.
+  ///
+  /// In en, this message translates to:
+  /// **'One thing to try'**
+  String get guideOneThing;
+
+  /// No description provided for @guideFeel.
+  ///
+  /// In en, this message translates to:
+  /// **'The feel to look for'**
+  String get guideFeel;
+
+  /// No description provided for @guideSelfCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'How to check yourself'**
+  String get guideSelfCheck;
+
+  /// No description provided for @guideCommonMistakes.
+  ///
+  /// In en, this message translates to:
+  /// **'Common mistakes when fixing it'**
+  String get guideCommonMistakes;
+
+  /// No description provided for @guidePreferredAngle.
+  ///
+  /// In en, this message translates to:
+  /// **'Best camera angle'**
+  String get guidePreferredAngle;
+
+  /// No description provided for @guideDifficulty.
+  ///
+  /// In en, this message translates to:
+  /// **'How hard to fix'**
+  String get guideDifficulty;
+
+  /// No description provided for @difficultyEasy.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy'**
+  String get difficultyEasy;
+
+  /// No description provided for @difficultyMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get difficultyMedium;
+
+  /// No description provided for @difficultyHard.
+  ///
+  /// In en, this message translates to:
+  /// **'Hard'**
+  String get difficultyHard;
+
+  /// No description provided for @feedbackQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Was this comment useful?'**
+  String get feedbackQuestion;
+
+  /// No description provided for @feedbackHelpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Helpful'**
+  String get feedbackHelpful;
+
+  /// No description provided for @feedbackUnclear.
+  ///
+  /// In en, this message translates to:
+  /// **'Unclear'**
+  String get feedbackUnclear;
+
+  /// No description provided for @feedbackNotRelevant.
+  ///
+  /// In en, this message translates to:
+  /// **'Doesn\'t fit'**
+  String get feedbackNotRelevant;
+
+  /// No description provided for @feedbackSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks. Your answer is stored on this device only.'**
+  String get feedbackSaved;
+
+  /// No description provided for @limitAngleMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The body in the video does not look like the camera angle you chose, so some points were not checked. Please check the session\'s camera angle.'**
+  String get limitAngleMismatch;
+
+  /// No description provided for @issueNotSeen.
+  ///
+  /// In en, this message translates to:
+  /// **'No sign of this in this swing. The notes below are for reference.'**
+  String get issueNotSeen;
 }
 
 class _AppLocalizationsDelegate

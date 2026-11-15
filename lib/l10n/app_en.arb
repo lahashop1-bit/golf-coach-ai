@@ -245,5 +245,51 @@
   "postureTrialBody": "The swing phases are found. Comments on posture come in a later version.",
   "limitSingle2dView": "A 2D video cannot show all 3D movement.",
   "limitLowFps": "Low frame rate: phase times are approximate.",
-  "experimentalLabel": "Experimental"
+  "experimentalLabel": "Experimental",
+  "postureTrialIssuesBody": "The comments below use provisional thresholds that coaches have not checked yet. Treat them as hints to check yourself, not as a verdict.",
+  "focusTitle": "Fix this first",
+  "otherIssuesTitle": "Also worth a look",
+  "checkedTitle": "What we checked",
+  "noIssueFound": "Nothing to fix among the points we checked.",
+  "levelOk": "Looks fine",
+  "levelAttention": "Worth a look",
+  "levelReview": "Needs review",
+  "confidenceMedium": "This seems likely.",
+  "confidenceHigh": "This looks fairly clear.",
+  "seeHowToFix": "See how to fix",
+  "issueSeenAt": "Seen at: {phase}",
+  "@issueSeenAt": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "issueNeedsAngle": "Needs a video filmed from the {angle} angle.",
+  "@issueNeedsAngle": {
+    "placeholders": {
+      "angle": {
+        "type": "String"
+      }
+    }
+  },
+  "guideDraftNote": "Draft content, waiting for coach review.",
+  "guideWhatWeSee": "What the AI saw",
+  "guideWhyItMatters": "Why it may matter",
+  "guideOneThing": "One thing to try",
+  "guideFeel": "The feel to look for",
+  "guideSelfCheck": "How to check yourself",
+  "guideCommonMistakes": "Common mistakes when fixing it",
+  "guidePreferredAngle": "Best camera angle",
+  "guideDifficulty": "How hard to fix",
+  "difficultyEasy": "Easy",
+  "difficultyMedium": "Medium",
+  "difficultyHard": "Hard",
+  "feedbackQuestion": "Was this comment useful?",
+  "feedbackHelpful": "Helpful",
+  "feedbackUnclear": "Unclear",
+  "feedbackNotRelevant": "Doesn't fit",
+  "feedbackSaved": "Thanks. Your answer is stored on this device only.",
+  "limitAngleMismatch": "The body in the video does not look like the camera angle you chose, so some points were not checked. Please check the session's camera angle.",
+  "issueNotSeen": "No sign of this in this swing. The notes below are for reference."
 }

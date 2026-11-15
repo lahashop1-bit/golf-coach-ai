@@ -43,7 +43,7 @@ Trạng thái lát 1 (2026-11-15). Mọi phần đánh dấu [x] là thật, kh�
 - [ ] HLV/biên tập viên duyệt nội dung.
 
 ## Phase 3 — Prototype phân tích (cốt lõi MVP)
-Trạng thái lát 2a (2026-11-15):
+Trạng thái lát 2a + 2b (2026-11-15):
 
 - [~] Pose on-device: **iOS chạy thật** với MediaPipe Pose Landmarker full (Apache 2.0, đã kiểm model card). Trên simulator, clip 12 giây xử lý trong khoảng 3 giây, nhận diện người ở 100% khung. [ ] Android. [ ] Đo nhiệt và pin trên máy thật.
 - [ ] Đánh giá plugin `camera` chính thức; viết plugin native nếu không đạt FPS/ổn định.
@@ -53,18 +53,18 @@ Trạng thái lát 2a (2026-11-15):
 - [x] Đo nhịp: đưa gậy lên, dừng ở đỉnh, hạ gậy, tỷ lệ. Không hiển thị khi confidence thấp.
 - [x] Lớp phủ khung xương, nút nhảy theo pha. [ ] Đường tham chiếu.
 - [x] Phân tích chạy nền theo hàng đợi, có tiến trình, hủy được; tự chạy sau mỗi cú ở chế độ Phân tích; người thuận tay trái được lật keypoints.
-- [ ] Prototype nhận diện lỗi nhóm A (Face-on và DTL).
+- [~] Prototype nhận diện lỗi nhóm A (Face-on và DTL): 4 luật hình học trong `analysis_core` (AI_ANALYSIS_SPEC §10a), ngưỡng **tạm**, confidence tối đa "vừa", kiểm tra góc quay có khớp không. Chỉ bật ở bản nội bộ (cờ `EXPERIMENTAL_ISSUES`). Trên 1 clip DTL thật của golfer giỏi: cả 3 luật DTL đều "Ổn". Chưa có clip có lỗi thật để kiểm.
 - [ ] Đánh giá với nhãn HLV/golfer chuyên môn; đo false positive/negative theo lỗi và góc.
 - [ ] Chỉ bật các lỗi đạt ngưỡng.
 
 ## Phase 4 — Tích hợp báo cáo và hướng dẫn
-- [ ] Schema kết quả nhiều lỗi, mức, confidence, giới hạn.
-- [ ] Luật chọn lỗi ưu tiên (tần suất + thứ tự biên tập).
-- [ ] Chi tiết cú swing 3 tab: Tư thế / Toàn bộ swing / Nhịp.
-- [ ] Danh sách lỗi theo phiên; "diễn biến theo pha".
-- [ ] Từ lỗi → IssueGuide → bài tập (có kiểm soát, không do LLM tự sáng tác).
+- [x] Schema kết quả nhiều lỗi, mức, confidence, giới hạn (bảng `issue_observations`, DB v3).
+- [~] Luật chọn lỗi ưu tiên: mức → số cú lặp lại → thứ tự biên tập → confidence (`FocusSelector`). Hiện chỉ tính trong một cú; [ ] theo phiên.
+- [x] Chi tiết cú swing 3 tab: Tư thế (lỗi ưu tiên, điểm khác, các điểm đã kiểm tra, pha) / Toàn bộ swing / Nhịp.
+- [ ] Danh sách lỗi theo phiên; "diễn biến theo pha" theo mức.
+- [~] Từ lỗi → IssueGuide: có màn giải thích; nội dung vi/en/ko là **bản nháp chờ HLV duyệt**. [ ] Bài tập.
 - [ ] Phản hồi ngay sau từng cú / tổng kết cuối phiên.
-- [ ] Phản hồi người dùng (hữu ích / không hiểu / không phù hợp).
+- [x] Phản hồi người dùng (hữu ích / không hiểu / không phù hợp), lưu trên máy.
 - [ ] LLM diễn giải theo locale dựa trên dữ liệu có cấu trúc (nếu dùng).
 - [ ] Backend job processing chỉ khi cần.
 

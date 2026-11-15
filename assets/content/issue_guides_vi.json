@@ -1,0 +1,90 @@
+{
+  "content_version": "0.1.0-draft",
+  "locale": "vi-VN",
+  "guides": [
+    {
+      "issue_id": "spine_angle_loss_top",
+      "title": "Mất góc cúi lưng ở đỉnh swing",
+      "what_we_see": "Khi gậy lên tới đỉnh swing, thân trên của bạn có vẻ đứng thẳng lên so với lúc vào bóng. Góc cúi lưng (độ nghiêng của thân trên về phía bóng) nhỏ đi.",
+      "why_it_matters": "Khi thân trên đứng lên ở đỉnh, bạn phải cúi xuống lại trong pha hạ gậy để chạm được bóng. Việc này khó lặp lại đều. Bóng dễ bị đánh dày hoặc đánh đỉnh.",
+      "one_thing_to_try": "Ở pha đưa gậy lên, hãy xoay vai quanh trục lưng. Giữ ngực hướng xuống bóng lâu hơn một chút.",
+      "feel": "Bạn thấy lưng giữ nguyên độ nghiêng như lúc vào bóng, còn vai thì xoay vòng quanh lưng.",
+      "self_check": "Quay một cú ở góc DTL. Dừng video ở đỉnh swing. So độ nghiêng của lưng với khung hình lúc vào bóng.",
+      "common_mistakes": [
+        "Cố giữ lưng cứng đơ đến mức không xoay được vai.",
+        "Cúi thấp hơn lúc vào bóng để bù lại.",
+        "Chỉ nâng tay lên cao mà không xoay vai."
+      ],
+      "correction_difficulty": 2,
+      "preferred_camera_angle": "down_the_line",
+      "applicable_club_types": ["driver", "wood", "hybrid", "iron", "wedge"],
+      "editorial_priority": 1,
+      "drill_ids": [],
+      "reviewed_by": null,
+      "reviewed_at": null
+    },
+    {
+      "issue_id": "early_extension",
+      "title": "Đứng thẳng người quá sớm",
+      "what_we_see": "Từ lúc vào bóng đến lúc tiếp xúc bóng, hông của bạn có vẻ tiến về phía bóng. Thân người mất dần tư thế cúi trước khi gậy chạm bóng.",
+      "why_it_matters": "Khi hông tiến về phía bóng, tay và gậy bị chật chỗ để đi qua. Bạn có thể phải điều chỉnh bằng tay vào phút chót. Đường bóng và điểm tiếp xúc dễ thay đổi giữa các cú.",
+      "one_thing_to_try": "Trong pha hạ gậy, hãy để mông giữ khoảng cách với một vật đặt sau lưng, ví dụ cái túi gậy.",
+      "feel": "Bạn thấy hông xoay mở ra, còn mông vẫn ở phía sau, không đẩy về phía bóng.",
+      "self_check": "Quay một cú ở góc DTL. Kẻ một vạch dọc chạm mông lúc vào bóng. Dừng ở lúc tiếp xúc bóng và xem mông còn chạm vạch đó không.",
+      "common_mistakes": [
+        "Giữ hông đứng yên, không xoay, chỉ để không tiến về phía bóng.",
+        "Cúi quá thấp lúc vào bóng.",
+        "Cố đánh mạnh bằng cách đẩy hông lên."
+      ],
+      "correction_difficulty": 3,
+      "preferred_camera_angle": "down_the_line",
+      "applicable_club_types": ["driver", "wood", "hybrid", "iron", "wedge"],
+      "editorial_priority": 2,
+      "drill_ids": [],
+      "reviewed_by": null,
+      "reviewed_at": null
+    },
+    {
+      "issue_id": "hanging_back_impact",
+      "title": "Dồn người lại phía sau lúc tiếp xúc",
+      "what_we_see": "Lúc tiếp xúc bóng, hông của bạn có vẻ chưa dịch về phía mục tiêu so với lúc vào bóng. Trọng lượng cơ thể có thể còn nằm nhiều ở chân sau.",
+      "why_it_matters": "Khi trọng lượng ở lại chân sau, điểm thấp nhất của cú swing dễ rơi trước bóng. Bóng dễ bị đánh dày hoặc bị hất lên.",
+      "one_thing_to_try": "Bắt đầu pha hạ gậy bằng cách dịch hông nhẹ về phía mục tiêu, trước khi tay đưa gậy xuống.",
+      "feel": "Ở tư thế kết thúc, gần như toàn bộ trọng lượng nằm trên chân trước (chân gần mục tiêu). Gót chân sau nhấc lên.",
+      "self_check": "Giữ tư thế kết thúc 3 giây. Nếu bạn đứng vững trên chân trước mà không bước lùi, việc chuyển trọng lượng đã tốt hơn.",
+      "common_mistakes": [
+        "Trượt cả người sang ngang thay vì dịch hông rồi xoay.",
+        "Nghiêng đầu về phía mục tiêu quá nhiều.",
+        "Cố hất bóng lên cao bằng tay."
+      ],
+      "correction_difficulty": 2,
+      "preferred_camera_angle": "face_on",
+      "applicable_club_types": ["driver", "wood", "hybrid", "iron", "wedge"],
+      "editorial_priority": 3,
+      "drill_ids": [],
+      "reviewed_by": null,
+      "reviewed_at": null
+    },
+    {
+      "issue_id": "head_lift_at_impact",
+      "title": "Ngẩng đầu lúc tiếp xúc bóng",
+      "what_we_see": "Từ lúc vào bóng đến lúc tiếp xúc bóng, đầu của bạn có vẻ nhích lên cao hơn trong khung hình.",
+      "why_it_matters": "Khi đầu nhô lên, thân trên thường nhô lên theo. Khoảng cách từ vai tới bóng thay đổi, nên bóng dễ bị đánh đỉnh.",
+      "one_thing_to_try": "Nhìn vào phía sau quả bóng cho tới khi gậy đi qua bóng. Sau đó mới để đầu xoay theo thân.",
+      "feel": "Đầu giữ tương đối ổn định cho tới lúc tiếp xúc. Đầu không cần đứng yên tuyệt đối, có thể xoay tự nhiên theo vai sau khi bóng đi.",
+      "self_check": "Sau khi đánh, hãy xem bạn còn thấy chỗ bóng vừa nằm trong một nhịp ngắn không.",
+      "common_mistakes": [
+        "Khóa cứng đầu và cổ đến mức vai không xoay được.",
+        "Cúi đầu thấp hơn lúc vào bóng.",
+        "Vội ngẩng lên xem bóng bay."
+      ],
+      "correction_difficulty": 1,
+      "preferred_camera_angle": "face_on",
+      "applicable_club_types": ["driver", "wood", "hybrid", "iron", "wedge"],
+      "editorial_priority": 4,
+      "drill_ids": [],
+      "reviewed_by": null,
+      "reviewed_at": null
+    }
+  ]
+}

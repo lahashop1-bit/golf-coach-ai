@@ -111,5 +111,22 @@ extension PhaseLabel on SwingPhase {
 String? limitationText(AppLocalizations l, String key) => switch (key) {
       'analysis.limit.single_2d_view' => l.limitSingle2dView,
       'analysis.limit.low_fps' => l.limitLowFps,
+      'analysis.limit.angle_mismatch' => l.limitAngleMismatch,
       _ => null,
+    };
+
+extension LevelLabel on Level {
+  String label(AppLocalizations l) => switch (this) {
+        Level.ok => l.levelOk,
+        Level.attention => l.levelAttention,
+        Level.review => l.levelReview,
+        Level.insufficientData => l.levelInsufficientData,
+      };
+}
+
+/// IssueGuide.correctionDifficulty (1–3, set by the editor).
+String difficultyLabel(AppLocalizations l, int d) => switch (d) {
+      1 => l.difficultyEasy,
+      2 => l.difficultyMedium,
+      _ => l.difficultyHard,
     };

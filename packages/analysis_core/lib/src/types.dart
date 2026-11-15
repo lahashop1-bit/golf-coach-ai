@@ -34,6 +34,28 @@ enum Confidence with WireEnum {
   Confidence min(Confidence other) => index <= other.index ? this : other;
 }
 
+enum CameraAngle with WireEnum {
+  faceOn('face_on'),
+  downTheLine('down_the_line');
+
+  const CameraAngle(this.wire);
+  @override
+  final String wire;
+}
+
+/// AI_ANALYSIS_SPEC §5. Severity order: review > attention > ok.
+/// `insufficientData` is never stored on an observation.
+enum Level with WireEnum {
+  ok('ok'),
+  attention('attention'),
+  review('review'),
+  insufficientData('insufficient_data');
+
+  const Level(this.wire);
+  @override
+  final String wire;
+}
+
 class PhaseMark {
   const PhaseMark(this.phase, this.timestampMs, this.confidence,
       {this.userAdjusted = false});

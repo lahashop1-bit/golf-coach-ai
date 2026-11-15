@@ -1,0 +1,90 @@
+{
+  "content_version": "0.1.0-draft",
+  "locale": "ko-KR",
+  "guides": [
+    {
+      "issue_id": "spine_angle_loss_top",
+      "title": "백스윙 탑에서 척추각 무너짐",
+      "what_we_see": "백스윙 탑에서 어드레스 때보다 상체가 일어선 것으로 보입니다. 척추각(상체가 공 쪽으로 숙여진 정도)이 작아졌습니다.",
+      "why_it_matters": "탑에서 상체가 일어서면 다운스윙에서 다시 숙여야 공에 닿습니다. 이 동작은 매번 똑같이 반복하기 어렵습니다. 뒤땅이나 토핑이 나오기 쉽습니다.",
+      "one_thing_to_try": "백스윙에서 척추를 축으로 어깨를 돌려 보세요. 가슴이 공을 향하는 시간을 조금 더 길게 유지하세요.",
+      "feel": "등은 어드레스 때의 기울기를 그대로 유지하고, 어깨만 등 주위로 돈다는 느낌입니다.",
+      "self_check": "DTL 각도로 한 번 촬영하세요. 탑에서 영상을 멈추고 어드레스 장면과 등의 기울기를 비교하세요.",
+      "common_mistakes": [
+        "등을 너무 굳혀서 어깨가 돌지 않는 경우.",
+        "보상하려고 어드레스보다 더 숙이는 경우.",
+        "어깨를 돌리지 않고 팔만 들어 올리는 경우."
+      ],
+      "correction_difficulty": 2,
+      "preferred_camera_angle": "down_the_line",
+      "applicable_club_types": ["driver", "wood", "hybrid", "iron", "wedge"],
+      "editorial_priority": 1,
+      "drill_ids": [],
+      "reviewed_by": null,
+      "reviewed_at": null
+    },
+    {
+      "issue_id": "early_extension",
+      "title": "얼리 익스텐션",
+      "what_we_see": "어드레스부터 임팩트까지 골반이 공 쪽으로 나오는 것으로 보입니다. 클럽이 공에 닿기 전에 숙인 자세가 풀립니다.",
+      "why_it_matters": "골반이 공 쪽으로 나오면 팔과 클럽이 지나갈 공간이 좁아집니다. 마지막 순간에 손으로 맞추게 될 수 있습니다. 샷마다 임팩트와 방향이 달라지기 쉽습니다.",
+      "one_thing_to_try": "다운스윙에서 엉덩이가 바로 뒤에 놓인 물건(예: 골프백)에서 멀어지지 않게 해 보세요.",
+      "feel": "골반은 열리며 회전하지만, 엉덩이는 공 쪽으로 밀리지 않고 뒤에 머무는 느낌입니다.",
+      "self_check": "DTL 각도로 촬영하세요. 어드레스 때 엉덩이에 닿는 세로선을 그으세요. 임팩트에서 멈추고 엉덩이가 아직 선에 닿는지 확인하세요.",
+      "common_mistakes": [
+        "골반을 돌리지 않고 멈춰 버리는 경우.",
+        "어드레스에서 너무 많이 숙이는 경우.",
+        "세게 치려고 골반을 위로 밀어 올리는 경우."
+      ],
+      "correction_difficulty": 3,
+      "preferred_camera_angle": "down_the_line",
+      "applicable_club_types": ["driver", "wood", "hybrid", "iron", "wedge"],
+      "editorial_priority": 2,
+      "drill_ids": [],
+      "reviewed_by": null,
+      "reviewed_at": null
+    },
+    {
+      "issue_id": "hanging_back_impact",
+      "title": "임팩트에서 체중이 뒤에 남음",
+      "what_we_see": "임팩트에서 골반이 어드레스 때보다 목표 쪽으로 이동하지 않은 것으로 보입니다. 체중이 아직 뒷발에 많이 남아 있을 수 있습니다.",
+      "why_it_matters": "체중이 뒷발에 남으면 스윙의 최저점이 공 뒤에 생기기 쉽습니다. 뒤땅이나 퍼 올리는 샷이 나오기 쉽습니다.",
+      "one_thing_to_try": "팔이 클럽을 내리기 전에, 골반을 목표 쪽으로 살짝 옮기면서 다운스윙을 시작해 보세요.",
+      "feel": "피니시에서 체중이 거의 모두 앞발(목표에 가까운 발)에 실리고 뒷발 뒤꿈치가 들립니다.",
+      "self_check": "피니시를 3초 동안 유지하세요. 뒤로 물러서지 않고 앞발로 균형을 잡을 수 있다면 체중 이동이 좋아지고 있는 것입니다.",
+      "common_mistakes": [
+        "옮긴 뒤 회전하지 않고 몸 전체가 옆으로 미끄러지는 경우.",
+        "머리를 목표 쪽으로 너무 기울이는 경우.",
+        "손으로 공을 띄우려는 경우."
+      ],
+      "correction_difficulty": 2,
+      "preferred_camera_angle": "face_on",
+      "applicable_club_types": ["driver", "wood", "hybrid", "iron", "wedge"],
+      "editorial_priority": 3,
+      "drill_ids": [],
+      "reviewed_by": null,
+      "reviewed_at": null
+    },
+    {
+      "issue_id": "head_lift_at_impact",
+      "title": "임팩트에서 헤드업",
+      "what_we_see": "어드레스부터 임팩트까지 화면에서 머리가 위로 올라간 것으로 보입니다.",
+      "why_it_matters": "머리가 올라가면 상체도 함께 올라가는 경우가 많습니다. 어깨와 공 사이의 거리가 달라져 토핑이 나오기 쉽습니다.",
+      "one_thing_to_try": "클럽이 공을 지나갈 때까지 공의 뒷부분을 보세요. 그다음에 머리가 몸과 함께 돌게 하세요.",
+      "feel": "임팩트까지 머리가 비교적 안정되어 있습니다. 완전히 고정할 필요는 없고, 공이 떠난 뒤에는 어깨와 함께 자연스럽게 돌아가도 됩니다.",
+      "self_check": "샷 후에 공이 있던 자리가 잠깐 동안 보이는지 확인하세요.",
+      "common_mistakes": [
+        "어깨가 돌지 않을 정도로 머리와 목을 고정하는 경우.",
+        "어드레스보다 머리를 더 숙이는 경우.",
+        "공이 날아가는 것을 보려고 일찍 고개를 드는 경우."
+      ],
+      "correction_difficulty": 1,
+      "preferred_camera_angle": "face_on",
+      "applicable_club_types": ["driver", "wood", "hybrid", "iron", "wedge"],
+      "editorial_priority": 4,
+      "drill_ids": [],
+      "reviewed_by": null,
+      "reviewed_at": null
+    }
+  ]
+}

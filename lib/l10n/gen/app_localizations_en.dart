@@ -546,4 +546,108 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get experimentalLabel => 'Experimental';
+
+  @override
+  String get postureTrialIssuesBody =>
+      'The comments below use provisional thresholds that coaches have not checked yet. Treat them as hints to check yourself, not as a verdict.';
+
+  @override
+  String get focusTitle => 'Fix this first';
+
+  @override
+  String get otherIssuesTitle => 'Also worth a look';
+
+  @override
+  String get checkedTitle => 'What we checked';
+
+  @override
+  String get noIssueFound => 'Nothing to fix among the points we checked.';
+
+  @override
+  String get levelOk => 'Looks fine';
+
+  @override
+  String get levelAttention => 'Worth a look';
+
+  @override
+  String get levelReview => 'Needs review';
+
+  @override
+  String get confidenceMedium => 'This seems likely.';
+
+  @override
+  String get confidenceHigh => 'This looks fairly clear.';
+
+  @override
+  String get seeHowToFix => 'See how to fix';
+
+  @override
+  String issueSeenAt(String phase) {
+    return 'Seen at: $phase';
+  }
+
+  @override
+  String issueNeedsAngle(String angle) {
+    return 'Needs a video filmed from the $angle angle.';
+  }
+
+  @override
+  String get guideDraftNote => 'Draft content, waiting for coach review.';
+
+  @override
+  String get guideWhatWeSee => 'What the AI saw';
+
+  @override
+  String get guideWhyItMatters => 'Why it may matter';
+
+  @override
+  String get guideOneThing => 'One thing to try';
+
+  @override
+  String get guideFeel => 'The feel to look for';
+
+  @override
+  String get guideSelfCheck => 'How to check yourself';
+
+  @override
+  String get guideCommonMistakes => 'Common mistakes when fixing it';
+
+  @override
+  String get guidePreferredAngle => 'Best camera angle';
+
+  @override
+  String get guideDifficulty => 'How hard to fix';
+
+  @override
+  String get difficultyEasy => 'Easy';
+
+  @override
+  String get difficultyMedium => 'Medium';
+
+  @override
+  String get difficultyHard => 'Hard';
+
+  @override
+  String get feedbackQuestion => 'Was this comment useful?';
+
+  @override
+  String get feedbackHelpful => 'Helpful';
+
+  @override
+  String get feedbackUnclear => 'Unclear';
+
+  @override
+  String get feedbackNotRelevant => 'Doesn\'t fit';
+
+  @override
+  String get feedbackSaved =>
+      'Thanks. Your answer is stored on this device only.';
+
+  @override
+  String get limitAngleMismatch =>
+      'The body in the video does not look like the camera angle you chose, so some points were not checked. Please check the session\'s camera angle.';
+
+  @override
+  String get issueNotSeen =>
+      'No sign of this in this swing. The notes below are for reference.';
 }

@@ -8,6 +8,7 @@ import 'package:drift/native.dart';
 import 'package:flutter/services.dart';
 import 'package:golf_coach_ai/data/analysis_repository.dart';
 import 'package:golf_coach_ai/data/db/database.dart';
+import 'package:golf_coach_ai/data/guide_repository.dart';
 import 'package:golf_coach_ai/data/swing_repository.dart';
 import 'package:golf_coach_ai/data/video_store.dart';
 import 'package:pose/pose.dart';
@@ -85,7 +86,8 @@ class TestEnv {
     final store = VideoStore(root);
     final repo = SwingRepository(db, store, Capture(api: api));
     final pose = FakePoseEngine();
-    return TestEnv._(db, root, api, repo, pose, AnalysisRepository(db, store, pose));
+    return TestEnv._(
+        db, root, api, repo, pose, AnalysisRepository(db, store, pose, GuideRepository()));
   }
 
   /// A fake clip file outside the store (like a camera temp file).

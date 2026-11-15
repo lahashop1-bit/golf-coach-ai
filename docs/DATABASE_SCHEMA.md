@@ -104,6 +104,9 @@ Lỗi của cú **chỉ** lưu trong `IssueObservation` (không lưu thêm bản
 - evidenceKey: string
 - evidenceFrameMs: optional integer
 - isPriorityFocus: boolean
+- metricValue: optional number (số đo thô của luật, chỉ để chỉnh ngưỡng; không hiển thị)
+
+Hiện thực: drift schema v3. Xóa SwingAnalysis → xóa IssueObservation → xóa AnalysisFeedback (ON DELETE CASCADE).
 
 ## 7. Nội dung biên soạn (đóng gói trong app ở MVP)
 

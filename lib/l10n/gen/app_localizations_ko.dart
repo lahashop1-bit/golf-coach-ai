@@ -525,4 +525,106 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get experimentalLabel => '실험 기능';
+
+  @override
+  String get postureTrialIssuesBody =>
+      '아래 피드백은 아직 코치가 검증하지 않은 임시 기준을 사용합니다. 결론이 아니라 스스로 확인해 볼 힌트로 봐 주세요.';
+
+  @override
+  String get focusTitle => '먼저 고칠 점';
+
+  @override
+  String get otherIssuesTitle => '함께 볼 점';
+
+  @override
+  String get checkedTitle => '확인한 항목';
+
+  @override
+  String get noIssueFound => '확인한 항목에서는 고칠 점이 보이지 않습니다.';
+
+  @override
+  String get levelOk => '괜찮음';
+
+  @override
+  String get levelAttention => '주의';
+
+  @override
+  String get levelReview => '다시 확인 필요';
+
+  @override
+  String get confidenceMedium => '그럴 가능성이 있어 보입니다.';
+
+  @override
+  String get confidenceHigh => '비교적 뚜렷합니다.';
+
+  @override
+  String get seeHowToFix => '교정 방법 보기';
+
+  @override
+  String issueSeenAt(String phase) {
+    return '확인 시점: $phase';
+  }
+
+  @override
+  String issueNeedsAngle(String angle) {
+    return '$angle 각도로 찍은 영상이 필요합니다.';
+  }
+
+  @override
+  String get guideDraftNote => '초안입니다. 코치 검토를 기다리고 있습니다.';
+
+  @override
+  String get guideWhatWeSee => 'AI가 본 것';
+
+  @override
+  String get guideWhyItMatters => '왜 중요할 수 있는지';
+
+  @override
+  String get guideOneThing => '한 가지 해 볼 것';
+
+  @override
+  String get guideFeel => '찾아야 할 느낌';
+
+  @override
+  String get guideSelfCheck => '스스로 확인하는 법';
+
+  @override
+  String get guideCommonMistakes => '고칠 때 흔한 실수';
+
+  @override
+  String get guidePreferredAngle => '권장 촬영 각도';
+
+  @override
+  String get guideDifficulty => '교정 난이도';
+
+  @override
+  String get difficultyEasy => '쉬움';
+
+  @override
+  String get difficultyMedium => '보통';
+
+  @override
+  String get difficultyHard => '어려움';
+
+  @override
+  String get feedbackQuestion => '이 피드백이 도움이 되었나요?';
+
+  @override
+  String get feedbackHelpful => '도움이 됨';
+
+  @override
+  String get feedbackUnclear => '이해가 안 됨';
+
+  @override
+  String get feedbackNotRelevant => '맞지 않음';
+
+  @override
+  String get feedbackSaved => '감사합니다. 답변은 이 기기에만 저장됩니다.';
+
+  @override
+  String get limitAngleMismatch =>
+      '영상 속 자세가 선택한 촬영 각도와 달라 일부 항목을 확인하지 못했습니다. 세션의 촬영 각도를 확인해 주세요.';
+
+  @override
+  String get issueNotSeen => '이번 스윙에서는 이 징후가 보이지 않습니다. 아래 내용은 참고용입니다.';
 }
