@@ -68,7 +68,8 @@ Chủ dự án yêu cầu app chạy trên **cả iPhone và Android**. Trọng 
 - Kênh native: Pigeon để có kiểu dữ liệu an toàn.
 
 ### 3.4 Phiên bản hệ điều hành
-- Đề xuất ban đầu: iOS 15+ và Android 8.0 (API 26)+. **Chốt ở Phase 0** sau khi kiểm tra yêu cầu của model pose, CameraX và thị phần người dùng Việt Nam/Hàn Quốc.
+- **Đã chốt (2026-11-15): iOS 15+ và Android 8.0 (API 26)+.** Sẽ xem lại nếu model pose chọn ở Phase 3 đòi hỏi bản cao hơn.
+- iOS dùng Swift Package Manager (Flutter mặc định); không cần CocoaPods.
 
 ### 3.5 Thiết kế giao diện đa nền tảng
 - Một design system riêng của dự án (không sao chép GolfFix), dựa trên Material 3 và điều chỉnh theo nền tảng:

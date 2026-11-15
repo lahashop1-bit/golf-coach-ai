@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Golf Coach AI";
+"NSCameraUsageDescription" = "Golf Coach AI dùng camera để quay cú swing của bạn. Video chỉ lưu trên điện thoại.";
+"NSPhotoLibraryUsageDescription" = "Golf Coach AI mở thư viện để bạn chọn video cú swing cần nhập.";

@@ -10,25 +10,28 @@ Hai luồng chạy song song:
 - [ ] Đọc và xác nhận tài liệu sản phẩm.
 - [ ] Chọn tên sản phẩm chính thức sau nghiên cứu thương hiệu.
 - [x] Xác nhận ADR-001 (Flutter + module native) — [PLATFORM_DECISION.md](PLATFORM_DECISION.md).
-- [ ] Chốt phiên bản iOS/Android tối thiểu và ma trận thiết bị thử nghiệm.
-- [ ] Tạo app Flutter chạy được trên iOS simulator và Android emulator, điều hướng 4 tab (Trang chủ, Quay, Nhật ký, Luyện tập).
-- [ ] Khung plugin native `capture` và `pose` (Pigeon) với API tối thiểu.
-- [ ] Thiết lập localization vi-VN, en, ko-KR.
-- [ ] Design system tối thiểu.
+- [x] Chốt phiên bản tối thiểu: **iOS 15, Android API 26** (2026-11-15). Ma trận thiết bị thật: còn mở.
+- [x] App Flutter, điều hướng 4 tab (tab bar Cupertino trên iOS, NavigationBar trên Android). Đã chạy trên iOS simulator; Android mới build APK, chưa chạy emulator.
+- [x] Plugin `capture` (Pigeon) với `probeVideo`. [ ] Plugin `pose`: làm ở lát 2.
+- [x] Localization vi, en, ko (ARB). Bản ko là bản nháp, cần biên tập viên duyệt.
+- [x] Design system tối thiểu (Material 3, màu riêng, sáng/tối).
 - [ ] CI build iOS + Android và unit test Dart.
 
 ## Phase 1 — Thu video và thư viện
-- [ ] Onboarding hồ sơ golfer.
-- [ ] Home.
-- [ ] Hướng dẫn Face-on / DTL bằng sơ đồ.
-- [ ] Camera preview và recording; chọn gậy (gồm tập không gậy), tay thuận, FPS, hẹn giờ.
-- [ ] Chế độ Phân tích / Tự quay; số cú; phản hồi ngay hoặc cuối phiên.
-- [ ] Nhập video từ Photos.
-- [ ] Playback 0.25x–1x; thử tua từng khung hình bằng `video_player` trên cả hai nền tảng (spike), thay bằng player native nếu không đạt; lưu, xóa video.
-- [ ] Nhật ký: nhóm theo phiên, lọc, yêu thích, ghi chú, màn "Ghi chú của tôi", `includeInStats`, swing của tôi / người khác.
-- [ ] Chi tiết cú: tab Toàn bộ swing (chưa có lớp phủ); tab Tư thế và Nhịp ở trạng thái rỗng.
-- [ ] Xuất dữ liệu (ZIP) và xóa dữ liệu.
-- [ ] Kiểm tra chất lượng cơ bản không cần pose: thời lượng, độ phân giải, FPS, độ sáng, rung.
+
+Trạng thái lát 1 (2026-11-15). Mọi phần đánh dấu [x] là thật, không dùng mock.
+
+- [x] Onboarding: ngôn ngữ, tay thuận, trình độ. [ ] Mục tiêu, gậy thường tập.
+- [x] Home: nút quay, buổi tập gần đây, vào Cài đặt.
+- [~] Hướng dẫn Face-on / DTL: hiện bằng chữ, có cảnh báo an toàn và lưu ý cho người thuận tay trái. [ ] Sơ đồ.
+- [x] Camera: xem trước và quay từng cú (Bắt đầu → Dừng, tự dừng sau 15 giây), hẹn giờ, đổi camera, không xin micro, gián đoạn thì bỏ cú đang quay. Xin 60 fps; nếu máy không hỗ trợ thì dùng mặc định. FPS thật đọc từ file. [ ] Chọn FPS theo danh sách thiết bị hỗ trợ (plugin `camera` không liệt kê được, cần thêm vào `capture`). [ ] Chưa thử trên iPhone thật.
+- [x] Chế độ Phân tích / Tự quay; số cú; xem lại sau mỗi cú hoặc cuối buổi (sau mỗi cú: xem lại / giữ / quay lại).
+- [x] Nhập video từ thư viện (PHPicker qua `image_picker`).
+- [x] Playback 0.25x/0.5x/1x, tắt tiếng, tua, từng khung hình. **Spike iOS đạt:** 6 bước ở 60 fps = đúng 100 ms. [ ] Android chưa kiểm.
+- [~] Nhật ký: nhóm theo phiên, Tất cả/Yêu thích, ghi chú, `includeInStats`, swing của tôi / người khác, xóa cú/buổi. [ ] Lọc gậy/góc/ngày, màn "Ghi chú của tôi".
+- [x] Chi tiết cú: tab Toàn bộ swing; tab Tư thế và Nhịp ở trạng thái "Chưa phân tích".
+- [~] Xóa toàn bộ dữ liệu. [ ] Xuất ZIP.
+- [~] Kiểm tra chất lượng: thời lượng, FPS. [ ] Độ phân giải, độ sáng, rung.
 - **Song song:** thu thập tập video thử nghiệm có đồng ý; chọn công cụ gán nhãn.
 
 ## Phase 2 — Nội dung hướng dẫn sửa

@@ -8,11 +8,48 @@
 
 ## Trạng thái dự án
 
-- Giai đoạn: Product discovery / đặc tả và chuẩn bị triển khai.
+- Giai đoạn: Lát 1 (thu video và thư viện) chạy được trên iPhone. **Chưa có phân tích AI**: tab Tư thế/Nhịp hiển thị "Chưa phân tích". Xem [Roadmap](docs/DEVELOPMENT_ROADMAP.md).
 - Nền tảng: iOS và Android (Flutter + module native cho camera và AI). Xem [Platform Decision](docs/PLATFORM_DECISION.md).
 - Ngôn ngữ ra mắt dự kiến: Tiếng Việt (vi-VN), English (en), 한국어 (ko-KR).
 - Đối tượng đầu tiên: người mới chơi golf; hỗ trợ người chơi trung cấp ở các giai đoạn sau.
 - Tên Golf Coach AI là tên làm việc, chưa phải quyết định thương hiệu cuối cùng.
+
+## Chạy ứng dụng
+
+Yêu cầu: Flutter 3.47+, Xcode 26+ (iOS 15+), Android SDK (API 26+).
+
+```sh
+flutter pub get
+flutter run -d "iPhone 17"            # iOS simulator (không có camera: dùng "Nhập video")
+flutter run -d <tên iPhone thật>      # cần chọn Team ký trong ios/Runner.xcworkspace
+flutter build apk --debug --target-platform android-arm64   # Android trên Apple Silicon
+```
+
+Sinh lại code sau khi sửa:
+- Bảng DB (`lib/data/db/database.dart`): `dart run build_runner build`
+- Chuỗi giao diện (`lib/l10n/*.arb`): `flutter gen-l10n`
+- Kênh native (`packages/capture/pigeons/`): xem [packages/capture/README.md](packages/capture/README.md)
+
+Kiểm thử:
+
+```sh
+flutter test                          # unit + widget
+ffmpeg -f lavfi -i testsrc=size=720x1280:rate=60 -t 3 -pix_fmt yuv420p /tmp/swing60.mp4
+flutter test integration_test -d "iPhone 17" --dart-define=PROBE_VIDEO=/tmp/swing60.mp4
+```
+
+Integration test chạy plugin native thật, DB thật và trình phát video thật trên simulator.
+
+Cấu trúc mã:
+
+| Thư mục | Nội dung |
+|---|---|
+| `lib/app/` | App, router 4 tab, theme, providers, nhãn enum |
+| `lib/domain/` | Enum chuẩn (theo DATABASE_SCHEMA), kiểm tra chất lượng video |
+| `lib/data/` | drift DB, repository, kho video |
+| `lib/features/<tên>/` | Màn hình theo tính năng |
+| `lib/l10n/` | ARB vi/en/ko |
+| `packages/capture/` | Plugin native (Swift/Kotlin, Pigeon): đọc FPS thật, thời lượng, ảnh bìa |
 
 ## Tài liệu dành cho Claude Code
 

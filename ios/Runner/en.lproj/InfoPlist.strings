@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Golf Coach AI";
+"NSCameraUsageDescription" = "Golf Coach AI uses the camera to record your swing. Videos stay on your phone.";
+"NSPhotoLibraryUsageDescription" = "Golf Coach AI opens your library so you can import a swing video.";

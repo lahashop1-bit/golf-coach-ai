@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Golf Coach AI";
+"NSCameraUsageDescription" = "Golf Coach AI는 스윙 촬영을 위해 카메라를 사용합니다. 영상은 휴대폰에만 저장됩니다.";
+"NSPhotoLibraryUsageDescription" = "스윙 영상을 가져오기 위해 Golf Coach AI가 사진 보관함을 엽니다.";
