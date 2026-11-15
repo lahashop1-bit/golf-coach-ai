@@ -706,18 +706,6 @@ abstract class AppLocalizations {
   /// **'Tempo'**
   String get tabTempo;
 
-  /// No description provided for @notAnalyzedTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Not analyzed yet'**
-  String get notAnalyzedTitle;
-
-  /// No description provided for @notAnalyzedBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Posture and tempo analysis is still in development. When it is ready, results for this swing will show here.'**
-  String get notAnalyzedBody;
-
   /// No description provided for @speedLabel.
   ///
   /// In en, this message translates to:
@@ -891,6 +879,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Every video, swing and your profile on this phone will be deleted. This can\'t be undone.'**
   String get deleteAllBody;
+
+  /// No description provided for @phaseAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get phaseAddress;
+
+  /// No description provided for @phaseTakeaway.
+  ///
+  /// In en, this message translates to:
+  /// **'Takeaway'**
+  String get phaseTakeaway;
+
+  /// No description provided for @phaseBackswing.
+  ///
+  /// In en, this message translates to:
+  /// **'Backswing'**
+  String get phaseBackswing;
+
+  /// No description provided for @phaseTop.
+  ///
+  /// In en, this message translates to:
+  /// **'Top'**
+  String get phaseTop;
+
+  /// No description provided for @phaseDownswing.
+  ///
+  /// In en, this message translates to:
+  /// **'Downswing'**
+  String get phaseDownswing;
+
+  /// No description provided for @phaseImpact.
+  ///
+  /// In en, this message translates to:
+  /// **'Impact'**
+  String get phaseImpact;
+
+  /// No description provided for @phaseFollowThrough.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow-through'**
+  String get phaseFollowThrough;
+
+  /// No description provided for @phaseFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get phaseFinish;
+
+  /// No description provided for @analyzeSwing.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyze this swing'**
+  String get analyzeSwing;
+
+  /// No description provided for @analyzeAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyze again'**
+  String get analyzeAgain;
+
+  /// No description provided for @analyzingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing…'**
+  String get analyzingLabel;
+
+  /// No description provided for @analysisQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting to analyze…'**
+  String get analysisQueued;
+
+  /// No description provided for @analysisFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'This swing couldn\'t be analyzed. Please try again.'**
+  String get analysisFailed;
+
+  /// No description provided for @analysisUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis isn\'t available on this device yet.'**
+  String get analysisUnsupported;
+
+  /// No description provided for @analysisNoSwing.
+  ///
+  /// In en, this message translates to:
+  /// **'No full swing was found. Record from address to finish with your whole body in the frame.'**
+  String get analysisNoSwing;
+
+  /// No description provided for @skeletonToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Skeleton'**
+  String get skeletonToggle;
+
+  /// No description provided for @tempoBackswing.
+  ///
+  /// In en, this message translates to:
+  /// **'Backswing'**
+  String get tempoBackswing;
+
+  /// No description provided for @tempoTopPause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause at the top'**
+  String get tempoTopPause;
+
+  /// No description provided for @tempoDownswing.
+  ///
+  /// In en, this message translates to:
+  /// **'Downswing'**
+  String get tempoDownswing;
+
+  /// No description provided for @tempoRatio.
+  ///
+  /// In en, this message translates to:
+  /// **'Rhythm ratio'**
+  String get tempoRatio;
+
+  /// No description provided for @tempoRatioValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{ratio} : 1'**
+  String tempoRatioValue(String ratio);
+
+  /// No description provided for @tempoRatioHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Backswing time divided by downswing time.'**
+  String get tempoRatioHint;
+
+  /// No description provided for @tempoEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated from video ({fps} fps). Accuracy depends on the frame rate.'**
+  String tempoEstimate(String fps);
+
+  /// No description provided for @tempoMaybe.
+  ///
+  /// In en, this message translates to:
+  /// **'These numbers may be off: the frame rate or hand visibility is limited.'**
+  String get tempoMaybe;
+
+  /// No description provided for @tempoInsufficient.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough data to measure the tempo of this swing.'**
+  String get tempoInsufficient;
+
+  /// No description provided for @levelInsufficientData.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough data'**
+  String get levelInsufficientData;
+
+  /// No description provided for @phasesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Swing phases'**
+  String get phasesTitle;
+
+  /// No description provided for @phaseFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Found'**
+  String get phaseFound;
+
+  /// No description provided for @postureTrialTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Posture feedback is being tested'**
+  String get postureTrialTitle;
+
+  /// No description provided for @postureTrialBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The swing phases are found. Comments on posture come in a later version.'**
+  String get postureTrialBody;
+
+  /// No description provided for @limitSingle2dView.
+  ///
+  /// In en, this message translates to:
+  /// **'A 2D video cannot show all 3D movement.'**
+  String get limitSingle2dView;
+
+  /// No description provided for @limitLowFps.
+  ///
+  /// In en, this message translates to:
+  /// **'Low frame rate: phase times are approximate.'**
+  String get limitLowFps;
+
+  /// No description provided for @experimentalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Experimental'**
+  String get experimentalLabel;
 }
 
 class _AppLocalizationsDelegate

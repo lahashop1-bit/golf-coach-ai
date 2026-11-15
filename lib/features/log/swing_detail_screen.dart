@@ -10,6 +10,9 @@ import '../../app/theme.dart';
 import '../../data/db/database.dart';
 import '../../domain/enums.dart';
 import '../../widgets/common.dart';
+import '../analysis/analysis_status.dart';
+import '../analysis/posture_tab.dart';
+import '../analysis/tempo_tab.dart';
 import 'swing_player.dart';
 
 final _sessionProvider = FutureProvider.family<SwingSession, String>(
@@ -84,19 +87,13 @@ class _Detail extends ConsumerWidget {
           ]),
         ),
         body: TabBarView(children: [
-          _notAnalyzed(context),
+          PostureTab(swing: swing),
           _FullSwingTab(swing: swing),
-          _notAnalyzed(context),
+          TempoTab(swing: swing),
         ]),
       ),
     );
   }
-
-  Widget _notAnalyzed(BuildContext context) => EmptyState(
-        icon: Icons.insights_outlined,
-        title: context.l10n.notAnalyzedTitle,
-        message: context.l10n.notAnalyzedBody,
-      );
 }
 
 class _FullSwingTab extends ConsumerWidget {
@@ -139,6 +136,9 @@ class _FullSwingTab extends ConsumerWidget {
     final repo = ref.read(swingRepositoryProvider);
     final session = ref.watch(_sessionProvider(swing.sessionId)).value;
     final file = File(ref.watch(videoStoreProvider).absolute(swing.localFilePath));
+    final analysis = ref.watch(analysisProvider(swing.id)).value;
+    final done = analysis?.row.status == AnalysisStatus.completed;
+    final keypoints = done ? ref.watch(keypointsProvider(analysis!.row)).value : null;
 
     Widget info(String label, String value) => ListTile(
           dense: true,
@@ -150,8 +150,14 @@ class _FullSwingTab extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.all(Gap.m),
       children: [
-        SwingPlayer(file: file, fps: swing.actualFps),
+        SwingPlayer(
+          file: file,
+          fps: swing.actualFps,
+          phases: done ? analysis!.phases : const [],
+          keypoints: keypoints,
+        ),
         const SizedBox(height: Gap.m),
+        AnalysisStatusCard(swingId: swing.id),
         ListTile(
           contentPadding: EdgeInsets.zero,
           leading: const Icon(Icons.edit_note),

@@ -9,6 +9,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "111.0.0"
+  analysis_core:
+    dependency: "direct main"
+    description:
+      path: "packages/analysis_core"
+      relative: true
+    source: path
+    version: "0.1.0"
   analyzer:
     dependency: transitive
     description:
@@ -763,6 +770,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.3"
+  pose:
+    dependency: "direct main"
+    description:
+      path: "packages/pose"
+      relative: true
+    source: path
+    version: "0.0.1"
   process:
     dependency: transitive
     description:

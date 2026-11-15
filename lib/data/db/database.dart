@@ -114,16 +114,49 @@ class Swings extends Table {
   Set<Column> get primaryKey => {id};
 }
 
-@DriftDatabase(tables: [UserProfiles, SwingSessions, Swings])
+/// DATABASE_SCHEMA §5. One analysis run of a swing; several may exist per
+/// swing (model versions), `isCurrent` marks the one shown.
+@DataClassName('SwingAnalysis')
+class SwingAnalyses extends Table {
+  TextColumn get id => text()();
+  TextColumn get swingId => text().references(Swings, #id)();
+  TextColumn get modelVersion => text()();
+  TextColumn get schemaVersion => text()();
+  TextColumn get status =>
+      text().map(const WireConverter(AnalysisStatus.values))();
+  BoolColumn get isCurrent => boolean().withDefault(const Constant(false))();
+  /// True when keypoints were mirrored for a left-handed golfer before rules.
+  BoolColumn get mirrored => boolean().withDefault(const Constant(false))();
+  /// Relative to the app documents directory (derived file, DATABASE_SCHEMA §12).
+  TextColumn get keypointsFilePath => text().nullable()();
+  /// JSON array of PhaseMark (snake_case fields).
+  TextColumn get phasesJson => text().nullable()();
+  /// JSON object of Tempo, absent when not measurable.
+  TextColumn get tempoJson => text().nullable()();
+  TextColumn get limitationKeys => text().withDefault(const Constant(''))();
+  TextColumn get errorCode => text().nullable()();
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get completedAt => dateTime().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+@DriftDatabase(tables: [UserProfiles, SwingSessions, Swings, SwingAnalyses])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor])
       : super(executor ?? driftDatabase(name: 'golf_coach'));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
+        onCreate: (m) => m.createAll(),
+        onUpgrade: (m, from, to) async {
+          // v2: swing analysis results. Existing rows are untouched.
+          if (from < 2) await m.createTable(swingAnalyses);
+        },
         beforeOpen: (details) async {
           await customStatement('PRAGMA foreign_keys = ON');
         },

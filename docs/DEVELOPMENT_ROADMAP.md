@@ -12,7 +12,7 @@ Hai luồng chạy song song:
 - [x] Xác nhận ADR-001 (Flutter + module native) — [PLATFORM_DECISION.md](PLATFORM_DECISION.md).
 - [x] Chốt phiên bản tối thiểu: **iOS 15, Android API 26** (2026-11-15). Ma trận thiết bị thật: còn mở.
 - [x] App Flutter, điều hướng 4 tab (tab bar Cupertino trên iOS, NavigationBar trên Android). Đã chạy trên iOS simulator; Android mới build APK, chưa chạy emulator.
-- [x] Plugin `capture` (Pigeon) với `probeVideo`. [ ] Plugin `pose`: làm ở lát 2.
+- [x] Plugin `capture` (Pigeon) với `probeVideo`. [x] Plugin `pose` (Pigeon) trên iOS. [ ] `pose` Android.
 - [x] Localization vi, en, ko (ARB). Bản ko là bản nháp, cần biên tập viên duyệt.
 - [x] Design system tối thiểu (Material 3, màu riêng, sáng/tối).
 - [ ] CI build iOS + Android và unit test Dart.
@@ -43,13 +43,16 @@ Trạng thái lát 1 (2026-11-15). Mọi phần đánh dấu [x] là thật, kh�
 - [ ] HLV/biên tập viên duyệt nội dung.
 
 ## Phase 3 — Prototype phân tích (cốt lõi MVP)
-- [ ] Thử pose estimation on-device trên cả iOS và Android với cùng model (độ chính xác, tốc độ, nhiệt, pin; kiểm tra giấy phép model).
+Trạng thái lát 2a (2026-11-15):
+
+- [~] Pose on-device: **iOS chạy thật** với MediaPipe Pose Landmarker full (Apache 2.0, đã kiểm model card). Trên simulator, clip 12 giây xử lý trong khoảng 3 giây, nhận diện người ở 100% khung. [ ] Android. [ ] Đo nhiệt và pin trên máy thật.
 - [ ] Đánh giá plugin `camera` chính thức; viết plugin native nếu không đạt FPS/ổn định.
 - [ ] Kiểm tra chất lượng có pose: toàn thân, che khuất.
 - [ ] Thử tự phát hiện và cắt từng cú khi quay liên tục.
-- [ ] Nhận diện pha swing với confidence; cho phép chỉnh mốc.
-- [ ] Đo nhịp và thời gian pha (ưu tiên đầu tiên).
-- [ ] Lớp phủ khung xương, đường tham chiếu.
+- [~] Nhận diện 8 pha kèm confidence (`analysis_core`, theo quỹ đạo tay). Mới kiểm bằng mắt trên 2 clip mẫu: khớp trong khoảng 1–2 khung hình. [ ] Đánh giá trên bộ video gán nhãn. [ ] Cho phép chỉnh mốc.
+- [x] Đo nhịp: đưa gậy lên, dừng ở đỉnh, hạ gậy, tỷ lệ. Không hiển thị khi confidence thấp.
+- [x] Lớp phủ khung xương, nút nhảy theo pha. [ ] Đường tham chiếu.
+- [x] Phân tích chạy nền theo hàng đợi, có tiến trình, hủy được; tự chạy sau mỗi cú ở chế độ Phân tích; người thuận tay trái được lật keypoints.
 - [ ] Prototype nhận diện lỗi nhóm A (Face-on và DTL).
 - [ ] Đánh giá với nhãn HLV/golfer chuyên môn; đo false positive/negative theo lỗi và góc.
 - [ ] Chỉ bật các lỗi đạt ngưỡng.

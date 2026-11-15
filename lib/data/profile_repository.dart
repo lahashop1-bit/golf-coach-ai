@@ -40,6 +40,7 @@ class ProfileRepository {
   /// Settings → "Xóa toàn bộ dữ liệu": DB rows and every video file.
   Future<void> deleteAllData() async {
     await _db.transaction(() async {
+      await _db.delete(_db.swingAnalyses).go();
       await _db.delete(_db.swings).go();
       await _db.delete(_db.swingSessions).go();
       await _db.delete(_db.userProfiles).go();

@@ -13,6 +13,7 @@ import '../../data/swing_repository.dart';
 import '../../domain/enums.dart';
 import '../../l10n/gen/app_localizations.dart';
 import '../../widgets/common.dart';
+import '../analysis/analysis_jobs.dart';
 import 'recording_session.dart';
 import 'swing_review_sheet.dart';
 
@@ -179,6 +180,11 @@ class _CameraScreenState extends ConsumerState<CameraScreen>
           !await showSwingReviewSheet(context, swing)) {
         await _session.discard(swing);
         if (mounted) setState(() {});
+      }
+      // Guided mode analyzes every kept swing in the background.
+      if (widget.setup.mode == SessionMode.guidedAnalysis &&
+          _session.kept.any((s) => s.id == swing.id)) {
+        ref.read(analysisJobsProvider.notifier).enqueue(swing.id);
       }
       if (_session.isComplete) await _finish();
     } catch (_) {

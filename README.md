@@ -8,7 +8,10 @@
 
 ## Trạng thái dự án
 
-- Giai đoạn: Lát 1 (thu video và thư viện) chạy được trên iPhone. **Chưa có phân tích AI**: tab Tư thế/Nhịp hiển thị "Chưa phân tích". Xem [Roadmap](docs/DEVELOPMENT_ROADMAP.md).
+- Giai đoạn: lát 2a chạy trên iPhone (simulator).
+  - Có: quay/nhập video; pose on-device (MediaPipe); nhận diện 8 pha; đo nhịp; khung xương.
+  - **Chưa có:** nhận xét lỗi tư thế và hướng dẫn sửa (lát 2b); bản Android của pose.
+  - Xem [Roadmap](docs/DEVELOPMENT_ROADMAP.md).
 - Nền tảng: iOS và Android (Flutter + module native cho camera và AI). Xem [Platform Decision](docs/PLATFORM_DECISION.md).
 - Ngôn ngữ ra mắt dự kiến: Tiếng Việt (vi-VN), English (en), 한국어 (ko-KR).
 - Đối tượng đầu tiên: người mới chơi golf; hỗ trợ người chơi trung cấp ở các giai đoạn sau.
@@ -35,10 +38,13 @@ Kiểm thử:
 ```sh
 flutter test                          # unit + widget
 ffmpeg -f lavfi -i testsrc=size=720x1280:rate=60 -t 3 -pix_fmt yuv420p /tmp/swing60.mp4
-flutter test integration_test -d "iPhone 17" --dart-define=PROBE_VIDEO=/tmp/swing60.mp4
+flutter test integration_test -d "iPhone 17" --dart-define=PROBE_VIDEO=/tmp/swing60.mp4 \
+  --dart-define=POSE_VIDEO=/abs/path/real_swing.mp4   # video một người swing, thấy toàn thân
+(cd packages/analysis_core && dart test)               # logic phân tích thuần Dart
+dart run packages/analysis_core/tool/inspect.dart <file.gckp>   # xem tín hiệu tay và pha
 ```
 
-Integration test chạy plugin native thật, DB thật và trình phát video thật trên simulator.
+Integration test chạy plugin native thật, DB thật, MediaPipe thật và trình phát video thật trên simulator. Video có người thật không được commit vào repo; dùng video của bạn hoặc video có giấy phép.
 
 Cấu trúc mã:
 
@@ -50,6 +56,9 @@ Cấu trúc mã:
 | `lib/features/<tên>/` | Màn hình theo tính năng |
 | `lib/l10n/` | ARB vi/en/ko |
 | `packages/capture/` | Plugin native (Swift/Kotlin, Pigeon): đọc FPS thật, thời lượng, ảnh bìa |
+| `packages/pose/` | Plugin native: MediaPipe Pose trên file video → tệp keypoints (iOS; Android chưa làm) |
+| `packages/analysis_core/` | Dart thuần, dùng chung hai nền tảng: đọc keypoints, lật cho người thuận tay trái, pha, nhịp |
+| `assets/models/` | Model pose (Apache 2.0, xem NOTICE) |
 
 ## Tài liệu dành cho Claude Code
 

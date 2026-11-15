@@ -199,6 +199,7 @@ class SwingRepository {
     final swing = await (_db.select(_db.swings)..where((s) => s.id.equals(id)))
         .getSingleOrNull();
     if (swing == null) return;
+    final keypoints = await _deleteAnalyses([id]);
     await _db.transaction(() async {
       await (_db.delete(_db.swings)..where((s) => s.id.equals(id))).go();
       if (await _swingCount(swing.sessionId) == 0) {
@@ -207,13 +208,23 @@ class SwingRepository {
             .go();
       }
     });
-    await _videos.deleteFiles([swing.localFilePath, swing.thumbnailPath]);
+    await _videos.deleteFiles([swing.localFilePath, swing.thumbnailPath, ...keypoints]);
+  }
+
+  /// Removes analysis rows of [swingIds]; returns their keypoints files.
+  Future<List<String?>> _deleteAnalyses(List<String> swingIds) async {
+    final rows = await (_db.select(_db.swingAnalyses)
+          ..where((a) => a.swingId.isIn(swingIds)))
+        .get();
+    await (_db.delete(_db.swingAnalyses)..where((a) => a.swingId.isIn(swingIds))).go();
+    return [for (final r in rows) r.keypointsFilePath];
   }
 
   Future<void> deleteSession(String sessionId) async {
     final swings = await (_db.select(_db.swings)
           ..where((s) => s.sessionId.equals(sessionId)))
         .get();
+    final keypoints = await _deleteAnalyses([for (final s in swings) s.id]);
     await _db.transaction(() async {
       await (_db.delete(_db.swings)..where((s) => s.sessionId.equals(sessionId)))
           .go();
@@ -221,6 +232,6 @@ class SwingRepository {
           .go();
     });
     await _videos.deleteFiles(
-        swings.expand((s) => [s.localFilePath, s.thumbnailPath]));
+        [...swings.expand((s) => [s.localFilePath, s.thumbnailPath]), ...keypoints]);
   }
 }

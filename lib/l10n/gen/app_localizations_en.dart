@@ -343,13 +343,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabTempo => 'Tempo';
 
   @override
-  String get notAnalyzedTitle => 'Not analyzed yet';
-
-  @override
-  String get notAnalyzedBody =>
-      'Posture and tempo analysis is still in development. When it is ready, results for this swing will show here.';
-
-  @override
   String get speedLabel => 'Speed';
 
   @override
@@ -444,4 +437,113 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deleteAllBody =>
       'Every video, swing and your profile on this phone will be deleted. This can\'t be undone.';
+
+  @override
+  String get phaseAddress => 'Address';
+
+  @override
+  String get phaseTakeaway => 'Takeaway';
+
+  @override
+  String get phaseBackswing => 'Backswing';
+
+  @override
+  String get phaseTop => 'Top';
+
+  @override
+  String get phaseDownswing => 'Downswing';
+
+  @override
+  String get phaseImpact => 'Impact';
+
+  @override
+  String get phaseFollowThrough => 'Follow-through';
+
+  @override
+  String get phaseFinish => 'Finish';
+
+  @override
+  String get analyzeSwing => 'Analyze this swing';
+
+  @override
+  String get analyzeAgain => 'Analyze again';
+
+  @override
+  String get analyzingLabel => 'Analyzing…';
+
+  @override
+  String get analysisQueued => 'Waiting to analyze…';
+
+  @override
+  String get analysisFailed =>
+      'This swing couldn\'t be analyzed. Please try again.';
+
+  @override
+  String get analysisUnsupported =>
+      'Analysis isn\'t available on this device yet.';
+
+  @override
+  String get analysisNoSwing =>
+      'No full swing was found. Record from address to finish with your whole body in the frame.';
+
+  @override
+  String get skeletonToggle => 'Skeleton';
+
+  @override
+  String get tempoBackswing => 'Backswing';
+
+  @override
+  String get tempoTopPause => 'Pause at the top';
+
+  @override
+  String get tempoDownswing => 'Downswing';
+
+  @override
+  String get tempoRatio => 'Rhythm ratio';
+
+  @override
+  String tempoRatioValue(String ratio) {
+    return '$ratio : 1';
+  }
+
+  @override
+  String get tempoRatioHint => 'Backswing time divided by downswing time.';
+
+  @override
+  String tempoEstimate(String fps) {
+    return 'Estimated from video ($fps fps). Accuracy depends on the frame rate.';
+  }
+
+  @override
+  String get tempoMaybe =>
+      'These numbers may be off: the frame rate or hand visibility is limited.';
+
+  @override
+  String get tempoInsufficient =>
+      'Not enough data to measure the tempo of this swing.';
+
+  @override
+  String get levelInsufficientData => 'Not enough data';
+
+  @override
+  String get phasesTitle => 'Swing phases';
+
+  @override
+  String get phaseFound => 'Found';
+
+  @override
+  String get postureTrialTitle => 'Posture feedback is being tested';
+
+  @override
+  String get postureTrialBody =>
+      'The swing phases are found. Comments on posture come in a later version.';
+
+  @override
+  String get limitSingle2dView => 'A 2D video cannot show all 3D movement.';
+
+  @override
+  String get limitLowFps => 'Low frame rate: phase times are approximate.';
+
+  @override
+  String get experimentalLabel => 'Experimental';
 }

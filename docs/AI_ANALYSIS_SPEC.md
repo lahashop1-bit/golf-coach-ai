@@ -182,6 +182,19 @@ early_wrist_hinge, unfolded_wrist_address, scooping_impact, chicken_wing. Có th
 - Lỗi ưu tiên = kết hợp (a) lặp lại ở nhiều cú trong phiên, (b) `editorialPriority` do biên tập viên gán trong IssueGuide (nền tảng/tư thế trước, kết quả sau), (c) mức tin cậy. Công thức cụ thể do Phase 4 quyết định và ghi lại; không dùng LLM để chọn.
 - Chỉ xem là "tiến bộ" khi có đủ số cú cùng góc/gậy; không kết luận từ một cú.
 
+## 11b. Nhận diện pha (hiện thực v1)
+
+Trong `packages/analysis_core` (PhaseDetector):
+- **Tín hiệu:** vị trí tay = trung bình có trọng số theo visibility của hai cổ tay. Hai tay cùng nắm cán gậy nên một cổ tay thường bị che, và tay vung nhanh thì bị nhòe. Tín hiệu được chuẩn hóa theo chiều dài thân (vai → hông) và làm mượt nhẹ.
+- **Tiếp xúc:** điểm tay thấp nhất, gần lúc tay nhanh nhất.
+- **Đỉnh:** điểm tay cao nhất trước đó.
+- **Khởi động:** lúc kết thúc quãng đứng yên trước đỉnh.
+- **Kết thúc:** lúc tay dừng lại (hoặc cao nhất) sau tiếp xúc.
+- **Pha giữa:** mức tay ở giữa hai mốc kề nhau.
+- **Giới hạn hợp lý** (để loại clip không phải một cú swing đủ): đưa gậy lên 0,3–2,5 giây, hạ gậy 0,1–0,9 giây. Đây là giới hạn xử lý tín hiệu, không phải ngưỡng lỗi.
+- **Confidence:** theo visibility quanh mốc và FPS. Mốc cần thời gian chính xác: FPS dưới 25 → low, dưới 50 → tối đa medium.
+- **Giới hạn đã biết:** mốc khởi động có thể trễ vài chục ms khi người chơi bắt đầu rất chậm. Video slow-motion phải giữ đúng timestamp thật.
+
 ## 12. Đo nhịp
 
 - Mốc: khởi động đưa gậy → đỉnh → tiếp xúc.

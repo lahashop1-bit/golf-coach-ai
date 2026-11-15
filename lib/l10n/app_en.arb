@@ -11,7 +11,6 @@
   "actionRetry": "Try again",
   "actionClose": "Close",
   "errorGeneric": "Something went wrong. Please try again.",
-
   "onboardingTitle": "Welcome",
   "onboardingIntro": "Record your swing, replay it in slow motion and keep track of your practice.",
   "languageLabel": "Language",
@@ -26,21 +25,18 @@
   "skillAdvanced": "Advanced",
   "privacyLocalOnly": "Your videos stay on this phone. The app never uploads them.",
   "onboardingStart": "Get started",
-
   "homeGreeting": "Hello!",
   "homeRecordCta": "Record a swing",
   "homeRecentSessions": "Recent sessions",
   "seeAll": "See all",
   "emptySwings": "You have no swings yet. Record your first one.",
   "settingsTitle": "Settings",
-
   "modeGuided": "Guided analysis",
   "modeGuidedDesc": "Record a few swings with camera setup tips. Automatic analysis is still in development.",
   "modeRecommended": "Recommended",
   "modeSelf": "Self record",
   "modeSelfDesc": "Just record and save to watch later.",
   "importVideo": "Import a video",
-
   "setupTitle": "Setup",
   "cameraAngleLabel": "Camera angle",
   "angleFaceOn": "Face-on",
@@ -59,7 +55,14 @@
   "clubNumberLabel": "Club number",
   "clubWithNumber": "{club} {number}",
   "@clubWithNumber": {
-    "placeholders": { "club": { "type": "String" }, "number": { "type": "int" } }
+    "placeholders": {
+      "club": {
+        "type": "String"
+      },
+      "number": {
+        "type": "int"
+      }
+    }
   },
   "swingCountLabel": "Number of swings",
   "feedbackLabel": "Review",
@@ -71,23 +74,43 @@
   "timerLabel": "Timer",
   "timerOff": "Off",
   "timerSeconds": "{seconds} s",
-  "@timerSeconds": { "placeholders": { "seconds": { "type": "int" } } },
+  "@timerSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
   "readyButton": "Ready",
   "placementTitle": "Placing the phone",
   "placementFaceOn": "Place the phone in front of you at hip height, facing you square to the target line. Your whole body and the club head must be in the frame.",
   "placementDtl": "Place the phone behind you, looking down the target line, at hand height. Your whole body and the club head must be in the frame.",
   "placementSafety": "Keep the phone and stand out of your swing path and walkways.",
   "placementLeftHanded": "You swing left-handed, so mirror this setup.",
-
   "cameraPermissionDenied": "The app has no camera access. Allow it in your phone's Settings to record swings.",
   "cameraUnavailable": "No camera found on this device. You can still import a video.",
   "startRecording": "Start recording",
   "stopRecording": "Stop",
   "recordingLabel": "Recording",
   "swingProgress": "Swing {current}/{total}",
-  "@swingProgress": { "placeholders": { "current": { "type": "int" }, "total": { "type": "int" } } },
+  "@swingProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "swingNumber": "Swing {number}",
-  "@swingNumber": { "placeholders": { "number": { "type": "int" } } },
+  "@swingNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "finishSession": "Finish",
   "flipCamera": "Switch camera",
   "leaveRecordingTitle": "Stop this session?",
@@ -98,27 +121,34 @@
   "qualityGood": "This video is good for replay.",
   "qualityTooShort": "The video is too short. Record from address to finish.",
   "qualityLowFps": "Low frame rate ({fps} fps). Slow motion will look choppy.",
-  "@qualityLowFps": { "placeholders": { "fps": { "type": "String" } } },
-
+  "@qualityLowFps": {
+    "placeholders": {
+      "fps": {
+        "type": "String"
+      }
+    }
+  },
   "importConfirmTitle": "About this video",
   "importSave": "Save video",
   "importing": "Importing video…",
   "importFailed": "This video can't be read. Try another one.",
-
   "filterAll": "All",
   "filterFavorites": "Favorites",
   "favoritesEmpty": "No favorites yet. Tap the star on a swing to save it here.",
   "swingCount": "{count, plural, =1{1 swing} other{{count} swings}}",
-  "@swingCount": { "placeholders": { "count": { "type": "int" } } },
+  "@swingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "sourceImported": "Imported",
   "deleteSessionTitle": "Delete this session?",
   "deleteSessionBody": "All swings and videos in it will be removed from this phone.",
-
   "tabPosture": "Posture",
   "tabFullSwing": "Full swing",
   "tabTempo": "Tempo",
-  "notAnalyzedTitle": "Not analyzed yet",
-  "notAnalyzedBody": "Posture and tempo analysis is still in development. When it is ready, results for this swing will show here.",
   "speedLabel": "Speed",
   "prevFrame": "Previous frame",
   "nextFrame": "Next frame",
@@ -132,10 +162,22 @@
   "includeInStats": "Count in my stats",
   "swingInfo": "Swing details",
   "fpsValue": "{fps} fps",
-  "@fpsValue": { "placeholders": { "fps": { "type": "String" } } },
+  "@fpsValue": {
+    "placeholders": {
+      "fps": {
+        "type": "String"
+      }
+    }
+  },
   "durationLabel": "Length",
   "durationSeconds": "{seconds} s",
-  "@durationSeconds": { "placeholders": { "seconds": { "type": "String" } } },
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
   "recordedAtLabel": "Recorded",
   "handednessLabel": "Handedness",
   "frameRateLabel": "Frame rate",
@@ -143,14 +185,65 @@
   "deleteSwingBody": "Its video and note will be removed from this phone.",
   "videoMissing": "Video file not found.",
   "swingThumbnail": "Swing {number} thumbnail",
-  "@swingThumbnail": { "placeholders": { "number": { "type": "int" } } },
-
+  "@swingThumbnail": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "practiceEmptyTitle": "Drills are being written",
   "practiceEmptyBody": "Drills will appear after a coach reviews them. Meanwhile, record and replay your swings.",
-
   "profileLabel": "Profile",
   "privacyLabel": "Privacy",
   "deleteAllData": "Delete all data",
   "deleteAllTitle": "Delete all data?",
-  "deleteAllBody": "Every video, swing and your profile on this phone will be deleted. This can't be undone."
+  "deleteAllBody": "Every video, swing and your profile on this phone will be deleted. This can't be undone.",
+  "phaseAddress": "Address",
+  "phaseTakeaway": "Takeaway",
+  "phaseBackswing": "Backswing",
+  "phaseTop": "Top",
+  "phaseDownswing": "Downswing",
+  "phaseImpact": "Impact",
+  "phaseFollowThrough": "Follow-through",
+  "phaseFinish": "Finish",
+  "analyzeSwing": "Analyze this swing",
+  "analyzeAgain": "Analyze again",
+  "analyzingLabel": "Analyzing…",
+  "analysisQueued": "Waiting to analyze…",
+  "analysisFailed": "This swing couldn't be analyzed. Please try again.",
+  "analysisUnsupported": "Analysis isn't available on this device yet.",
+  "analysisNoSwing": "No full swing was found. Record from address to finish with your whole body in the frame.",
+  "skeletonToggle": "Skeleton",
+  "tempoBackswing": "Backswing",
+  "tempoTopPause": "Pause at the top",
+  "tempoDownswing": "Downswing",
+  "tempoRatio": "Rhythm ratio",
+  "tempoRatioValue": "{ratio} : 1",
+  "@tempoRatioValue": {
+    "placeholders": {
+      "ratio": {
+        "type": "String"
+      }
+    }
+  },
+  "tempoRatioHint": "Backswing time divided by downswing time.",
+  "tempoEstimate": "Estimated from video ({fps} fps). Accuracy depends on the frame rate.",
+  "@tempoEstimate": {
+    "placeholders": {
+      "fps": {
+        "type": "String"
+      }
+    }
+  },
+  "tempoMaybe": "These numbers may be off: the frame rate or hand visibility is limited.",
+  "tempoInsufficient": "Not enough data to measure the tempo of this swing.",
+  "levelInsufficientData": "Not enough data",
+  "phasesTitle": "Swing phases",
+  "phaseFound": "Found",
+  "postureTrialTitle": "Posture feedback is being tested",
+  "postureTrialBody": "The swing phases are found. Comments on posture come in a later version.",
+  "limitSingle2dView": "A 2D video cannot show all 3D movement.",
+  "limitLowFps": "Low frame rate: phase times are approximate.",
+  "experimentalLabel": "Experimental"
 }

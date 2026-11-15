@@ -1,6 +1,8 @@
+import 'package:analysis_core/analysis_core.dart';
 import 'package:capture/capture.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/analysis_repository.dart';
 import '../data/db/database.dart';
 import '../data/profile_repository.dart';
 import '../data/swing_repository.dart';
@@ -28,3 +30,19 @@ final sessionsProvider = StreamProvider<List<SessionWithSwings>>(
 
 final swingProvider = StreamProvider.family<Swing?, String>(
     (ref, id) => ref.watch(swingRepositoryProvider).watchSwing(id));
+
+final poseEngineProvider = Provider<PoseEngine>((ref) => MediaPipePoseEngine());
+
+final analysisRepositoryProvider = Provider<AnalysisRepository>((ref) =>
+    AnalysisRepository(ref.watch(databaseProvider), ref.watch(videoStoreProvider),
+        ref.watch(poseEngineProvider)));
+
+/// Latest analysis of a swing, decoded.
+final analysisProvider = StreamProvider.family<AnalysisResult?, String>((ref, swingId) =>
+    ref.watch(analysisRepositoryProvider).watchLatest(swingId).map(
+        (row) => row == null ? null : AnalysisResult(row)));
+
+/// Keypoints of an analysis (for the skeleton overlay). Data classes from
+/// drift compare by value, so the row works as a family key.
+final keypointsProvider = FutureProvider.family<KeypointSequence?, SwingAnalysis>(
+    (ref, row) => ref.watch(analysisRepositoryProvider).loadKeypoints(row));

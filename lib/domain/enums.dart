@@ -1,14 +1,10 @@
 // Canonical enums. Wire values (DB/JSON) follow docs/DATABASE_SCHEMA.md §1
 // and must never be renamed once released.
 
-/// An enum with a stable snake_case wire value.
-mixin WireEnum on Enum {
-  String get wire;
-}
+import 'package:analysis_core/analysis_core.dart';
 
-T wireValue<T extends WireEnum>(List<T> values, String wire) =>
-    values.firstWhere((v) => v.wire == wire,
-        orElse: () => throw ArgumentError('Unknown $T value: $wire'));
+export 'package:analysis_core/analysis_core.dart'
+    show Confidence, SwingPhase, WireEnum, wireValue;
 
 enum Handedness with WireEnum {
   right('right'),
@@ -132,6 +128,19 @@ enum SessionStatus with WireEnum {
   cancelled('cancelled');
 
   const SessionStatus(this.wire);
+  @override
+  final String wire;
+}
+
+enum AnalysisStatus with WireEnum {
+  queued('queued'),
+  processing('processing'),
+  completed('completed'),
+  insufficientQuality('insufficient_quality'),
+  failed('failed'),
+  cancelled('cancelled');
+
+  const AnalysisStatus(this.wire);
   @override
   final String wire;
 }

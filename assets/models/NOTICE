@@ -1,0 +1,7 @@
+pose_landmarker_full.task — MediaPipe Pose Landmarker (BlazePose GHUM 3D), Google LLC.
+Licensed under the Apache License, Version 2.0 (per the model card
+"Model Card BlazePose GHUM 3D", https://storage.googleapis.com/mediapipe-assets/Model%20Card%20BlazePose%20GHUM%203D.pdf).
+Source: https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/latest/pose_landmarker_full.task
+License text: https://www.apache.org/licenses/LICENSE-2.0
+Out of scope per model card: multiple people, people farther than ~4 m, head not visible,
+metric-accurate depth, surveillance or identity recognition.

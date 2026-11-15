@@ -329,13 +329,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get tabTempo => '템포';
 
   @override
-  String get notAnalyzedTitle => '아직 분석되지 않음';
-
-  @override
-  String get notAnalyzedBody =>
-      '자세와 템포 분석은 아직 개발 중입니다. 준비되면 이 스윙의 결과가 여기에 표시됩니다.';
-
-  @override
   String get speedLabel => '속도';
 
   @override
@@ -428,4 +421,108 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get deleteAllBody => '이 휴대폰의 모든 영상, 스윙, 프로필이 삭제됩니다. 되돌릴 수 없습니다.';
+
+  @override
+  String get phaseAddress => '어드레스';
+
+  @override
+  String get phaseTakeaway => '테이크어웨이';
+
+  @override
+  String get phaseBackswing => '백스윙';
+
+  @override
+  String get phaseTop => '톱';
+
+  @override
+  String get phaseDownswing => '다운스윙';
+
+  @override
+  String get phaseImpact => '임팩트';
+
+  @override
+  String get phaseFollowThrough => '팔로스루';
+
+  @override
+  String get phaseFinish => '피니시';
+
+  @override
+  String get analyzeSwing => '이 스윙 분석';
+
+  @override
+  String get analyzeAgain => '다시 분석';
+
+  @override
+  String get analyzingLabel => '분석 중…';
+
+  @override
+  String get analysisQueued => '분석 대기 중…';
+
+  @override
+  String get analysisFailed => '이 스윙을 분석하지 못했습니다. 다시 시도해 주세요.';
+
+  @override
+  String get analysisUnsupported => '이 기기에서는 아직 분석을 지원하지 않습니다.';
+
+  @override
+  String get analysisNoSwing =>
+      '완전한 스윙을 찾지 못했습니다. 어드레스부터 피니시까지 몸 전체가 보이도록 촬영하세요.';
+
+  @override
+  String get skeletonToggle => '골격';
+
+  @override
+  String get tempoBackswing => '백스윙';
+
+  @override
+  String get tempoTopPause => '톱에서 멈춤';
+
+  @override
+  String get tempoDownswing => '다운스윙';
+
+  @override
+  String get tempoRatio => '템포 비율';
+
+  @override
+  String tempoRatioValue(String ratio) {
+    return '$ratio : 1';
+  }
+
+  @override
+  String get tempoRatioHint => '백스윙 시간을 다운스윙 시간으로 나눈 값입니다.';
+
+  @override
+  String tempoEstimate(String fps) {
+    return '영상에서 추정한 값입니다 ($fps fps). 정확도는 프레임 속도에 따라 달라집니다.';
+  }
+
+  @override
+  String get tempoMaybe => '프레임 속도나 손의 선명도 때문에 수치가 정확하지 않을 수 있습니다.';
+
+  @override
+  String get tempoInsufficient => '이 스윙의 템포를 측정할 데이터가 부족합니다.';
+
+  @override
+  String get levelInsufficientData => '데이터 부족';
+
+  @override
+  String get phasesTitle => '스윙 단계';
+
+  @override
+  String get phaseFound => '확인됨';
+
+  @override
+  String get postureTrialTitle => '자세 피드백 테스트 중';
+
+  @override
+  String get postureTrialBody => '스윙 단계는 확인되었습니다. 자세 피드백은 다음 버전에서 제공됩니다.';
+
+  @override
+  String get limitSingle2dView => '2D 영상으로는 3D 움직임을 모두 보여줄 수 없습니다.';
+
+  @override
+  String get limitLowFps => '프레임 속도가 낮아 단계 시점은 대략적인 값입니다.';
+
+  @override
+  String get experimentalLabel => '실험 기능';
 }

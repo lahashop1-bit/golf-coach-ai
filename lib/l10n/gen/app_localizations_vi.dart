@@ -338,13 +338,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get tabTempo => 'Nhịp';
 
   @override
-  String get notAnalyzedTitle => 'Chưa phân tích';
-
-  @override
-  String get notAnalyzedBody =>
-      'Phần phân tích tư thế và nhịp đang được phát triển. Khi sẵn sàng, kết quả của cú này sẽ hiện ở đây.';
-
-  @override
   String get speedLabel => 'Tốc độ';
 
   @override
@@ -439,4 +432,112 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get deleteAllBody =>
       'Mọi video, cú swing và hồ sơ trên điện thoại này sẽ bị xóa. Không thể khôi phục.';
+
+  @override
+  String get phaseAddress => 'Vào bóng';
+
+  @override
+  String get phaseTakeaway => 'Khởi động';
+
+  @override
+  String get phaseBackswing => 'Đưa gậy lên';
+
+  @override
+  String get phaseTop => 'Đỉnh';
+
+  @override
+  String get phaseDownswing => 'Hạ gậy';
+
+  @override
+  String get phaseImpact => 'Tiếp xúc';
+
+  @override
+  String get phaseFollowThrough => 'Theo đà';
+
+  @override
+  String get phaseFinish => 'Kết thúc';
+
+  @override
+  String get analyzeSwing => 'Phân tích cú này';
+
+  @override
+  String get analyzeAgain => 'Phân tích lại';
+
+  @override
+  String get analyzingLabel => 'Đang phân tích…';
+
+  @override
+  String get analysisQueued => 'Đang chờ phân tích…';
+
+  @override
+  String get analysisFailed => 'Chưa phân tích được cú này. Bạn thử lại nhé.';
+
+  @override
+  String get analysisUnsupported => 'Máy này chưa hỗ trợ phân tích.';
+
+  @override
+  String get analysisNoSwing =>
+      'Chưa nhận ra một cú swing trọn vẹn. Hãy quay từ lúc vào bóng tới tư thế kết thúc, thấy toàn thân.';
+
+  @override
+  String get skeletonToggle => 'Khung xương';
+
+  @override
+  String get tempoBackswing => 'Đưa gậy lên';
+
+  @override
+  String get tempoTopPause => 'Dừng ở đỉnh';
+
+  @override
+  String get tempoDownswing => 'Hạ gậy';
+
+  @override
+  String get tempoRatio => 'Tỷ lệ nhịp';
+
+  @override
+  String tempoRatioValue(String ratio) {
+    return '$ratio : 1';
+  }
+
+  @override
+  String get tempoRatioHint =>
+      'Thời gian đưa gậy lên chia cho thời gian hạ gậy.';
+
+  @override
+  String tempoEstimate(String fps) {
+    return 'Ước tính từ video ($fps khung/giây). Độ chính xác phụ thuộc tốc độ khung hình.';
+  }
+
+  @override
+  String get tempoMaybe =>
+      'Số đo có thể chưa chính xác vì tốc độ khung hình hoặc tay chưa rõ trong video.';
+
+  @override
+  String get tempoInsufficient => 'Chưa đủ dữ liệu để đo nhịp cú này.';
+
+  @override
+  String get levelInsufficientData => 'Chưa đủ dữ liệu';
+
+  @override
+  String get phasesTitle => 'Các pha swing';
+
+  @override
+  String get phaseFound => 'Đã xác định';
+
+  @override
+  String get postureTrialTitle => 'Nhận xét tư thế đang thử nghiệm';
+
+  @override
+  String get postureTrialBody =>
+      'Các pha swing đã được xác định. Phần nhận xét tư thế sẽ có ở bản sau.';
+
+  @override
+  String get limitSingle2dView => 'Video 2D chưa phản ánh đủ chuyển động 3D.';
+
+  @override
+  String get limitLowFps =>
+      'Tốc độ khung hình thấp: thời điểm các pha chỉ là ước lượng.';
+
+  @override
+  String get experimentalLabel => 'Thử nghiệm';
 }

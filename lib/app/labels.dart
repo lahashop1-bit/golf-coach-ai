@@ -87,6 +87,29 @@ String _lang(BuildContext context) => Localizations.localeOf(context).toLanguage
 String formatFps(BuildContext context, double fps) =>
     NumberFormat('0.#', _lang(context)).format(fps);
 
-/// Seconds with one decimal and the locale separator ("3,0" in vi).
-String formatSeconds(BuildContext context, int ms) =>
-    NumberFormat('0.0', _lang(context)).format(ms / 1000);
+/// Seconds with the locale separator ("3,0" in vi). Tempo uses 2 decimals:
+/// a downswing lasts only ~0.3 s.
+String formatSeconds(BuildContext context, int ms, {int decimals = 1}) =>
+    NumberFormat('0.${'0' * decimals}', _lang(context)).format(ms / 1000);
+
+extension PhaseLabel on SwingPhase {
+  /// Short labels from the glossary ("Nhãn ngắn trên giao diện").
+  String label(AppLocalizations l) => switch (this) {
+        SwingPhase.address => l.phaseAddress,
+        SwingPhase.takeaway => l.phaseTakeaway,
+        SwingPhase.backswing => l.phaseBackswing,
+        SwingPhase.top => l.phaseTop,
+        SwingPhase.downswing => l.phaseDownswing,
+        SwingPhase.impact => l.phaseImpact,
+        SwingPhase.followThrough => l.phaseFollowThrough,
+        SwingPhase.finish => l.phaseFinish,
+      };
+}
+
+/// `analysis.limit.*` keys → text (I18N_L10N_SPEC §8). Unknown keys are
+/// skipped rather than shown raw.
+String? limitationText(AppLocalizations l, String key) => switch (key) {
+      'analysis.limit.single_2d_view' => l.limitSingle2dView,
+      'analysis.limit.low_fps' => l.limitLowFps,
+      _ => null,
+    };

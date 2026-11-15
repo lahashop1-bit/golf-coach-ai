@@ -2683,12 +2683,862 @@ class SwingsCompanion extends UpdateCompanion<Swing> {
   }
 }
 
+class $SwingAnalysesTable extends SwingAnalyses
+    with TableInfo<$SwingAnalysesTable, SwingAnalysis> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SwingAnalysesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _swingIdMeta = const VerificationMeta(
+    'swingId',
+  );
+  @override
+  late final GeneratedColumn<String> swingId = GeneratedColumn<String>(
+    'swing_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES swings (id)',
+    ),
+  );
+  static const VerificationMeta _modelVersionMeta = const VerificationMeta(
+    'modelVersion',
+  );
+  @override
+  late final GeneratedColumn<String> modelVersion = GeneratedColumn<String>(
+    'model_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _schemaVersionMeta = const VerificationMeta(
+    'schemaVersion',
+  );
+  @override
+  late final GeneratedColumn<String> schemaVersion = GeneratedColumn<String>(
+    'schema_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<AnalysisStatus, String> status =
+      GeneratedColumn<String>(
+        'status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<AnalysisStatus>($SwingAnalysesTable.$converterstatus);
+  static const VerificationMeta _isCurrentMeta = const VerificationMeta(
+    'isCurrent',
+  );
+  @override
+  late final GeneratedColumn<bool> isCurrent = GeneratedColumn<bool>(
+    'is_current',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_current" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _mirroredMeta = const VerificationMeta(
+    'mirrored',
+  );
+  @override
+  late final GeneratedColumn<bool> mirrored = GeneratedColumn<bool>(
+    'mirrored',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("mirrored" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _keypointsFilePathMeta = const VerificationMeta(
+    'keypointsFilePath',
+  );
+  @override
+  late final GeneratedColumn<String> keypointsFilePath =
+      GeneratedColumn<String>(
+        'keypoints_file_path',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _phasesJsonMeta = const VerificationMeta(
+    'phasesJson',
+  );
+  @override
+  late final GeneratedColumn<String> phasesJson = GeneratedColumn<String>(
+    'phases_json',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _tempoJsonMeta = const VerificationMeta(
+    'tempoJson',
+  );
+  @override
+  late final GeneratedColumn<String> tempoJson = GeneratedColumn<String>(
+    'tempo_json',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _limitationKeysMeta = const VerificationMeta(
+    'limitationKeys',
+  );
+  @override
+  late final GeneratedColumn<String> limitationKeys = GeneratedColumn<String>(
+    'limitation_keys',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _errorCodeMeta = const VerificationMeta(
+    'errorCode',
+  );
+  @override
+  late final GeneratedColumn<String> errorCode = GeneratedColumn<String>(
+    'error_code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _completedAtMeta = const VerificationMeta(
+    'completedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
+    'completed_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    swingId,
+    modelVersion,
+    schemaVersion,
+    status,
+    isCurrent,
+    mirrored,
+    keypointsFilePath,
+    phasesJson,
+    tempoJson,
+    limitationKeys,
+    errorCode,
+    createdAt,
+    completedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'swing_analyses';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SwingAnalysis> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('swing_id')) {
+      context.handle(
+        _swingIdMeta,
+        swingId.isAcceptableOrUnknown(data['swing_id']!, _swingIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_swingIdMeta);
+    }
+    if (data.containsKey('model_version')) {
+      context.handle(
+        _modelVersionMeta,
+        modelVersion.isAcceptableOrUnknown(
+          data['model_version']!,
+          _modelVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_modelVersionMeta);
+    }
+    if (data.containsKey('schema_version')) {
+      context.handle(
+        _schemaVersionMeta,
+        schemaVersion.isAcceptableOrUnknown(
+          data['schema_version']!,
+          _schemaVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_schemaVersionMeta);
+    }
+    if (data.containsKey('is_current')) {
+      context.handle(
+        _isCurrentMeta,
+        isCurrent.isAcceptableOrUnknown(data['is_current']!, _isCurrentMeta),
+      );
+    }
+    if (data.containsKey('mirrored')) {
+      context.handle(
+        _mirroredMeta,
+        mirrored.isAcceptableOrUnknown(data['mirrored']!, _mirroredMeta),
+      );
+    }
+    if (data.containsKey('keypoints_file_path')) {
+      context.handle(
+        _keypointsFilePathMeta,
+        keypointsFilePath.isAcceptableOrUnknown(
+          data['keypoints_file_path']!,
+          _keypointsFilePathMeta,
+        ),
+      );
+    }
+    if (data.containsKey('phases_json')) {
+      context.handle(
+        _phasesJsonMeta,
+        phasesJson.isAcceptableOrUnknown(data['phases_json']!, _phasesJsonMeta),
+      );
+    }
+    if (data.containsKey('tempo_json')) {
+      context.handle(
+        _tempoJsonMeta,
+        tempoJson.isAcceptableOrUnknown(data['tempo_json']!, _tempoJsonMeta),
+      );
+    }
+    if (data.containsKey('limitation_keys')) {
+      context.handle(
+        _limitationKeysMeta,
+        limitationKeys.isAcceptableOrUnknown(
+          data['limitation_keys']!,
+          _limitationKeysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('error_code')) {
+      context.handle(
+        _errorCodeMeta,
+        errorCode.isAcceptableOrUnknown(data['error_code']!, _errorCodeMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('completed_at')) {
+      context.handle(
+        _completedAtMeta,
+        completedAt.isAcceptableOrUnknown(
+          data['completed_at']!,
+          _completedAtMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SwingAnalysis map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SwingAnalysis(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      swingId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}swing_id'],
+      )!,
+      modelVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}model_version'],
+      )!,
+      schemaVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}schema_version'],
+      )!,
+      status: $SwingAnalysesTable.$converterstatus.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}status'],
+        )!,
+      ),
+      isCurrent: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_current'],
+      )!,
+      mirrored: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}mirrored'],
+      )!,
+      keypointsFilePath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}keypoints_file_path'],
+      ),
+      phasesJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}phases_json'],
+      ),
+      tempoJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}tempo_json'],
+      ),
+      limitationKeys: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}limitation_keys'],
+      )!,
+      errorCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}error_code'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      completedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}completed_at'],
+      ),
+    );
+  }
+
+  @override
+  $SwingAnalysesTable createAlias(String alias) {
+    return $SwingAnalysesTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<AnalysisStatus, String> $converterstatus =
+      const WireConverter(AnalysisStatus.values);
+}
+
+class SwingAnalysis extends DataClass implements Insertable<SwingAnalysis> {
+  final String id;
+  final String swingId;
+  final String modelVersion;
+  final String schemaVersion;
+  final AnalysisStatus status;
+  final bool isCurrent;
+
+  /// True when keypoints were mirrored for a left-handed golfer before rules.
+  final bool mirrored;
+
+  /// Relative to the app documents directory (derived file, DATABASE_SCHEMA §12).
+  final String? keypointsFilePath;
+
+  /// JSON array of PhaseMark (snake_case fields).
+  final String? phasesJson;
+
+  /// JSON object of Tempo, absent when not measurable.
+  final String? tempoJson;
+  final String limitationKeys;
+  final String? errorCode;
+  final DateTime createdAt;
+  final DateTime? completedAt;
+  const SwingAnalysis({
+    required this.id,
+    required this.swingId,
+    required this.modelVersion,
+    required this.schemaVersion,
+    required this.status,
+    required this.isCurrent,
+    required this.mirrored,
+    this.keypointsFilePath,
+    this.phasesJson,
+    this.tempoJson,
+    required this.limitationKeys,
+    this.errorCode,
+    required this.createdAt,
+    this.completedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['swing_id'] = Variable<String>(swingId);
+    map['model_version'] = Variable<String>(modelVersion);
+    map['schema_version'] = Variable<String>(schemaVersion);
+    {
+      map['status'] = Variable<String>(
+        $SwingAnalysesTable.$converterstatus.toSql(status),
+      );
+    }
+    map['is_current'] = Variable<bool>(isCurrent);
+    map['mirrored'] = Variable<bool>(mirrored);
+    if (!nullToAbsent || keypointsFilePath != null) {
+      map['keypoints_file_path'] = Variable<String>(keypointsFilePath);
+    }
+    if (!nullToAbsent || phasesJson != null) {
+      map['phases_json'] = Variable<String>(phasesJson);
+    }
+    if (!nullToAbsent || tempoJson != null) {
+      map['tempo_json'] = Variable<String>(tempoJson);
+    }
+    map['limitation_keys'] = Variable<String>(limitationKeys);
+    if (!nullToAbsent || errorCode != null) {
+      map['error_code'] = Variable<String>(errorCode);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || completedAt != null) {
+      map['completed_at'] = Variable<DateTime>(completedAt);
+    }
+    return map;
+  }
+
+  SwingAnalysesCompanion toCompanion(bool nullToAbsent) {
+    return SwingAnalysesCompanion(
+      id: Value(id),
+      swingId: Value(swingId),
+      modelVersion: Value(modelVersion),
+      schemaVersion: Value(schemaVersion),
+      status: Value(status),
+      isCurrent: Value(isCurrent),
+      mirrored: Value(mirrored),
+      keypointsFilePath: keypointsFilePath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(keypointsFilePath),
+      phasesJson: phasesJson == null && nullToAbsent
+          ? const Value.absent()
+          : Value(phasesJson),
+      tempoJson: tempoJson == null && nullToAbsent
+          ? const Value.absent()
+          : Value(tempoJson),
+      limitationKeys: Value(limitationKeys),
+      errorCode: errorCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(errorCode),
+      createdAt: Value(createdAt),
+      completedAt: completedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(completedAt),
+    );
+  }
+
+  factory SwingAnalysis.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SwingAnalysis(
+      id: serializer.fromJson<String>(json['id']),
+      swingId: serializer.fromJson<String>(json['swingId']),
+      modelVersion: serializer.fromJson<String>(json['modelVersion']),
+      schemaVersion: serializer.fromJson<String>(json['schemaVersion']),
+      status: serializer.fromJson<AnalysisStatus>(json['status']),
+      isCurrent: serializer.fromJson<bool>(json['isCurrent']),
+      mirrored: serializer.fromJson<bool>(json['mirrored']),
+      keypointsFilePath: serializer.fromJson<String?>(
+        json['keypointsFilePath'],
+      ),
+      phasesJson: serializer.fromJson<String?>(json['phasesJson']),
+      tempoJson: serializer.fromJson<String?>(json['tempoJson']),
+      limitationKeys: serializer.fromJson<String>(json['limitationKeys']),
+      errorCode: serializer.fromJson<String?>(json['errorCode']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      completedAt: serializer.fromJson<DateTime?>(json['completedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'swingId': serializer.toJson<String>(swingId),
+      'modelVersion': serializer.toJson<String>(modelVersion),
+      'schemaVersion': serializer.toJson<String>(schemaVersion),
+      'status': serializer.toJson<AnalysisStatus>(status),
+      'isCurrent': serializer.toJson<bool>(isCurrent),
+      'mirrored': serializer.toJson<bool>(mirrored),
+      'keypointsFilePath': serializer.toJson<String?>(keypointsFilePath),
+      'phasesJson': serializer.toJson<String?>(phasesJson),
+      'tempoJson': serializer.toJson<String?>(tempoJson),
+      'limitationKeys': serializer.toJson<String>(limitationKeys),
+      'errorCode': serializer.toJson<String?>(errorCode),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'completedAt': serializer.toJson<DateTime?>(completedAt),
+    };
+  }
+
+  SwingAnalysis copyWith({
+    String? id,
+    String? swingId,
+    String? modelVersion,
+    String? schemaVersion,
+    AnalysisStatus? status,
+    bool? isCurrent,
+    bool? mirrored,
+    Value<String?> keypointsFilePath = const Value.absent(),
+    Value<String?> phasesJson = const Value.absent(),
+    Value<String?> tempoJson = const Value.absent(),
+    String? limitationKeys,
+    Value<String?> errorCode = const Value.absent(),
+    DateTime? createdAt,
+    Value<DateTime?> completedAt = const Value.absent(),
+  }) => SwingAnalysis(
+    id: id ?? this.id,
+    swingId: swingId ?? this.swingId,
+    modelVersion: modelVersion ?? this.modelVersion,
+    schemaVersion: schemaVersion ?? this.schemaVersion,
+    status: status ?? this.status,
+    isCurrent: isCurrent ?? this.isCurrent,
+    mirrored: mirrored ?? this.mirrored,
+    keypointsFilePath: keypointsFilePath.present
+        ? keypointsFilePath.value
+        : this.keypointsFilePath,
+    phasesJson: phasesJson.present ? phasesJson.value : this.phasesJson,
+    tempoJson: tempoJson.present ? tempoJson.value : this.tempoJson,
+    limitationKeys: limitationKeys ?? this.limitationKeys,
+    errorCode: errorCode.present ? errorCode.value : this.errorCode,
+    createdAt: createdAt ?? this.createdAt,
+    completedAt: completedAt.present ? completedAt.value : this.completedAt,
+  );
+  SwingAnalysis copyWithCompanion(SwingAnalysesCompanion data) {
+    return SwingAnalysis(
+      id: data.id.present ? data.id.value : this.id,
+      swingId: data.swingId.present ? data.swingId.value : this.swingId,
+      modelVersion: data.modelVersion.present
+          ? data.modelVersion.value
+          : this.modelVersion,
+      schemaVersion: data.schemaVersion.present
+          ? data.schemaVersion.value
+          : this.schemaVersion,
+      status: data.status.present ? data.status.value : this.status,
+      isCurrent: data.isCurrent.present ? data.isCurrent.value : this.isCurrent,
+      mirrored: data.mirrored.present ? data.mirrored.value : this.mirrored,
+      keypointsFilePath: data.keypointsFilePath.present
+          ? data.keypointsFilePath.value
+          : this.keypointsFilePath,
+      phasesJson: data.phasesJson.present
+          ? data.phasesJson.value
+          : this.phasesJson,
+      tempoJson: data.tempoJson.present ? data.tempoJson.value : this.tempoJson,
+      limitationKeys: data.limitationKeys.present
+          ? data.limitationKeys.value
+          : this.limitationKeys,
+      errorCode: data.errorCode.present ? data.errorCode.value : this.errorCode,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      completedAt: data.completedAt.present
+          ? data.completedAt.value
+          : this.completedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SwingAnalysis(')
+          ..write('id: $id, ')
+          ..write('swingId: $swingId, ')
+          ..write('modelVersion: $modelVersion, ')
+          ..write('schemaVersion: $schemaVersion, ')
+          ..write('status: $status, ')
+          ..write('isCurrent: $isCurrent, ')
+          ..write('mirrored: $mirrored, ')
+          ..write('keypointsFilePath: $keypointsFilePath, ')
+          ..write('phasesJson: $phasesJson, ')
+          ..write('tempoJson: $tempoJson, ')
+          ..write('limitationKeys: $limitationKeys, ')
+          ..write('errorCode: $errorCode, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('completedAt: $completedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    swingId,
+    modelVersion,
+    schemaVersion,
+    status,
+    isCurrent,
+    mirrored,
+    keypointsFilePath,
+    phasesJson,
+    tempoJson,
+    limitationKeys,
+    errorCode,
+    createdAt,
+    completedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SwingAnalysis &&
+          other.id == this.id &&
+          other.swingId == this.swingId &&
+          other.modelVersion == this.modelVersion &&
+          other.schemaVersion == this.schemaVersion &&
+          other.status == this.status &&
+          other.isCurrent == this.isCurrent &&
+          other.mirrored == this.mirrored &&
+          other.keypointsFilePath == this.keypointsFilePath &&
+          other.phasesJson == this.phasesJson &&
+          other.tempoJson == this.tempoJson &&
+          other.limitationKeys == this.limitationKeys &&
+          other.errorCode == this.errorCode &&
+          other.createdAt == this.createdAt &&
+          other.completedAt == this.completedAt);
+}
+
+class SwingAnalysesCompanion extends UpdateCompanion<SwingAnalysis> {
+  final Value<String> id;
+  final Value<String> swingId;
+  final Value<String> modelVersion;
+  final Value<String> schemaVersion;
+  final Value<AnalysisStatus> status;
+  final Value<bool> isCurrent;
+  final Value<bool> mirrored;
+  final Value<String?> keypointsFilePath;
+  final Value<String?> phasesJson;
+  final Value<String?> tempoJson;
+  final Value<String> limitationKeys;
+  final Value<String?> errorCode;
+  final Value<DateTime> createdAt;
+  final Value<DateTime?> completedAt;
+  final Value<int> rowid;
+  const SwingAnalysesCompanion({
+    this.id = const Value.absent(),
+    this.swingId = const Value.absent(),
+    this.modelVersion = const Value.absent(),
+    this.schemaVersion = const Value.absent(),
+    this.status = const Value.absent(),
+    this.isCurrent = const Value.absent(),
+    this.mirrored = const Value.absent(),
+    this.keypointsFilePath = const Value.absent(),
+    this.phasesJson = const Value.absent(),
+    this.tempoJson = const Value.absent(),
+    this.limitationKeys = const Value.absent(),
+    this.errorCode = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SwingAnalysesCompanion.insert({
+    required String id,
+    required String swingId,
+    required String modelVersion,
+    required String schemaVersion,
+    required AnalysisStatus status,
+    this.isCurrent = const Value.absent(),
+    this.mirrored = const Value.absent(),
+    this.keypointsFilePath = const Value.absent(),
+    this.phasesJson = const Value.absent(),
+    this.tempoJson = const Value.absent(),
+    this.limitationKeys = const Value.absent(),
+    this.errorCode = const Value.absent(),
+    required DateTime createdAt,
+    this.completedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       swingId = Value(swingId),
+       modelVersion = Value(modelVersion),
+       schemaVersion = Value(schemaVersion),
+       status = Value(status),
+       createdAt = Value(createdAt);
+  static Insertable<SwingAnalysis> custom({
+    Expression<String>? id,
+    Expression<String>? swingId,
+    Expression<String>? modelVersion,
+    Expression<String>? schemaVersion,
+    Expression<String>? status,
+    Expression<bool>? isCurrent,
+    Expression<bool>? mirrored,
+    Expression<String>? keypointsFilePath,
+    Expression<String>? phasesJson,
+    Expression<String>? tempoJson,
+    Expression<String>? limitationKeys,
+    Expression<String>? errorCode,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? completedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (swingId != null) 'swing_id': swingId,
+      if (modelVersion != null) 'model_version': modelVersion,
+      if (schemaVersion != null) 'schema_version': schemaVersion,
+      if (status != null) 'status': status,
+      if (isCurrent != null) 'is_current': isCurrent,
+      if (mirrored != null) 'mirrored': mirrored,
+      if (keypointsFilePath != null) 'keypoints_file_path': keypointsFilePath,
+      if (phasesJson != null) 'phases_json': phasesJson,
+      if (tempoJson != null) 'tempo_json': tempoJson,
+      if (limitationKeys != null) 'limitation_keys': limitationKeys,
+      if (errorCode != null) 'error_code': errorCode,
+      if (createdAt != null) 'created_at': createdAt,
+      if (completedAt != null) 'completed_at': completedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SwingAnalysesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? swingId,
+    Value<String>? modelVersion,
+    Value<String>? schemaVersion,
+    Value<AnalysisStatus>? status,
+    Value<bool>? isCurrent,
+    Value<bool>? mirrored,
+    Value<String?>? keypointsFilePath,
+    Value<String?>? phasesJson,
+    Value<String?>? tempoJson,
+    Value<String>? limitationKeys,
+    Value<String?>? errorCode,
+    Value<DateTime>? createdAt,
+    Value<DateTime?>? completedAt,
+    Value<int>? rowid,
+  }) {
+    return SwingAnalysesCompanion(
+      id: id ?? this.id,
+      swingId: swingId ?? this.swingId,
+      modelVersion: modelVersion ?? this.modelVersion,
+      schemaVersion: schemaVersion ?? this.schemaVersion,
+      status: status ?? this.status,
+      isCurrent: isCurrent ?? this.isCurrent,
+      mirrored: mirrored ?? this.mirrored,
+      keypointsFilePath: keypointsFilePath ?? this.keypointsFilePath,
+      phasesJson: phasesJson ?? this.phasesJson,
+      tempoJson: tempoJson ?? this.tempoJson,
+      limitationKeys: limitationKeys ?? this.limitationKeys,
+      errorCode: errorCode ?? this.errorCode,
+      createdAt: createdAt ?? this.createdAt,
+      completedAt: completedAt ?? this.completedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (swingId.present) {
+      map['swing_id'] = Variable<String>(swingId.value);
+    }
+    if (modelVersion.present) {
+      map['model_version'] = Variable<String>(modelVersion.value);
+    }
+    if (schemaVersion.present) {
+      map['schema_version'] = Variable<String>(schemaVersion.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(
+        $SwingAnalysesTable.$converterstatus.toSql(status.value),
+      );
+    }
+    if (isCurrent.present) {
+      map['is_current'] = Variable<bool>(isCurrent.value);
+    }
+    if (mirrored.present) {
+      map['mirrored'] = Variable<bool>(mirrored.value);
+    }
+    if (keypointsFilePath.present) {
+      map['keypoints_file_path'] = Variable<String>(keypointsFilePath.value);
+    }
+    if (phasesJson.present) {
+      map['phases_json'] = Variable<String>(phasesJson.value);
+    }
+    if (tempoJson.present) {
+      map['tempo_json'] = Variable<String>(tempoJson.value);
+    }
+    if (limitationKeys.present) {
+      map['limitation_keys'] = Variable<String>(limitationKeys.value);
+    }
+    if (errorCode.present) {
+      map['error_code'] = Variable<String>(errorCode.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (completedAt.present) {
+      map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SwingAnalysesCompanion(')
+          ..write('id: $id, ')
+          ..write('swingId: $swingId, ')
+          ..write('modelVersion: $modelVersion, ')
+          ..write('schemaVersion: $schemaVersion, ')
+          ..write('status: $status, ')
+          ..write('isCurrent: $isCurrent, ')
+          ..write('mirrored: $mirrored, ')
+          ..write('keypointsFilePath: $keypointsFilePath, ')
+          ..write('phasesJson: $phasesJson, ')
+          ..write('tempoJson: $tempoJson, ')
+          ..write('limitationKeys: $limitationKeys, ')
+          ..write('errorCode: $errorCode, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $UserProfilesTable userProfiles = $UserProfilesTable(this);
   late final $SwingSessionsTable swingSessions = $SwingSessionsTable(this);
   late final $SwingsTable swings = $SwingsTable(this);
+  late final $SwingAnalysesTable swingAnalyses = $SwingAnalysesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -2697,6 +3547,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     userProfiles,
     swingSessions,
     swings,
+    swingAnalyses,
   ];
 }
 
@@ -3788,6 +4639,24 @@ final class $$SwingsTableReferences
       manager.$state.copyWith(prefetchedData: [item]),
     );
   }
+
+  static MultiTypedResultKey<$SwingAnalysesTable, List<SwingAnalysis>>
+  _swingAnalysesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.swingAnalyses,
+    aliasName: 'swings__id__swing_analyses__swing_id',
+  );
+
+  $$SwingAnalysesTableProcessedTableManager get swingAnalysesRefs {
+    final manager = $$SwingAnalysesTableTableManager(
+      $_db,
+      $_db.swingAnalyses,
+    ).filter((f) => f.swingId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_swingAnalysesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$SwingsTableFilterComposer
@@ -3924,6 +4793,31 @@ class $$SwingsTableFilterComposer
           ),
     );
     return composer;
+  }
+
+  Expression<bool> swingAnalysesRefs(
+    Expression<bool> Function($$SwingAnalysesTableFilterComposer f) f,
+  ) {
+    final $$SwingAnalysesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.swingAnalyses,
+      getReferencedColumn: (t) => t.swingId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SwingAnalysesTableFilterComposer(
+            $db: $db,
+            $table: $db.swingAnalyses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
   }
 }
 
@@ -4177,6 +5071,31 @@ class $$SwingsTableAnnotationComposer
     );
     return composer;
   }
+
+  Expression<T> swingAnalysesRefs<T extends Object>(
+    Expression<T> Function($$SwingAnalysesTableAnnotationComposer a) f,
+  ) {
+    final $$SwingAnalysesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.swingAnalyses,
+      getReferencedColumn: (t) => t.swingId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SwingAnalysesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.swingAnalyses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$SwingsTableTableManager
@@ -4192,7 +5111,7 @@ class $$SwingsTableTableManager
           $$SwingsTableUpdateCompanionBuilder,
           (Swing, $$SwingsTableReferences),
           Swing,
-          PrefetchHooks Function({bool sessionId})
+          PrefetchHooks Function({bool sessionId, bool swingAnalysesRefs})
         > {
   $$SwingsTableTableManager(_$AppDatabase db, $SwingsTable table)
     : super(
@@ -4309,7 +5228,534 @@ class $$SwingsTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({sessionId = false}) {
+          prefetchHooksCallback:
+              ({sessionId = false, swingAnalysesRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (swingAnalysesRefs) db.swingAnalyses,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (sessionId) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.sessionId,
+                            referencedTable: $$SwingsTableReferences
+                                ._sessionIdTable(db),
+                            referencedColumn: $$SwingsTableReferences
+                                ._sessionIdTable(db)
+                                .id,
+                          ) as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (swingAnalysesRefs)
+                        await $_getPrefetchedDataByColumns<
+                          Swing,
+                          $SwingsTable,
+                          SwingAnalysis,
+                          $SwingAnalysesTable
+                        >(
+                          currentTable: table,
+                          referencedTable: $$SwingsTableReferences
+                              ._swingAnalysesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$SwingsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).swingAnalysesRefs,
+                          currentColumn: 'id',
+                          referencedColumn: 'swing_id',
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$SwingsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SwingsTable,
+      Swing,
+      $$SwingsTableFilterComposer,
+      $$SwingsTableOrderingComposer,
+      $$SwingsTableAnnotationComposer,
+      $$SwingsTableCreateCompanionBuilder,
+      $$SwingsTableUpdateCompanionBuilder,
+      (Swing, $$SwingsTableReferences),
+      Swing,
+      PrefetchHooks Function({bool sessionId, bool swingAnalysesRefs})
+    >;
+typedef $$SwingAnalysesTableCreateCompanionBuilder =
+    SwingAnalysesCompanion Function({
+      required String id,
+      required String swingId,
+      required String modelVersion,
+      required String schemaVersion,
+      required AnalysisStatus status,
+      Value<bool> isCurrent,
+      Value<bool> mirrored,
+      Value<String?> keypointsFilePath,
+      Value<String?> phasesJson,
+      Value<String?> tempoJson,
+      Value<String> limitationKeys,
+      Value<String?> errorCode,
+      required DateTime createdAt,
+      Value<DateTime?> completedAt,
+      Value<int> rowid,
+    });
+typedef $$SwingAnalysesTableUpdateCompanionBuilder =
+    SwingAnalysesCompanion Function({
+      Value<String> id,
+      Value<String> swingId,
+      Value<String> modelVersion,
+      Value<String> schemaVersion,
+      Value<AnalysisStatus> status,
+      Value<bool> isCurrent,
+      Value<bool> mirrored,
+      Value<String?> keypointsFilePath,
+      Value<String?> phasesJson,
+      Value<String?> tempoJson,
+      Value<String> limitationKeys,
+      Value<String?> errorCode,
+      Value<DateTime> createdAt,
+      Value<DateTime?> completedAt,
+      Value<int> rowid,
+    });
+
+final class $$SwingAnalysesTableReferences
+    extends BaseReferences<_$AppDatabase, $SwingAnalysesTable, SwingAnalysis> {
+  $$SwingAnalysesTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $SwingsTable _swingIdTable(_$AppDatabase db) =>
+      db.swings.createAlias('swing_analyses__swing_id__swings__id');
+
+  $$SwingsTableProcessedTableManager get swingId {
+    final $_column = $_itemColumn<String>('swing_id')!;
+
+    final manager = $$SwingsTableTableManager(
+      $_db,
+      $_db.swings,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_swingIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$SwingAnalysesTableFilterComposer
+    extends Composer<_$AppDatabase, $SwingAnalysesTable> {
+  $$SwingAnalysesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get modelVersion => $composableBuilder(
+    column: $table.modelVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get schemaVersion => $composableBuilder(
+    column: $table.schemaVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<AnalysisStatus, AnalysisStatus, String>
+  get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<bool> get isCurrent => $composableBuilder(
+    column: $table.isCurrent,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get mirrored => $composableBuilder(
+    column: $table.mirrored,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get keypointsFilePath => $composableBuilder(
+    column: $table.keypointsFilePath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get phasesJson => $composableBuilder(
+    column: $table.phasesJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get tempoJson => $composableBuilder(
+    column: $table.tempoJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get limitationKeys => $composableBuilder(
+    column: $table.limitationKeys,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get errorCode => $composableBuilder(
+    column: $table.errorCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$SwingsTableFilterComposer get swingId {
+    final $$SwingsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.swingId,
+      referencedTable: $db.swings,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SwingsTableFilterComposer(
+            $db: $db,
+            $table: $db.swings,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SwingAnalysesTableOrderingComposer
+    extends Composer<_$AppDatabase, $SwingAnalysesTable> {
+  $$SwingAnalysesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get modelVersion => $composableBuilder(
+    column: $table.modelVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get schemaVersion => $composableBuilder(
+    column: $table.schemaVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isCurrent => $composableBuilder(
+    column: $table.isCurrent,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get mirrored => $composableBuilder(
+    column: $table.mirrored,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get keypointsFilePath => $composableBuilder(
+    column: $table.keypointsFilePath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get phasesJson => $composableBuilder(
+    column: $table.phasesJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get tempoJson => $composableBuilder(
+    column: $table.tempoJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get limitationKeys => $composableBuilder(
+    column: $table.limitationKeys,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get errorCode => $composableBuilder(
+    column: $table.errorCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$SwingsTableOrderingComposer get swingId {
+    final $$SwingsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.swingId,
+      referencedTable: $db.swings,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SwingsTableOrderingComposer(
+            $db: $db,
+            $table: $db.swings,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SwingAnalysesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SwingAnalysesTable> {
+  $$SwingAnalysesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get modelVersion => $composableBuilder(
+    column: $table.modelVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get schemaVersion => $composableBuilder(
+    column: $table.schemaVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<AnalysisStatus, String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<bool> get isCurrent =>
+      $composableBuilder(column: $table.isCurrent, builder: (column) => column);
+
+  GeneratedColumn<bool> get mirrored =>
+      $composableBuilder(column: $table.mirrored, builder: (column) => column);
+
+  GeneratedColumn<String> get keypointsFilePath => $composableBuilder(
+    column: $table.keypointsFilePath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get phasesJson => $composableBuilder(
+    column: $table.phasesJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get tempoJson =>
+      $composableBuilder(column: $table.tempoJson, builder: (column) => column);
+
+  GeneratedColumn<String> get limitationKeys => $composableBuilder(
+    column: $table.limitationKeys,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get errorCode =>
+      $composableBuilder(column: $table.errorCode, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => column,
+  );
+
+  $$SwingsTableAnnotationComposer get swingId {
+    final $$SwingsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.swingId,
+      referencedTable: $db.swings,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SwingsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.swings,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SwingAnalysesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SwingAnalysesTable,
+          SwingAnalysis,
+          $$SwingAnalysesTableFilterComposer,
+          $$SwingAnalysesTableOrderingComposer,
+          $$SwingAnalysesTableAnnotationComposer,
+          $$SwingAnalysesTableCreateCompanionBuilder,
+          $$SwingAnalysesTableUpdateCompanionBuilder,
+          (SwingAnalysis, $$SwingAnalysesTableReferences),
+          SwingAnalysis,
+          PrefetchHooks Function({bool swingId})
+        > {
+  $$SwingAnalysesTableTableManager(_$AppDatabase db, $SwingAnalysesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SwingAnalysesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SwingAnalysesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SwingAnalysesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> swingId = const Value.absent(),
+                Value<String> modelVersion = const Value.absent(),
+                Value<String> schemaVersion = const Value.absent(),
+                Value<AnalysisStatus> status = const Value.absent(),
+                Value<bool> isCurrent = const Value.absent(),
+                Value<bool> mirrored = const Value.absent(),
+                Value<String?> keypointsFilePath = const Value.absent(),
+                Value<String?> phasesJson = const Value.absent(),
+                Value<String?> tempoJson = const Value.absent(),
+                Value<String> limitationKeys = const Value.absent(),
+                Value<String?> errorCode = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime?> completedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SwingAnalysesCompanion(
+                id: id,
+                swingId: swingId,
+                modelVersion: modelVersion,
+                schemaVersion: schemaVersion,
+                status: status,
+                isCurrent: isCurrent,
+                mirrored: mirrored,
+                keypointsFilePath: keypointsFilePath,
+                phasesJson: phasesJson,
+                tempoJson: tempoJson,
+                limitationKeys: limitationKeys,
+                errorCode: errorCode,
+                createdAt: createdAt,
+                completedAt: completedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String swingId,
+                required String modelVersion,
+                required String schemaVersion,
+                required AnalysisStatus status,
+                Value<bool> isCurrent = const Value.absent(),
+                Value<bool> mirrored = const Value.absent(),
+                Value<String?> keypointsFilePath = const Value.absent(),
+                Value<String?> phasesJson = const Value.absent(),
+                Value<String?> tempoJson = const Value.absent(),
+                Value<String> limitationKeys = const Value.absent(),
+                Value<String?> errorCode = const Value.absent(),
+                required DateTime createdAt,
+                Value<DateTime?> completedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SwingAnalysesCompanion.insert(
+                id: id,
+                swingId: swingId,
+                modelVersion: modelVersion,
+                schemaVersion: schemaVersion,
+                status: status,
+                isCurrent: isCurrent,
+                mirrored: mirrored,
+                keypointsFilePath: keypointsFilePath,
+                phasesJson: phasesJson,
+                tempoJson: tempoJson,
+                limitationKeys: limitationKeys,
+                errorCode: errorCode,
+                createdAt: createdAt,
+                completedAt: completedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SwingAnalysesTable, SwingAnalysis>(table),
+                  $$SwingAnalysesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({swingId = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
@@ -4329,14 +5775,14 @@ class $$SwingsTableTableManager
                       dynamic
                     >
                   >(state) {
-                    if (sessionId) {
+                    if (swingId) {
                       state = state.withJoin(
                         currentTable: table,
-                        currentColumn: table.sessionId,
-                        referencedTable: $$SwingsTableReferences
-                            ._sessionIdTable(db),
-                        referencedColumn: $$SwingsTableReferences
-                            ._sessionIdTable(db)
+                        currentColumn: table.swingId,
+                        referencedTable: $$SwingAnalysesTableReferences
+                            ._swingIdTable(db),
+                        referencedColumn: $$SwingAnalysesTableReferences
+                            ._swingIdTable(db)
                             .id,
                       ) as T;
                     }
@@ -4352,19 +5798,19 @@ class $$SwingsTableTableManager
       );
 }
 
-typedef $$SwingsTableProcessedTableManager =
+typedef $$SwingAnalysesTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $SwingsTable,
-      Swing,
-      $$SwingsTableFilterComposer,
-      $$SwingsTableOrderingComposer,
-      $$SwingsTableAnnotationComposer,
-      $$SwingsTableCreateCompanionBuilder,
-      $$SwingsTableUpdateCompanionBuilder,
-      (Swing, $$SwingsTableReferences),
-      Swing,
-      PrefetchHooks Function({bool sessionId})
+      $SwingAnalysesTable,
+      SwingAnalysis,
+      $$SwingAnalysesTableFilterComposer,
+      $$SwingAnalysesTableOrderingComposer,
+      $$SwingAnalysesTableAnnotationComposer,
+      $$SwingAnalysesTableCreateCompanionBuilder,
+      $$SwingAnalysesTableUpdateCompanionBuilder,
+      (SwingAnalysis, $$SwingAnalysesTableReferences),
+      SwingAnalysis,
+      PrefetchHooks Function({bool swingId})
     >;
 
 class $AppDatabaseManager {
@@ -4376,4 +5822,6 @@ class $AppDatabaseManager {
       $$SwingSessionsTableTableManager(_db, _db.swingSessions);
   $$SwingsTableTableManager get swings =>
       $$SwingsTableTableManager(_db, _db.swings);
+  $$SwingAnalysesTableTableManager get swingAnalyses =>
+      $$SwingAnalysesTableTableManager(_db, _db.swingAnalyses);
 }

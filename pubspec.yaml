@@ -49,6 +49,10 @@ dependencies:
   capture:
     path: packages/capture
   drift_flutter: ^0.3.1
+  pose:
+    path: packages/pose
+  analysis_core:
+    path: packages/analysis_core
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +75,8 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   generate: true
+  assets:
+    - assets/models/pose_landmarker_full.task
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

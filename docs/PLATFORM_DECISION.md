@@ -53,7 +53,11 @@ Chủ dự án yêu cầu app chạy trên **cả iPhone và Android**. Trọng 
 
 ### 3.2 Pose estimation (plugin `pose`)
 - Phân tích **sau khi quay** (offline trên file video), không cần real-time ở MVP → đơn giản và ổn định hơn.
-- Ứng viên: MediaPipe Pose Landmarker (có bản cho cả iOS và Android). **Phải kiểm tra giấy phép model và điều khoản trước khi dùng** (AI_ANALYSIS_SPEC mục 2). Ứng viên khác được so sánh ở Phase 3 trên cùng bộ video.
+- **Đã chọn (2026-11-15): MediaPipe Pose Landmarker, bản *full*** (33 điểm), có cho cả iOS và Android.
+  - **Giấy phép:** model card "BlazePose GHUM 3D" ghi Apache License 2.0. Ngoài phạm vi theo model card: nhiều người, người xa hơn khoảng 4 m, không thấy đầu, giám sát/nhận dạng. Xem `assets/models/NOTICE`.
+  - **iOS:** MediaPipeTasksVision qua Swift Package Manager, ghim commit. Gói chỉ có bản simulator arm64, nên simulator loại x86_64 (cần Mac Apple Silicon).
+  - **Đọc khung hình:** qua `AVAssetReaderVideoCompositionOutput` để khung luôn dựng đứng (video dọc có rotation 90°), cạnh dài tối đa 1280 px.
+  - Ứng viên khác chỉ xét lại nếu đánh giá ở Phase 3 không đạt.
 - Plugin nhận đường dẫn video, trả về **đường dẫn tệp keypoints** (nhị phân gọn) thay vì đẩy dữ liệu lớn qua kênh.
 - Ưu tiên GPU/Neural Engine; tự rơi về CPU khi không hỗ trợ.
 
