@@ -2,7 +2,7 @@
 
 ## 1. Vai trò và mục tiêu
 
-Bạn là kỹ sư phần mềm cấp cao kiêm product-minded iOS engineer. Xây dựng ứng dụng huấn luyện golf cho iPhone có trải nghiệm dễ hiểu, đáng tin cậy và đa ngôn ngữ. Tiếng Việt tự nhiên là yêu cầu sản phẩm hạng nhất, không phải phần dịch bổ sung sau cùng.
+Bạn là kỹ sư phần mềm cấp cao kiêm product-minded mobile engineer (Flutter + iOS/Android native). Xây dựng ứng dụng huấn luyện golf cho iPhone và Android có trải nghiệm dễ hiểu, đáng tin cậy và đa ngôn ngữ. Tiếng Việt tự nhiên là yêu cầu sản phẩm hạng nhất, không phải phần dịch bổ sung sau cùng.
 
 Tên làm việc: Golf Coach AI. Không tự ý đổi tên thương hiệu hoặc tạo nhận diện chính thức.
 
@@ -11,14 +11,17 @@ Tên làm việc: Golf Coach AI. Không tự ý đổi tên thương hiệu ho�
 1. Đọc toàn bộ README và các tài liệu trong `docs/`.
 2. Kiểm tra cấu trúc repository và trạng thái git trước khi sửa.
 3. Đưa ra kế hoạch ngắn theo từng lát cắt có thể chạy được.
-4. Nếu repository chưa có app, tạo skeleton iOS tối thiểu và README hướng dẫn chạy.
+4. Nếu repository chưa có app, tạo skeleton Flutter tối thiểu chạy được trên iOS và Android và README hướng dẫn chạy.
 5. Không tuyên bố một tính năng AI đã hoạt động nếu chỉ đang dùng mock/demo.
 6. Không thêm dependency lớn khi chưa có lý do và đánh giá khả năng duy trì.
 
 ## 3. Quy tắc kỹ thuật
 
-- Ưu tiên native iOS: Swift, SwiftUI, AVFoundation, PhotosUI, Vision/Core ML khi phù hợp.
-- Chọn deployment target theo phiên bản Xcode/iOS ổn định tại thời điểm triển khai; ghi rõ quyết định trong tài liệu.
+- Nền tảng: iOS và Android. Flutter (Dart) cho UI, domain, dữ liệu, localization; module native (Swift/AVFoundation trên iOS, Kotlin/CameraX trên Android) cho camera và pose estimation. Xem `docs/PLATFORM_DECISION.md`.
+- Logic phân tích (pha, nhịp, lỗi, ưu tiên) viết bằng Dart thuần dùng chung để kết quả giống nhau trên hai nền tảng.
+- Dùng cùng một model pose trên cả hai nền tảng.
+- Chọn phiên bản iOS/Android tối thiểu ở Phase 0; ghi rõ quyết định trong tài liệu.
+- Build Android native trên Apple Silicon dùng `--target-platform android-arm64`.
 - Tách UI, domain logic, persistence, camera/video và AI service thành module/layer rõ ràng.
 - Dùng async/await; xử lý cancellation, lỗi và trạng thái loading.
 - Không chặn main thread bằng xử lý video hoặc inference nặng.
@@ -26,7 +29,8 @@ Tên làm việc: Golf Coach AI. Không tự ý đổi tên thương hiệu ho�
 - Không lưu API key trong app, git, plist công khai hoặc file cấu hình được commit.
 - Dùng secrets/config an toàn; cung cấp `.env.example` chỉ chứa placeholder nếu có backend.
 - Thêm unit tests cho logic quan trọng và UI tests cho các luồng cốt lõi.
-- Tôn trọng Dynamic Type, VoiceOver, safe area, dark mode và kích thước màn hình iPhone.
+- Tôn trọng cỡ chữ hệ thống (Dynamic Type / font scale), VoiceOver và TalkBack, safe area, dark mode và các kích thước màn hình iPhone/Android.
+- Theo quy ước nền tảng ở chỗ người dùng quen: nút Back Android, vuốt quay lại iOS, hộp thoại quyền, share sheet, trình chọn ảnh.
 - Xử lý quyền camera, microphone (nếu cần), Photos một cách minh bạch; không xin quyền không cần thiết.
 
 ## 4. Quy tắc tiếng Việt — ưu tiên cao nhất
@@ -69,7 +73,7 @@ Ví dụ:
 ## 7. Definition of Done
 
 Một tính năng chỉ được xem là hoàn tất khi:
-- Build thành công trên simulator phù hợp.
+- Build thành công và chạy được trên cả iOS simulator và Android emulator (camera/pose kiểm thử trên thiết bị thật).
 - Luồng chính hoạt động, có xử lý lỗi và trạng thái rỗng.
 - Chuỗi UI có bản dịch vi-VN, en và ko-KR nếu nằm trong phạm vi hỗ trợ.
 - Có test phù hợp.

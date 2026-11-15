@@ -2,7 +2,7 @@
 
 ## 1. Tầm nhìn
 
-Xây dựng một huấn luyện viên golf cá nhân trên iPhone. Người chơi quay video cú đánh, nhận phản hồi dễ hiểu, biết một hoặc hai điểm cần sửa và có bài tập phù hợp để luyện tập. Sản phẩm ưu tiên người mới và tiếng Việt tự nhiên, đồng thời phục vụ người dùng tiếng Anh và tiếng Hàn.
+Xây dựng một huấn luyện viên golf cá nhân trên iPhone và Android. Người chơi quay video cú đánh, nhận phản hồi dễ hiểu, biết một hoặc hai điểm cần sửa và có bài tập phù hợp để luyện tập. Sản phẩm ưu tiên người mới và tiếng Việt tự nhiên, đồng thời phục vụ người dùng tiếng Anh và tiếng Hàn.
 
 ## 2. Vấn đề người dùng
 
@@ -43,36 +43,73 @@ Không bắt buộc người dùng khai báo mọi thông tin để sử dụng 
 
 ## 5. Phạm vi MVP
 
-### Must have
-- Onboarding: ngôn ngữ, tay thuận, trình độ, mục tiêu.
-- Trang chủ và hồ sơ người chơi.
-- Hướng dẫn quay video Face-on và Down-the-line (DTL).
-- Ghi hình bằng camera iPhone, xem lại, quay lại, lưu hoặc xóa.
-- Chọn loại gậy và tay thuận.
-- Chọn chế độ tự quay hoặc phiên phân tích có hướng dẫn.
-- Danh sách các video swing và chi tiết từng video.
-- Phân tích tư thế cơ thể ở mức có thể đo được từ video, có cảnh báo chất lượng.
-- Báo cáo dễ hiểu, chỉ ra độ tin cậy và giới hạn.
-- Bài tập sửa lỗi có bước thực hiện, số lần và cách tự kiểm tra.
-- Lịch sử buổi tập và ghi chú.
+### 5.1 Vòng giá trị cốt lõi (trọng tâm MVP)
+
+> **Quay hoặc nhập video → AI phân tích tư thế và cú swing → nêu lỗi quan sát được → hướng dẫn cách sửa → luyện lại và so sánh.**
+
+Mọi quyết định ưu tiên đều dựa trên vòng này. Các tính năng khác chỉ nằm trong MVP nếu phục vụ trực tiếp vòng này.
+
+Chi tiết 7 bước của vòng:
+1. **Chuẩn bị:** hướng dẫn đặt máy theo góc Face-on hoặc DTL; chọn gậy, tay thuận.
+2. **Thu video:** quay bằng camera trong app hoặc nhập từ thư viện ảnh của máy; mỗi cú là một clip.
+3. **Kiểm tra chất lượng:** đủ sáng, thấy toàn thân, ít rung; nếu không đạt thì nói rõ lý do và hướng dẫn quay lại.
+4. **Phân tích trên máy:** ước lượng tư thế (pose), tìm các pha swing, đo nhịp, nhận diện lỗi theo luật/mô hình đã kiểm chứng.
+5. **Báo cáo:** 1–2 lỗi nên sửa trước, các lỗi khác ở mục "Xem thêm"; mỗi lỗi có bằng chứng, mức tin cậy và giới hạn.
+6. **Hướng dẫn sửa:** giải thích dễ hiểu, một điều nên thử, bài tập đã được biên tập duyệt, cách tự kiểm tra.
+7. **Luyện lại:** quay lại cùng góc, so với lần trước của chính người dùng, theo dõi lỗi nào giảm.
+
+### 5.2 Must have (MVP)
+
+**A. Thu video**
+- Onboarding: ngôn ngữ, tay thuận, trình độ, mục tiêu (bỏ qua được).
+- Hướng dẫn quay Face-on và DTL bằng sơ đồ; cảnh báo an toàn.
+- Quay bằng camera điện thoại (iPhone và Android); xem lại, quay lại, lưu, xóa.
+- Nhập video từ thư viện ảnh qua trình chọn hệ thống (chọn góc quay, gậy, tay thuận thủ công).
+- Chọn gậy (gồm cả tập không gậy), tay thuận, FPS và hẹn giờ theo khả năng thiết bị.
+- Hai chế độ: **Phân tích có hướng dẫn** (số cú, phản hồi ngay hoặc cuối phiên) và **Tự quay** (không phân tích).
+
+**B. Phân tích (cốt lõi)**
+- Kiểm tra chất lượng video trước khi phân tích.
+- Pose estimation trên máy, có điểm tin cậy.
+- Nhận diện các pha swing (vào bóng, khởi động đưa gậy, đưa lên, đỉnh, hạ gậy, tiếp xúc, kết thúc đà, kết thúc), chỉ gán khi đủ bằng chứng; người dùng có thể chỉnh mốc.
+- Đo nhịp: thời gian đưa lên, dừng ở đỉnh, hạ gậy và tỷ lệ nhịp.
+- Nhận diện lỗi theo **bộ lỗi ra mắt** (xem [AI_ANALYSIS_SPEC.md](AI_ANALYSIS_SPEC.md) mục 10). Mỗi lỗi có mức (AI spec mục 5), mức tin cậy, góc quay áp dụng và giới hạn.
+- Lớp phủ khung xương và đường tham chiếu, bật/tắt được.
+- Tổng hợp theo phiên: lỗi lặp lại nhiều cú, lỗi ưu tiên.
+
+**C. Hướng dẫn sửa (cốt lõi)**
+- Màn giải thích từng lỗi: AI thấy gì, vì sao có thể quan trọng, cảm giác nên tìm, một điều nên thử.
+- Thư viện bài tập beginner (gậy sắt số 7) đã được biên tập duyệt, gắn với từng lỗi.
+- Chi tiết bài tập: bước thực hiện, số lần, lỗi thường gặp, cách tự kiểm tra, cảnh báo dừng khi đau.
+- Phản hồi "hữu ích / không hiểu / không phù hợp" cho từng nhận xét.
+
+**D. Lưu trữ và theo dõi**
+- Nhật ký swing: nhóm theo phiên, lọc theo gậy/góc/ngày/lỗi, yêu thích, ghi chú (kèm màn "Ghi chú của tôi"), công tắc "tính vào thống kê".
+- So sánh hai cú **cùng góc** của chính người dùng.
+- Chi tiết một cú swing có 3 tab: Tư thế, Toàn bộ swing, Nhịp.
 - Localization vi-VN, en, ko-KR.
-- Quyền riêng tư, xóa video và xuất dữ liệu cơ bản.
+- Quyền riêng tư: xử lý trên máy mặc định; xóa video; xuất dữ liệu cơ bản.
 
-### Should have
-- Phân tích nhiều cú trong một phiên.
-- Phản hồi ngay sau từng cú hoặc tổng kết sau phiên.
-- So sánh hai video cạnh nhau.
-- Nhắc lại bài tập và mục tiêu tuần.
-- Hỗ trợ import video từ Photos.
-- Tùy chỉnh FPS/timer nếu thiết bị hỗ trợ.
-- Báo cáo tiến bộ theo tuần.
+### 5.3 Should have (sau khi vòng cốt lõi chạy ổn)
+- Sửa cú đánh (Shot Fix): người dùng chọn lỗi bóng (cong trái/phải, đánh dày, đánh đỉnh…) → nguyên nhân thường gặp → bài tập đã duyệt. Nội dung biên soạn, không suy ra đường bóng từ video.
+- Báo cáo theo ngày và theo tháng; biểu đồ nhịp theo từng cú.
+- Mục "Cải thiện" khi có đủ cú cùng góc/gậy.
+- Mục tiêu ngày/tuần do người dùng đặt (mặc định tắt).
+- Nhắc luyện tập.
+- Bộ lỗi mở rộng sau khi được kiểm chứng.
+- Đồng bộ cloud tùy chọn có đồng ý riêng.
 
-### Not in initial MVP
-- Đo chính xác tốc độ đầu gậy, tốc độ bóng, spin, launch angle nếu không có phần cứng/camera chuyên dụng.
-- Phân tích 3D toàn thân chính xác như hệ thống motion capture.
-- Chẩn đoán y khoa/chấn thương.
-- Mạng xã hội, bảng xếp hạng, marketplace.
-- Đồng bộ thiết bị golf bên thứ ba trước khi có nhu cầu rõ ràng.
+### 5.4 Not in MVP
+- Điểm số tổng hợp dạng x/10, x/100 (chỉ cân nhắc khi có hiệu chuẩn và giải thích).
+- So sánh với swing của người chơi chuyên nghiệp (chưa có nguồn có giấy phép).
+- Vùng nhịp "chuẩn" kiểu pro (chỉ dùng khoảng tham khảo đã duyệt nếu có).
+- Cộng đồng, bảng xếp hạng, marketplace, dịch bài đăng.
+- Đo tốc độ đầu gậy, tốc độ bóng, spin, launch angle, đường bóng từ video.
+- Phân tích 3D chính xác; chẩn đoán y khoa/chấn thương.
+- Thiết bị golf bên thứ ba; video bài tập ngoài có bản quyền; nhân vật HLV dùng hình người thật.
+
+### 5.5 Điều kiện phát hành tính năng AI
+Phân tích chỉ được bật cho người dùng cuối với **những lỗi đã đạt ngưỡng chất lượng** theo [ACCEPTANCE_CRITERIA.md](ACCEPTANCE_CRITERIA.md) mục 8. Lỗi chưa đạt ngưỡng chỉ chạy trong bản nội bộ (build dev, TestFlight, Google Play internal testing) với nhãn "thử nghiệm" để thu thập đánh giá; không xuất hiện trong bản phát hành công khai. Trước khi có lỗi nào đạt ngưỡng, bản công khai vẫn có giá trị nhờ quay, xem lại, đo nhịp (nếu đạt), ghi chú và bài tập.
 
 ## 6. Các chỉ số thành công
 
@@ -93,7 +130,7 @@ Chưa quyết định. Thiết kế hệ thống có thể hỗ trợ:
 - Premium: phân tích AI nâng cao, lịch sử dài hạn, chương trình tập cá nhân.
 - Không chặn các tính năng an toàn hoặc quyền xuất/xóa dữ liệu sau paywall.
 
-Mọi giá, gói và entitlement phải được cấu hình từ backend/App Store, không hard-code.
+Mọi giá, gói và entitlement phải được cấu hình từ backend/App Store/Google Play, không hard-code.
 
 ## 8. Rủi ro và giả định
 
@@ -102,3 +139,7 @@ Mọi giá, gói và entitlement phải được cấu hình từ backend/App St
 - Một lỗi hình ảnh có thể có nhiều nguyên nhân; AI phải dùng ngôn ngữ xác suất.
 - Cần xác minh tính khả thi và chi phí của pose estimation trên thiết bị trước khi chọn mô hình.
 - Quyền sử dụng mô hình/dataset phải được kiểm tra trước khi đưa vào sản phẩm.
+
+## 9. Tham chiếu
+
+Phân tích tính năng từ ảnh tham chiếu: [REFERENCE_FEATURE_ANALYSIS.md](REFERENCE_FEATURE_ANALYSIS.md). Danh sách quyết định sản phẩm hiện hành nằm ở mục "Quyết định đã chốt" trong file đó.

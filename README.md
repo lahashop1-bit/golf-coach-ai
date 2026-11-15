@@ -1,13 +1,15 @@
 # Golf Coach AI
 
-Ứng dụng huấn luyện golf cá nhân trên iPhone, hỗ trợ đa ngôn ngữ, ưu tiên trải nghiệm tiếng Việt tự nhiên cho người mới chơi.
+Ứng dụng huấn luyện golf cá nhân trên iPhone và Android, hỗ trợ đa ngôn ngữ, ưu tiên trải nghiệm tiếng Việt tự nhiên cho người mới chơi.
 
+> **Trọng tâm MVP:** quay/nhập video → AI phân tích tư thế và cú swing → nêu lỗi → hướng dẫn cách sửa → luyện lại.
+>
 > **Mục tiêu:** giúp người chơi hiểu cú swing của mình, biết lỗi nào nên sửa trước và có bài tập cụ thể để cải thiện an toàn, có hệ thống.
 
 ## Trạng thái dự án
 
 - Giai đoạn: Product discovery / đặc tả và chuẩn bị triển khai.
-- Nền tảng ưu tiên: iOS (iPhone).
+- Nền tảng: iOS và Android (Flutter + module native cho camera và AI). Xem [Platform Decision](docs/PLATFORM_DECISION.md).
 - Ngôn ngữ ra mắt dự kiến: Tiếng Việt (vi-VN), English (en), 한국어 (ko-KR).
 - Đối tượng đầu tiên: người mới chơi golf; hỗ trợ người chơi trung cấp ở các giai đoạn sau.
 - Tên Golf Coach AI là tên làm việc, chưa phải quyết định thương hiệu cuối cùng.
@@ -27,6 +29,8 @@
 9. [Database Schema](docs/DATABASE_SCHEMA.md) — mô hình dữ liệu.
 10. [Roadmap](docs/DEVELOPMENT_ROADMAP.md) — thứ tự triển khai.
 11. [Acceptance Criteria](docs/ACCEPTANCE_CRITERIA.md) — tiêu chí nghiệm thu.
+12. [Reference Feature Analysis](docs/REFERENCE_FEATURE_ANALYSIS.md) — phân tích tính năng từ ảnh tham chiếu (cập nhật theo từng lô ảnh).
+13. [Platform Decision](docs/PLATFORM_DECISION.md) — ADR chọn Flutter + module native cho iOS và Android.
 
 ## Nguyên tắc sản phẩm
 

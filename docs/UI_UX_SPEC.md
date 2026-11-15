@@ -1,147 +1,155 @@
 # UI/UX Specification
 
+Thuật ngữ theo [VIETNAMESE_GOLF_GLOSSARY.md](VIETNAMESE_GOLF_GLOSSARY.md); enum theo [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md).
+
 ## 1. Hướng thiết kế
 
-Thiết kế iOS riêng, rõ ràng, tối giản, tương phản tốt khi dùng ở sân tập. Không sao chép pixel, icon, màu nhận diện hoặc bố cục độc quyền từ GolfFix. Dùng ngôn ngữ hình ảnh thể thao hiện đại, dễ đọc ngoài trời.
+Một design system riêng cho cả iOS và Android, điều chỉnh theo quy ước từng nền tảng (mục 12). Rõ ràng, tối giản, tương phản tốt khi dùng ở sân tập. Không sao chép pixel, icon, màu nhận diện hoặc bố cục độc quyền của GolfFix hay ứng dụng khác. Ngôn ngữ hình ảnh thể thao hiện đại, dễ đọc ngoài trời.
 
 Ưu tiên:
 - Nút lớn, thao tác được bằng một tay.
 - Ít bước trước khi quay.
-- Hướng dẫn bằng hình minh họa do dự án tự tạo hoặc có giấy phép.
-- Văn bản tiếng Việt ngắn, không tràn dòng khó đọc.
+- Hình minh họa do dự án tự tạo hoặc có giấy phép; không dùng hình người thật làm nhân vật HLV.
+- Văn bản tiếng Việt ngắn, không tràn dòng.
 - Trạng thái camera và quyền riêng tư luôn rõ ràng.
 
-## 2. Luồng quay video tham chiếu
+## 2. Điều hướng chính (MVP)
 
-Người dùng đã cung cấp ảnh GolfFix thể hiện các lựa chọn sau. Đây là danh sách nhu cầu cần xem xét, không phải yêu cầu sao chép UI:
+4 tab:
+1. **Trang chủ:** lời chào, nút "Quay cú swing", lỗi ưu tiên gần nhất, bài tập đang theo, buổi tập gần đây. Vào Cài đặt từ đây.
+2. **Quay:** chọn chế độ, thiết lập, camera, nhập video.
+3. **Nhật ký:** phiên và cú swing, lọc, yêu thích, ghi chú, so sánh; báo cáo ngày/tháng (Phase 5).
+4. **Luyện tập:** bài tập đề xuất theo lỗi, thư viện bài tập, nhật ký luyện; Shot Fix (Phase 5).
 
-### Screen A — Thiết lập ghi hình
-- Chế độ: Phiên phân tích có hướng dẫn / Tự quay.
-- Góc camera:
-  - Face-on: quay chính diện người chơi, camera nhìn ngang qua người chơi.
-  - DTL (Down-the-line): camera đặt phía sau người chơi, nhìn dọc theo đường ngắm về mục tiêu.
-- Loại gậy: Gậy sắt / Driver; thiết kế dữ liệu cho phép thêm hybrid, wedge, putter.
-- Tay thuận: Phải / Trái.
-- Tốc độ khung hình: chọn các mức thiết bị thực sự hỗ trợ; không hiển thị 60 FPS nếu camera không hỗ trợ cấu hình đó.
-- Hẹn giờ: tắt / bật và chọn thời gian đếm ngược.
-- Đối tượng: cú swing của tôi / cú swing của người khác.
-- Hướng dẫn đặt máy.
-- Đổi camera trước/sau khi thiết bị hỗ trợ.
-- Nút chính: “Bắt đầu quay”.
+Cộng đồng không có trong MVP. Thêm tab chỉ khi có nội dung thật.
 
-### Screen B — Cấu hình phiên phân tích
-- Chế độ “Phân tích có hướng dẫn” hoặc “Tự quay”.
-- Số cú swing cần ghi.
-- Phản hồi ngay sau mỗi cú: bật/tắt.
-- Thời lượng xem phản hồi có thể tùy chỉnh nếu sản phẩm hỗ trợ.
-- Nút “Sẵn sàng”.
+## 3. Onboarding
 
-Mặc định MVP đề xuất:
-- Người mới: 3 cú swing.
-- Phản hồi ngay sau từng cú: bật, nhưng cho phép tắt.
-- Nếu người dùng tắt, hiển thị tổng kết sau phiên.
-- Không ép người dùng phải ghi đủ số cú nếu muốn kết thúc sớm.
+- Chọn ngôn ngữ (mặc định theo hệ thống, đổi được sau).
+- Tay thuận, trình độ, mục tiêu, gậy thường tập.
+- Giải thích ngắn quyền camera và cách xử lý video (mặc định chỉ lưu trên máy).
+- Bỏ qua được câu hỏi không bắt buộc.
 
-## 3. Màn hình và hành vi
+## 4. Luồng Quay và phân tích (cốt lõi)
 
-### 3.1 Onboarding
-- Chọn ngôn ngữ (mặc định theo hệ thống, cho phép đổi).
-- Chọn tay thuận.
-- Chọn trình độ.
-- Chọn mục tiêu luyện tập.
-- Giải thích ngắn quyền camera và cách xử lý video.
-- Có thể bỏ qua câu hỏi không bắt buộc.
+### 4.1 Chọn chế độ
+- **Phân tích có hướng dẫn** (nhãn ngắn: "Phân tích", gắn "Khuyên dùng").
+- **Tự quay**: chỉ quay và lưu.
+- Nút **Nhập video** từ thư viện ảnh.
 
-### 3.2 Home
-- Lời chào ngắn.
-- Mục tiêu/bài tập gần nhất.
-- Nút nổi bật “Quay cú swing”.
-- Buổi tập gần đây.
-- Tiến bộ tuần này, không gây áp lực thành tích.
+### 4.2 Thiết lập phiên phân tích
+- Số cú (mặc định 3 cho người mới).
+- Nhận xét sau mỗi cú: Có / Không; nếu Có, chọn thời lượng hiển thị nhận xét.
+- Nếu Không: tổng kết sau phiên.
+- Nút "Sẵn sàng". Luôn cho kết thúc sớm.
 
-### 3.3 Camera setup
-- Chọn Face-on hoặc DTL.
-- Hình minh họa vị trí tripod và đường mục tiêu.
-- Cảnh báo không đặt camera trong vùng người/gậy có thể va chạm.
-- Hướng dẫn đặt điện thoại ổn định, thấy toàn bộ cơ thể và đầu gậy.
-- Kiểm tra khung hình trước khi quay.
-- Chọn gậy, tay thuận, FPS, timer.
-- Có nút lật camera nếu thiết bị hỗ trợ.
+### 4.3 Hướng dẫn đặt máy
+- Chọn Chính diện hoặc DTL; sơ đồ chỉ rõ người chơi, bóng, đường mục tiêu, chân máy (xét tay thuận).
+- Cảnh báo không đặt máy trong vùng vung gậy.
+- Đặt điện thoại ổn định, thấy toàn thân và đầu gậy.
 
-### 3.4 Recording
-- Khung xem camera lớn.
-- Hiển thị rõ đang quay, thời lượng và số cú đã ghi.
-- Nút dừng dễ chạm.
-- Không phủ quá nhiều chữ lên video.
-- Sau khi dừng: xem lại, dùng video, quay lại hoặc xóa.
+### 4.4 Màn quay
+- Tóm tắt chế độ ở đầu màn (đổi nhanh được).
+- Góc quay; gậy (ghi chú "gậy sắt, hybrid, hoặc tập không gậy"); tay thuận; FPS (chỉ mức thiết bị hỗ trợ); hẹn giờ.
+- Swing của tôi / của người khác.
+- Hướng dẫn; lật camera (nếu hỗ trợ); nút "Bắt đầu quay".
+- Khi quay: khung xem lớn, trạng thái đang quay rõ, thời lượng, số cú đã ghi (vd. 2/3), nút dừng dễ chạm; ít chữ phủ lên video.
+- Mỗi cú là một clip (GOLF_FEATURES mục 2.1).
 
-### 3.5 Review / chọn video
-- Phát video, tua, chọn khung hình.
-- Chọn góc quay và loại gậy.
+### 4.5 Sau mỗi cú
+- Nếu bật nhận xét ngay: kết quả nhanh (lỗi ưu tiên + một điều nên thử), tự đóng sau thời lượng đã chọn, rồi sẵn sàng cú tiếp.
+- Luôn có: xem lại, giữ, quay lại, xóa.
+- Nếu chất lượng không đạt: nêu lý do cụ thể và nút "Quay lại".
+
+### 4.6 Xem lại / nhập video
+- Phát, tua, chọn khung hình.
+- Xác nhận góc quay, gậy, tay thuận, swing của ai.
 - Ghi chú tùy chọn.
-- Người dùng xác nhận trước khi gửi video lên dịch vụ cloud.
+- Xác nhận riêng trước khi gửi video lên cloud (chỉ khi có tính năng cloud).
 
-### 3.6 Analysis
-- Trạng thái: đang xử lý, hoàn tất, không đủ chất lượng, lỗi.
-- Nếu chất lượng không đạt: chỉ rõ lý do và hướng dẫn quay lại.
-- Không hiển thị phần trăm độ chính xác giả.
-- Kết quả chia thành:
-  1. Điều AI quan sát được.
-  2. Điều đó có thể ảnh hưởng thế nào.
-  3. Một điểm nên thử ở lần tập tới.
-  4. Mức tin cậy: thấp / vừa / cao, kèm giải thích.
-- Cho phép xem khung hình minh họa có đánh dấu.
+### 4.7 Trạng thái phân tích
+Đang xử lý (có tiến trình, hủy được), hoàn tất, không đủ chất lượng, lỗi, cần kết nối (chỉ khi cloud). Không hiển thị phần trăm chính xác.
 
-### 3.7 Drill detail
-- Tên bài tập tiếng Việt dễ hiểu.
-- Mục tiêu.
-- Chuẩn bị.
-- Từng bước thực hiện.
-- Số lần/hiệp/thời gian.
-- Cảm giác đúng nên tìm.
-- Lỗi thường gặp.
-- Cách tự kiểm tra.
-- Điều kiện dừng nếu đau hoặc khó chịu.
+## 5. Màn kết quả
 
-### 3.8 Session summary
-- Số video/cú đã ghi.
-- Những nhận xét chính.
-- Bài tập tiếp theo.
-- Ghi chú người dùng.
-- Nút lưu phiên và xem lịch sử.
+### 5.1 Tổng kết phiên
+- Số cú, tổng thời gian.
+- Lỗi ưu tiên (nhãn "Nên sửa trước"), lỗi lặp lại nhiều nhất (nhãn "Lặp lại nhiều nhất"); hai nhãn có thể cùng một lỗi.
+- Danh sách lỗi ("Xem thêm"), mỗi lỗi: số cú có lỗi, nút (?), mở giải thích.
+- Nhịp trung bình: đưa gậy lên / dừng ở đỉnh / hạ gậy.
+- Bài tập tiếp theo; ghi chú phiên.
+- Danh sách cú: ảnh bìa, số thứ tự, gậy · góc · tay thuận, lỗi chính (+N), nhãn mức, yêu thích, nút chi tiết.
 
-### 3.9 History / Progress
-- Lọc theo ngày, gậy, góc quay, lỗi/mục tiêu.
-- So sánh video cùng góc và điều kiện tương tự.
-- Không kết luận tiến bộ chỉ dựa trên một video.
+### 5.2 Chi tiết một cú (3 tab)
+Tư thế · Toàn bộ swing · Nhịp — nội dung ở [GOLF_FEATURES.md](GOLF_FEATURES.md) mục 8.
+- Toàn bộ swing: tua, tốc độ 0.25x/0.5x/1x, từng khung hình, tắt tiếng, 8 nút pha, bật/tắt khung xương và đường tham chiếu, khung hình minh họa có đánh dấu.
+- Tư thế: diễn biến theo pha, chọn lỗi theo pha, nút "Xem cách sửa".
+- Tab chưa có dữ liệu (trước Phase 3–4 hoặc chế độ Tự quay chưa phân tích): trạng thái rỗng có nút "Phân tích cú này".
 
-### 3.10 Settings
-- Ngôn ngữ.
-- Tay thuận và hồ sơ.
-- Đơn vị đo.
-- Quyền riêng tư, quản lý video, xóa dữ liệu.
-- Gói đăng ký nếu có.
-- Trợ giúp và phản hồi.
+### 5.3 Giải thích lỗi (IssueGuide)
+Điều AI quan sát thấy · Vì sao có thể quan trọng · Một điều nên thử · Cảm giác cần tìm · Cách tự kiểm tra · Lỗi thường gặp · Góc quay nên dùng · Bài tập đề xuất · Phản hồi "hữu ích / không hiểu / không phù hợp".
 
-## 4. Định nghĩa góc quay
+### 5.4 Mức và mức tin cậy
+- Nhãn mức theo AI_ANALYSIS_SPEC mục 5: Ổn / Nên chú ý / Cần xem lại / Chưa đủ dữ liệu. Có biểu tượng và chữ.
+- Nhận xét hiển thị kèm mức tin cậy bằng lời ("có vẻ", "khá rõ"), không dùng con số. Nhận xét tin cậy thấp không hiển thị.
+- Không hiển thị điểm số x/10, x/100.
+- Mỗi kết quả có dòng giới hạn ("Video 2D chưa phản ánh đủ chuyển động 3D").
 
-### Face-on
-Camera đặt ở phía trước người chơi, nhìn ngang qua cơ thể, vuông góc tương đối với đường mục tiêu. Khung hình nên thấy đầu, thân, chân, tay và toàn bộ gậy.
+## 6. Luyện tập
 
-### DTL
-Camera đặt phía sau người chơi, nhìn dọc theo đường mục tiêu. Cần hướng dẫn căn máy để tránh đặt quá gần hoặc quá xa đường tay; vị trí chính xác cần minh họa theo tay thuận và bố trí sân tập.
+- Trung tâm bài tập: tab Đề xuất (theo lỗi gần đây) / Chính diện / DTL; lọc theo gậy; hiển thị độ khó sửa của lỗi liên quan; gợi ý góc quay phù hợp.
+- Giới thiệu "Bài tập tư thế là gì" lần đầu, bỏ qua được.
+- Chi tiết bài tập: tên dễ hiểu, mục tiêu, chuẩn bị, từng bước, số lần/hiệp/thời gian, cảm giác đúng, lỗi thường gặp, cách tự kiểm tra, điều kiện dừng nếu đau.
+- Phase 5: chế độ tập có đếm lần và quay kiểm tra; Shot Fix (lưới lỗi bóng, hình minh họa tự thiết kế, có nhãn chữ).
 
-Không dùng hướng dẫn “camera phía sau” một cách mơ hồ. Dùng hình sơ đồ, chỉ rõ người chơi, bóng, đường mục tiêu và chân máy.
+## 7. Nhật ký và báo cáo
 
-## 5. Khả năng tiếp cận
+- Tab Tất cả / Yêu thích; nhóm theo phiên; lọc gậy, góc, ngày, lỗi.
+- Ghi chú: gắn với cú/phiên; có màn "Ghi chú của tôi" tổng hợp (Phase 1).
+- Chọn nhiều để so sánh hai cú **cùng góc**, phát song song.
+- Phase 5: báo cáo ngày/tháng (chọn ngày, lỗi lặp lại nhiều nhất, so với kỳ trước, biểu đồ nhịp từng cú, mục "Cải thiện" khi đủ dữ liệu). Không kết luận tiến bộ từ một video.
+- Biểu đồ có mô tả văn bản cho trình đọc màn hình (VoiceOver, TalkBack).
 
-- Dynamic Type và VoiceOver.
+## 8. Cài đặt
+
+Ngôn ngữ; tay thuận và hồ sơ; đơn vị đo; quyền riêng tư, quản lý dung lượng video, xuất dữ liệu, xóa dữ liệu; gói đăng ký nếu có; trợ giúp và phản hồi.
+
+## 9. Định nghĩa góc quay
+
+### Chính diện (Face-on)
+Camera đặt phía trước người chơi, nhìn ngang qua cơ thể, vuông góc tương đối với đường mục tiêu. Khung hình thấy đầu, thân, chân, tay và toàn bộ gậy.
+
+### Dọc đường mục tiêu (DTL)
+Camera đặt phía sau người chơi, nhìn dọc theo đường mục tiêu. Hướng dẫn căn máy để không quá gần/quá xa đường tay; vị trí minh họa theo tay thuận và bố trí sân tập.
+
+Không dùng hướng dẫn "camera phía sau" mơ hồ. Dùng sơ đồ chỉ rõ người chơi, bóng, đường mục tiêu và chân máy.
+
+## 10. Khả năng tiếp cận
+
+- Cỡ chữ hệ thống (Dynamic Type trên iOS, font scale trên Android).
+- VoiceOver và TalkBack; mọi nút có nhãn.
 - Màu không phải tín hiệu duy nhất.
-- Nút có nhãn rõ ràng.
 - Hỗ trợ giảm chuyển động.
-- Phụ đề cho nội dung video hướng dẫn.
+- Phụ đề cho video hướng dẫn.
 - Bản dịch không bị cắt ở tiếng Việt và tiếng Hàn.
 
-## 6. Ảnh tham chiếu gốc
+## 11. Trạng thái bắt buộc cho mọi màn
 
-Hai ảnh người dùng cung cấp trong cuộc trò chuyện cần được lưu vào repository chỉ khi có file ảnh thực tế và người dùng đồng ý. Hiện tài liệu này ghi lại nội dung quan sát được; không giả định ảnh đã được commit vào repo.
+Loading, rỗng (có hướng dẫn hành động đầu tiên), lỗi, thành công, nhãn trợ năng. Ví dụ rỗng ở Nhật ký: "Bạn chưa có cú swing nào. Hãy quay cú đầu tiên."
+
+## 12. Khác biệt theo nền tảng
+
+| Hành vi | iOS | Android |
+|---|---|---|
+| Quay lại | Vuốt từ cạnh trái, nút back trên thanh | Nút/cử chỉ Back hệ thống; hỏi xác nhận nếu đang quay |
+| Xin quyền | Hộp thoại hệ thống, chuỗi trong InfoPlist | Hộp thoại runtime; hướng dẫn mở Cài đặt khi bị từ chối vĩnh viễn |
+| Chọn video | PHPicker | Photo Picker hệ thống |
+| Chia sẻ | Share sheet iOS | Share intent Android |
+| Thanh điều hướng | Tab bar dưới | Navigation bar dưới (Material 3) |
+| Trợ năng | VoiceOver | TalkBack |
+
+Bố cục, nội dung và luồng giống nhau trên hai nền tảng; chỉ khác ở các điểm trên.
+
+## 13. Ảnh tham chiếu
+
+Ảnh chụp ứng dụng khác do người dùng cung cấp chỉ dùng để rút ra nhu cầu và luồng (xem [REFERENCE_FEATURE_ANALYSIS.md](REFERENCE_FEATURE_ANALYSIS.md)). Không lưu ảnh vào repo; mọi giao diện, hình minh họa và chữ do dự án tự tạo.

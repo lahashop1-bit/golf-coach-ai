@@ -15,7 +15,7 @@ Thiết kế cho phép thêm locale mà không sửa logic nghiệp vụ.
 - Hỗ trợ pluralization, gender-neutral phrasing và format ngày/giờ/số theo locale.
 - Không nhúng chữ vào ảnh; nếu cần chú thích hình, cung cấp layer text bản địa hóa.
 - Không dùng cờ quốc gia làm lựa chọn ngôn ngữ duy nhất.
-- Người dùng có thể đổi ngôn ngữ trong Settings mà không cần đổi ngôn ngữ iPhone.
+- Người dùng có thể đổi ngôn ngữ trong Settings mà không cần đổi ngôn ngữ của điện thoại (iOS hoặc Android).
 - Lưu locale đã chọn.
 - Hỗ trợ fallback có kiểm soát; không để lộ localization key ra UI.
 
@@ -53,8 +53,8 @@ Xem glossary làm nguồn chuẩn duy nhất.
 
 | Key | vi-VN | en | ko-KR |
 |---|---|---|---|
-| camera.face_on | Chính diện (Face-on) | Face-on | 정면 촬영 |
-| camera.down_the_line | Dọc theo đường mục tiêu (DTL) | Down-the-line (DTL) | 타깃 라인 후방 촬영 |
+| camera.face_on | Góc chính diện (Face-on) | Face-on | 정면 촬영 |
+| camera.down_the_line | Góc dọc đường mục tiêu (DTL) | Down-the-line (DTL) | 타깃 라인 후방 촬영 |
 | recording.start | Bắt đầu quay | Start recording | 촬영 시작 |
 | recording.stop | Dừng quay | Stop recording | 촬영 중지 |
 | club.iron | Gậy sắt | Iron | 아이언 |
@@ -72,13 +72,48 @@ Bản tiếng Hàn cần được người bản ngữ/biên tập viên golf ki
 2. Biên tập viên kiểm tra độ tự nhiên và đúng kỹ thuật.
 3. Dịch sang English/Korean.
 4. Người bản ngữ kiểm tra thuật ngữ và sắc thái.
-5. Kiểm tra trên thiết bị thật, gồm text expansion, Dynamic Type và dark mode.
+5. Kiểm tra trên thiết bị thật iOS và Android, gồm text expansion, cỡ chữ hệ thống (Dynamic Type / font scale), VoiceOver/TalkBack và dark mode.
 6. Thu thập phản hồi người dùng và cập nhật glossary.
 
 ## 7. Localization trong code
 
-- Dùng String Catalog (.xcstrings) hoặc giải pháp native tương đương.
-- Không hard-code string trong SwiftUI.
+- Dùng ARB + `flutter gen-l10n` cho chuỗi UI Flutter.
+- Chuỗi bắt buộc ở tầng native (mô tả quyền camera/thư viện ảnh: `InfoPlist.strings` trên iOS, `strings.xml` trên Android) cũng phải có đủ vi/en/ko.
+- Không hard-code string trong code Flutter hoặc native.
 - Nội dung bài tập dài nên lưu dạng structured content theo locale, có version.
 - Phân biệt nội dung UI ngắn với nội dung huấn luyện cần biên tập.
 - Không dùng machine translation trực tiếp để xuất bản nội dung kỹ thuật mà chưa review.
+
+## 8. Khóa localization cho phân tích (bổ sung)
+
+Quy ước đặt tên:
+- `issue.<issue_id>.title`, `.what_we_see`, `.why_it_matters`, `.one_thing_to_try`, `.feel`, `.self_check`, `.common_mistakes`.
+- `level.ok`, `level.attention`, `level.review`, `level.insufficient_data`.
+- `confidence.low|medium|high`.
+- `phase.address|takeaway|backswing|top|downswing|impact|follow_through|finish`.
+- `tempo.backswing`, `tempo.top_pause`, `tempo.downswing`, `tempo.ratio`.
+- `analysis.limit.*` cho các dòng giới hạn.
+
+| Key | vi-VN | en |
+|---|---|---|
+| level.ok | Ổn | Looks fine |
+| level.attention | Nên chú ý | Worth a look |
+| level.review | Cần xem lại | Needs review |
+| level.insufficient_data | Chưa đủ dữ liệu | Not enough data |
+| phase.takeaway | Khởi động đưa gậy | Takeaway |
+| phase.top | Đỉnh swing | Top of swing |
+| tempo.ratio | Tỷ lệ nhịp | Rhythm ratio |
+| analysis.limit.single_2d_view | Video 2D chưa phản ánh đủ chuyển động 3D. | A 2D video cannot show all 3D movement. |
+
+Bản ko-KR điền khi có biên tập viên.
+
+Nguồn chữ:
+- Nhãn ngắn (pha, góc quay, chế độ, mức): bảng "Nhãn ngắn trên giao diện" trong glossary — đã chuẩn.
+- Tên lỗi: bảng "Lỗi tư thế" trong glossary — bản nháp, dùng được trong bản nội bộ, phải được HLV duyệt trước bản công khai.
+
+Hai loại nội dung, hai cơ chế:
+- **Chuỗi UI ngắn** (nhãn, nút, trạng thái, tên lỗi, `level.*`, `phase.*`, `tempo.*`, `analysis.limit.*`): ARB.
+- **Nội dung hướng dẫn dài** (IssueGuide, Drill, ShotTroubleGuide): file JSON có version theo locale trong assets (DATABASE_SCHEMA mục 7). Khóa `issue.<issue_id>.*` ở trên là trường trong file JSON này, không phải ARB.
+- `evidence_key` trong kết quả phân tích trỏ tới `issue.<issue_id>.what_we_see` hoặc biến thể của nó.
+
+Không dịch máy nội dung kỹ thuật khi chưa review.

@@ -28,41 +28,30 @@ Video 2D không đủ để đo chính xác mọi chuyển động 3D. Không kh
 
 ## 4. Chất lượng và confidence
 
-Các trạng thái:
-- Không thể phân tích: video thiếu người chơi, quá tối, quá rung hoặc bị che khuất.
-- Confidence thấp: hiển thị cảnh báo và không đưa ra kết luận kỹ thuật mạnh.
-- Confidence vừa: dùng ngôn ngữ “có vẻ”, “có thể”.
-- Confidence cao: vẫn nêu góc quay và điều kiện quan sát.
+Chất lượng video (`QualityLevel`):
+- `poor` — không thể phân tích: thiếu người chơi, quá tối, quá rung hoặc bị che khuất. Nêu lý do và hướng dẫn quay lại; không tạo nhận xét kỹ thuật.
+- `fair` — phân tích được nhưng có hạn chế; hiển thị cảnh báo chất lượng cùng kết quả.
+- `good` — vẫn nêu góc quay và điều kiện quan sát.
 
-Không hiển thị con số confidence giả. Nếu có điểm số, phải được hiệu chuẩn và giải thích ý nghĩa.
+Confidence của từng nhận xét:
+- `low` — **không hiển thị như lỗi**. Lưu với cờ ẩn để đánh giá model; nếu một pha chỉ có dữ liệu low thì pha đó hiển thị "Chưa đủ dữ liệu".
+- `medium` — hiển thị, dùng ngôn ngữ "có vẻ", "có thể".
+- `high` — hiển thị, vẫn kèm giới hạn.
 
-## 5. Cấu trúc phản hồi
+Không hiển thị con số confidence hay phần trăm chính xác. Không có điểm số tổng hợp ở MVP.
 
-```json
-{
-  "status": "completed",
-  "camera_angle": "face_on",
-  "club": "iron_7",
-  "quality": {
-    "level": "good",
-    "issues": []
-  },
-  "observations": [
-    {
-      "id": "early_head_lift",
-      "title_key": "analysis.early_head_lift.title",
-      "evidence": "Đầu và thân trên thay đổi vị trí trước thời điểm tiếp xúc bóng.",
-      "confidence": "medium",
-      "phase": "downswing"
-    }
-  ],
-  "priority_focus_id": "early_head_lift",
-  "drill_ids": ["half_swing_posture"],
-  "limitations": ["Một góc quay 2D không thể xác nhận toàn bộ chuyển động 3D."]
-}
-```
+## 5. Mức (Level) — định nghĩa chuẩn
 
-JSON trên là ví dụ schema, không phải kết quả đo thật.
+| Level | Nhãn vi-VN | Ý nghĩa |
+|---|---|---|
+| `ok` | Ổn | Đã kiểm tra được ở pha này, không thấy dấu hiệu lỗi |
+| `attention` | Nên chú ý | Có dấu hiệu nhẹ, hoặc chỉ xuất hiện ở một số cú |
+| `review` | Cần xem lại | Dấu hiệu rõ hoặc lặp lại; ứng viên ưu tiên sửa |
+| `insufficient_data` | Chưa đủ dữ liệu | Không đủ bằng chứng (góc quay không phù hợp, che khuất, confidence thấp) |
+
+Thứ tự nghiêm trọng: `review` > `attention` > `ok`. `insufficient_data` không phải mức nghiêm trọng, chỉ dùng cho pha/lỗi không đánh giá được. Mức hiển thị bằng chữ + biểu tượng, không chỉ màu.
+
+Cấu trúc kết quả: xem mục 9.
 
 ## 6. Vai trò của LLM
 
@@ -95,3 +84,127 @@ Trước phát hành:
 - Mã hóa khi truyền và lưu.
 - Không dùng video để huấn luyện model nếu chưa có opt-in rõ ràng.
 - Cho phép xóa video và kết quả liên quan.
+
+## 9. Schema kết quả cho MVP (v1, ví dụ)
+
+Ví dụ cấu trúc, không phải kết quả đo thật.
+
+```json
+{
+  "schema_version": "1.0",
+  "model_version": "<chưa có>",
+  "status": "completed",
+  "camera_angle": "down_the_line",
+  "club_type": "iron",
+  "club_number": 7,
+  "handedness": "right",
+  "quality": { "level": "good", "issues": [] },
+  "phases": [
+    { "phase": "address", "timestamp_ms": 0, "confidence": "high" },
+    { "phase": "top", "timestamp_ms": 1480, "confidence": "medium" },
+    { "phase": "impact", "timestamp_ms": 2310, "confidence": "medium" }
+  ],
+  "tempo": {
+    "backswing_ms": 1480, "top_pause_ms": 120, "downswing_ms": 710,
+    "ratio": 2.1, "confidence": "medium"
+  },
+  "observations": [
+    {
+      "issue_id": "spine_angle_loss_top",
+      "phase": "top",
+      "level": "attention",
+      "confidence": "medium",
+      "camera_angle": "down_the_line",
+      "evidence_key": "issue.spine_angle_loss_top.what_we_see",
+      "evidence_frame_ms": 1480,
+      "is_priority_focus": true
+    }
+  ],
+  "phase_flow": [
+    { "phase": "address", "level": "ok" },
+    { "phase": "top", "level": "attention" },
+    { "phase": "impact", "level": "insufficient_data" }
+  ],
+  "drill_ids": ["half_swing_posture"],
+  "limitations": ["analysis.limit.single_2d_view"]
+}
+```
+
+Quy tắc:
+- Tên trường JSON là snake_case của các trường trong [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md); enum theo bảng enum chuẩn ở đó.
+- `observations[].level` ∈ `ok` | `attention` | `review`; `phase_flow[].level` có thêm `insufficient_data`. Định nghĩa ở mục 5. Không dùng điểm số.
+- Chỉ trả về observation có confidence `medium`/`high`; observation `low` được ghi riêng cho đánh giá, không hiển thị.
+- `tempo` và `phases` chỉ có khi đo được.
+- `is_priority_focus` do luật chọn (mục 11), không do LLM.
+- Mọi `*_key` trỏ tới nội dung đã biên tập theo locale.
+
+## 10. Bộ lỗi và mức sẵn sàng
+
+Tên tiếng Việt theo [VIETNAMESE_GOLF_GLOSSARY.md](VIETNAMESE_GOLF_GLOSSARY.md) (bản nháp, chờ HLV duyệt).
+
+Danh mục lỗi chia theo mức sẵn sàng. **Chưa có lỗi nào được xem là bật cho người dùng cuối** cho tới khi qua đánh giá (ACCEPTANCE_CRITERIA mục 8). Mức khả thi dưới đây là giả thuyết cần Phase 3 kiểm chứng, chưa đo.
+
+### Nhóm A — Ứng viên ra mắt (khả thi trung bình)
+| issue_id | Tên thân thiện | Góc phù hợp |
+|---|---|---|
+| head_lift_at_impact | Ngẩng đầu lúc tiếp xúc bóng | Face-on, DTL |
+| spine_angle_loss_top | Mất góc cúi lưng ở đỉnh swing | DTL (tốt hơn), Face-on |
+| early_extension | Đứng thẳng người quá sớm | DTL |
+| hanging_back_impact | Dồn người lại phía sau lúc tiếp xúc | Face-on |
+
+Nhịp swing không nằm trong danh mục lỗi: đây là **số đo** (mục 12), hiển thị ở tab Nhịp.
+
+### Nhóm B — Sau khi kiểm chứng
+| issue_id | Tên thân thiện | Ghi chú khả thi |
+|---|---|---|
+| lifting_upper_body_address | Nâng thân trên khi vào bóng | Trung bình, tư thế tĩnh |
+| shoulder_up_impact | Vai nâng lên lúc tiếp xúc | Thấp–trung bình |
+| side_bending_lack_impact | Thiếu nghiêng thân sang bên | Thấp–trung bình |
+| pelvic_rotation_lack_impact | Hông xoay chưa đủ | Thấp (xoay 3D từ 2D) |
+| left_arm_bend_top | Tay trái co ở đỉnh swing | Trung bình ở Face-on |
+| club_inside_takeaway | Gậy đi vào trong lúc khởi động | Thấp–trung bình, cần DTL |
+| over_the_top | Đưa gậy từ ngoài vào | Cần DTL, thấy gậy |
+
+### Nhóm C — Chưa nên tự động hóa (khó đo từ video 2D)
+early_wrist_hinge, unfolded_wrist_address, scooping_impact, chicken_wing. Có thể chỉ hiển thị như nội dung giáo dục hoặc để người dùng tự đánh dấu, cho tới khi có bằng chứng đo được.
+
+### Phương pháp nhận diện
+- Ưu tiên **luật hình học trên keypoints đã làm mượt**, có điều kiện áp dụng (góc quay, pha, độ tin cậy keypoint), vì dễ giải thích và kiểm tra.
+- Mô hình học máy chỉ dùng khi luật không đủ và có dữ liệu gán nhãn.
+- Mỗi lỗi có tài liệu mô tả: định nghĩa, tín hiệu đo, điều kiện áp dụng, ngưỡng (do Phase 3 xác định), trường hợp thường nhầm.
+- Chưa đặt số ngưỡng trong tài liệu này vì chưa có dữ liệu.
+
+## 11. Chọn lỗi ưu tiên và tổng hợp theo phiên
+
+- Mỗi cú có thể có nhiều quan sát; chỉ hiển thị nổi bật **1–2 lỗi ưu tiên**, phần còn lại trong "Xem thêm".
+- Chỉ đưa lên kết quả lỗi có confidence ≥ vừa và chất lượng video ≥ trung bình. Lỗi confidence thấp không hiển thị như lỗi; tối đa ghi "chưa đủ dữ liệu".
+- Tổng hợp phiên: đếm số cú có mỗi lỗi ("Lặp lại nhiều nhất").
+- Lỗi ưu tiên = kết hợp (a) lặp lại ở nhiều cú trong phiên, (b) `editorialPriority` do biên tập viên gán trong IssueGuide (nền tảng/tư thế trước, kết quả sau), (c) mức tin cậy. Công thức cụ thể do Phase 4 quyết định và ghi lại; không dùng LLM để chọn.
+- Chỉ xem là "tiến bộ" khi có đủ số cú cùng góc/gậy; không kết luận từ một cú.
+
+## 12. Đo nhịp
+
+- Mốc: khởi động đưa gậy → đỉnh → tiếp xúc.
+- Đưa ra: thời gian đưa lên, dừng ở đỉnh, hạ gậy, tỷ lệ nhịp.
+- Ghi chú trên UI: "ước tính từ video"; sai số phụ thuộc FPS và chất lượng mốc pha.
+- Hiển thị khoảng tham khảo chỉ khi có nguồn đã duyệt; không so với pro nếu chưa có giấy phép.
+- Với nhịp, dùng ngôn ngữ mô tả ("nhịp đưa lên khá chậm so với hạ gậy"), không phán xét.
+
+## 13. Quy tắc nội dung hướng dẫn sửa
+
+- Mỗi lỗi → một IssueGuide đã duyệt (xem DATABASE_SCHEMA mục 7).
+- Khóa nội dung: `issue.<issue_id>.*` (xem I18N mục 8).
+- Phản hồi gồm: điều quan sát thấy, vì sao có thể quan trọng, một điều nên thử, cảm giác cần tìm, cách tự kiểm tra.
+- Bài tập chỉ lấy từ thư viện đã duyệt.
+- Ghi rõ góc quay nên dùng nếu góc hiện tại kém tin cậy cho lỗi đó ("Lỗi này thường rõ hơn ở góc DTL").
+- Không hứa chính xác tuyệt đối; luôn có phần giới hạn.
+
+## 14. Xử lý và hiệu năng
+
+- Phân tích trên máy (iOS và Android), ở nền; có thể hủy; hiển thị tiến trình.
+- **Người thuận tay trái:** lật ngang keypoints trước khi chạy luật, để mọi luật viết cho người thuận tay phải; ghi `mirrored = true`; lật lại khi vẽ lớp phủ.
+- Cùng model pose và cùng logic Dart trên hai nền tảng; kết quả phải nhất quán (xem PLATFORM_DECISION).
+- Ghi FPS thật của video; FPS thấp (thường gặp trên Android tầm trung) làm giảm confidence của mốc pha và nhịp.
+- Không chặn main thread; kiểm soát nhiệt và pin; giới hạn thời lượng video.
+- Khi thiết bị không đủ khả năng: báo rõ, cho phép lưu video và phân tích sau.
+- Giữ keypoints dẫn xuất ngoài DB; xóa cùng video.
