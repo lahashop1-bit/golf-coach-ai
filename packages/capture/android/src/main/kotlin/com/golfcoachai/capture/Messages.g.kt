@@ -198,6 +198,19 @@ class FlutterError (
   val details: Any? = null
 ) : RuntimeException()
 
+enum class CameraLens(val raw: Int) {
+  BACK(0),
+  FRONT(1);
+
+  companion object {
+    private val pigeonValues = values()
+
+    fun ofRaw(raw: Int): CameraLens? {
+      return pigeonValues.getOrNull(raw)
+    }
+  }
+}
+
 /**
  * Metadata read from the video file itself (never from the requested settings).
  *
@@ -265,12 +278,87 @@ data class VideoInfo (
     return "VideoInfo(fps=$fps, durationMs=$durationMs, width=$width, height=$height, rotationDegrees=$rotationDegrees, fileSizeBytes=$fileSizeBytes, thumbnailPath=$thumbnailPath)"
   }
 }
+
+/**
+ * What Flutter needs to draw the live preview texture upright.
+ *
+ * Generated class from Pigeon that represents data sent in messages.
+ */
+data class CameraPreviewInfo (
+  val textureId: Long,
+  /** Size of the frames in the texture (sensor orientation, not rotated). */
+  val width: Long,
+  val height: Long,
+  /** Clockwise rotation that makes the frames upright in portrait. */
+  val rotationDegrees: Long,
+  /** Front camera: the preview is shown mirrored (recordings are not). */
+  val mirrored: Boolean,
+  /** Frame rate the device was configured for. */
+  val fps: Double
+)
+ {
+  companion object {
+    fun fromList(pigeonVar_list: List<Any?>): CameraPreviewInfo {
+      val textureId = pigeonVar_list[0] as Long
+      val width = pigeonVar_list[1] as Long
+      val height = pigeonVar_list[2] as Long
+      val rotationDegrees = pigeonVar_list[3] as Long
+      val mirrored = pigeonVar_list[4] as Boolean
+      val fps = pigeonVar_list[5] as Double
+      return CameraPreviewInfo(textureId, width, height, rotationDegrees, mirrored, fps)
+    }
+  }
+  fun toList(): List<Any?> {
+    return listOf(
+      textureId,
+      width,
+      height,
+      rotationDegrees,
+      mirrored,
+      fps,
+    )
+  }
+  override fun equals(other: Any?): Boolean {
+    if (other == null || other.javaClass != javaClass) {
+      return false
+    }
+    if (this === other) {
+      return true
+    }
+    val other = other as CameraPreviewInfo
+    return MessagesPigeonUtils.deepEquals(this.textureId, other.textureId) && MessagesPigeonUtils.deepEquals(this.width, other.width) && MessagesPigeonUtils.deepEquals(this.height, other.height) && MessagesPigeonUtils.deepEquals(this.rotationDegrees, other.rotationDegrees) && MessagesPigeonUtils.deepEquals(this.mirrored, other.mirrored) && MessagesPigeonUtils.deepEquals(this.fps, other.fps)
+  }
+
+  override fun hashCode(): Int {
+    var result = javaClass.hashCode()
+    result = 31 * result + MessagesPigeonUtils.deepHash(this.textureId)
+    result = 31 * result + MessagesPigeonUtils.deepHash(this.width)
+    result = 31 * result + MessagesPigeonUtils.deepHash(this.height)
+    result = 31 * result + MessagesPigeonUtils.deepHash(this.rotationDegrees)
+    result = 31 * result + MessagesPigeonUtils.deepHash(this.mirrored)
+    result = 31 * result + MessagesPigeonUtils.deepHash(this.fps)
+    return result
+  }
+  override fun toString(): String {
+    return "CameraPreviewInfo(textureId=$textureId, width=$width, height=$height, rotationDegrees=$rotationDegrees, mirrored=$mirrored, fps=$fps)"
+  }
+}
 private open class MessagesPigeonCodec : StandardMessageCodec() {
   override fun readValueOfType(type: Byte, buffer: ByteBuffer): Any? {
     return when (type) {
       129.toByte() -> {
+        (readValue(buffer) as Long?)?.let {
+          CameraLens.ofRaw(it.toInt())
+        }
+      }
+      130.toByte() -> {
         (readValue(buffer) as? List<Any?>)?.let {
           VideoInfo.fromList(it)
+        }
+      }
+      131.toByte() -> {
+        (readValue(buffer) as? List<Any?>)?.let {
+          CameraPreviewInfo.fromList(it)
         }
       }
       else -> super.readValueOfType(type, buffer)
@@ -278,8 +366,16 @@ private open class MessagesPigeonCodec : StandardMessageCodec() {
   }
   override fun writeValue(stream: ByteArrayOutputStream, value: Any?)   {
     when (value) {
-      is VideoInfo -> {
+      is CameraLens -> {
         stream.write(129)
+        writeValue(stream, value.raw.toLong())
+      }
+      is VideoInfo -> {
+        stream.write(130)
+        writeValue(stream, value.toList())
+      }
+      is CameraPreviewInfo -> {
+        stream.write(131)
         writeValue(stream, value.toList())
       }
       else -> super.writeValue(stream, value)
@@ -288,6 +384,132 @@ private open class MessagesPigeonCodec : StandardMessageCodec() {
 }
 
 
+/**
+ * Live camera for recording swings (iOS: AVFoundation). Recordings are
+ * written in sensor orientation with the rotation stored as file metadata,
+ * never mirrored, without audio.
+ *
+ * Generated interface from Pigeon that represents a handler of messages from Flutter.
+ */
+interface CameraHostApi {
+  fun availableLenses(): List<CameraLens>
+  /**
+   * Opens [lens] (closing any open camera), asking for [targetFps] and
+   * falling back to the best rate the device supports.
+   */
+  suspend fun open(lens: CameraLens, targetFps: Long): CameraPreviewInfo
+  suspend fun startRecording(path: String)
+  /** Finishes the file started by [startRecording]. */
+  suspend fun stopRecording()
+  /**
+   * Stops the camera and releases the preview texture. A recording in
+   * progress is discarded.
+   */
+  suspend fun close()
+
+  companion object {
+    /** The codec used by CameraHostApi. */
+    val codec: MessageCodec<Any?> by lazy {
+      MessagesPigeonCodec()
+    }
+    /** Sets up an instance of `CameraHostApi` to handle messages through the `binaryMessenger`. */
+    @JvmOverloads
+    fun setUp(binaryMessenger: BinaryMessenger, api: CameraHostApi?, messageChannelSuffix: String = "") {
+      val separatedMessageChannelSuffix = if (messageChannelSuffix.isNotEmpty()) ".$messageChannelSuffix" else ""
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.capture.CameraHostApi.availableLenses$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            val wrapped: List<Any?> = try {
+              listOf(api.availableLenses())
+            } catch (exception: Throwable) {
+              MessagesPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.capture.CameraHostApi.open$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val lensArg = args[0] as CameraLens
+            val targetFpsArg = args[1] as Long
+            CoroutineScope(Dispatchers.Main).launch {
+              val wrapped: List<Any?> = try {
+                listOf(api.open(lensArg, targetFpsArg))
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+              reply.reply(wrapped)
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.capture.CameraHostApi.startRecording$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pathArg = args[0] as String
+            CoroutineScope(Dispatchers.Main).launch {
+              val wrapped: List<Any?> = try {
+                api.startRecording(pathArg)
+                listOf(null)
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+              reply.reply(wrapped)
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.capture.CameraHostApi.stopRecording$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            CoroutineScope(Dispatchers.Main).launch {
+              val wrapped: List<Any?> = try {
+                api.stopRecording()
+                listOf(null)
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+              reply.reply(wrapped)
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.capture.CameraHostApi.close$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            CoroutineScope(Dispatchers.Main).launch {
+              val wrapped: List<Any?> = try {
+                api.close()
+                listOf(null)
+              } catch (exception: Throwable) {
+                MessagesPigeonUtils.wrapError(exception)
+              }
+              reply.reply(wrapped)
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+}
 /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
 interface CaptureHostApi {
   /**

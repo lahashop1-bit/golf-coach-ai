@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -15,11 +13,10 @@ import '../../l10n/gen/app_localizations.dart';
 import '../../widgets/common.dart';
 import '../analysis/analysis_jobs.dart';
 import 'recording_session.dart';
+import 'swing_recorder.dart';
 import 'swing_review_sheet.dart';
 
 enum _Phase { idle, countdown, recording, saving }
-
-enum _CameraError { denied, unavailable, failed }
 
 /// One clip per swing: Start → Stop (or auto-stop) → save → next swing
 /// (GOLF_FEATURES §2.1). No microphone: audio is disabled.
@@ -37,10 +34,11 @@ class CameraScreen extends ConsumerStatefulWidget {
 
 class _CameraScreenState extends ConsumerState<CameraScreen>
     with WidgetsBindingObserver {
-  CameraController? _controller;
-  List<CameraDescription> _cameras = const [];
-  int _cameraIndex = 0;
-  _CameraError? _error;
+  final SwingRecorder _recorder = SwingRecorder.forPlatform();
+  List<CameraLens> _lenses = const [];
+  CameraLens _lens = CameraLens.back;
+  bool _open = false;
+  RecorderError? _error;
   _Phase _phase = _Phase.idle;
   int _countdown = 0;
   Duration _elapsed = Duration.zero;
@@ -60,81 +58,63 @@ class _CameraScreenState extends ConsumerState<CameraScreen>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _ticker?.cancel();
-    _controller?.dispose();
+    _recorder.close();
     _session.finish();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    final c = _controller;
     if (state == AppLifecycleState.inactive) {
       // A recording interrupted by a call/background is discarded.
       _ticker?.cancel();
-      _controller = null;
-      c?.dispose();
-      if (mounted) setState(() => _phase = _Phase.idle);
-    } else if (state == AppLifecycleState.resumed && c == null && _error == null) {
+      if (_open) _recorder.close();
+      if (mounted) {
+        setState(() {
+          _open = false;
+          _phase = _Phase.idle;
+        });
+      }
+    } else if (state == AppLifecycleState.resumed && !_open && _error == null &&
+        _lenses.isNotEmpty) {
       _openCamera();
     }
   }
 
   Future<void> _initCameras() async {
     try {
-      _cameras = await availableCameras();
-    } on CameraException catch (e) {
-      return _fail(e);
+      _lenses = await _recorder.lenses();
+    } on RecorderException catch (e) {
+      return _fail(e.error);
     }
-    if (_cameras.isEmpty) {
-      return setState(() => _error = _CameraError.unavailable);
-    }
-    final back = _cameras.indexWhere((c) => c.lensDirection == CameraLensDirection.back);
-    _cameraIndex = back < 0 ? 0 : back;
+    if (_lenses.isEmpty) return _fail(RecorderError.unavailable);
+    _lens = _lenses.contains(CameraLens.back) ? CameraLens.back : _lenses.first;
     await _openCamera();
   }
 
   Future<void> _openCamera() async {
-    final description = _cameras[_cameraIndex];
-    // Ask for 60 fps; fall back to the preset's default when unsupported.
-    // The real FPS is always read back from the file.
-    for (final fps in [60, null]) {
-      final c = CameraController(description, ResolutionPreset.high,
-          enableAudio: false, fps: fps);
-      try {
-        await c.initialize();
-        await c.prepareForVideoRecording();
-        if (!mounted) {
-          await c.dispose();
-          return;
-        }
-        setState(() {
-          _controller = c;
-          _error = null;
-        });
-        return;
-      } on CameraException catch (e) {
-        await c.dispose();
-        if (_isPermissionError(e) || fps == null) return _fail(e);
-      }
+    try {
+      await _recorder.open(_lens);
+    } on RecorderException catch (e) {
+      return _fail(e.error);
     }
+    if (!mounted) return _recorder.close();
+    setState(() {
+      _open = true;
+      _error = null;
+    });
   }
 
-  bool _isPermissionError(CameraException e) => e.code.startsWith('CameraAccess');
-
-  void _fail(CameraException e) {
-    if (!mounted) return;
-    setState(() => _error =
-        _isPermissionError(e) ? _CameraError.denied : _CameraError.failed);
+  void _fail(RecorderError error) {
+    if (mounted) setState(() => _error = error);
   }
 
   Future<void> _flip() async {
-    if (_cameras.length < 2 || _phase != _Phase.idle) return;
-    final old = _controller;
+    if (_lenses.length < 2 || _phase != _Phase.idle) return;
     setState(() {
-      _controller = null;
-      _cameraIndex = (_cameraIndex + 1) % _cameras.length;
+      _open = false;
+      _lens = _lens == CameraLens.back ? CameraLens.front : CameraLens.back;
     });
-    await old?.dispose();
     await _openCamera();
   }
 
@@ -151,9 +131,16 @@ class _CameraScreenState extends ConsumerState<CameraScreen>
         setState(() => _countdown--);
       }
     }
-    final c = _controller;
-    if (c == null) return;
-    await c.startVideoRecording();
+    if (!_open) return;
+    try {
+      await _recorder.start();
+    } on RecorderException {
+      if (!mounted) return;
+      setState(() => _phase = _Phase.idle);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(context.l10n.errorGeneric)));
+      return;
+    }
     final started = DateTime.now();
     setState(() {
       _phase = _Phase.recording;
@@ -166,14 +153,12 @@ class _CameraScreenState extends ConsumerState<CameraScreen>
   }
 
   Future<void> _stop() async {
-    final c = _controller;
     if (_phase == _Phase.countdown) return setState(() => _phase = _Phase.idle);
-    if (c == null || _phase != _Phase.recording) return;
+    if (!_open || _phase != _Phase.recording) return;
     _ticker?.cancel();
     setState(() => _phase = _Phase.saving);
     try {
-      final file = await c.stopVideoRecording();
-      final swing = await _session.save(File(file.path));
+      final swing = await _session.save(await _recorder.stop());
       if (!mounted) return;
       setState(() => _phase = _Phase.idle);
       if (widget.setup.feedbackTiming == FeedbackTiming.afterEach &&
@@ -256,16 +241,15 @@ class _CameraScreenState extends ConsumerState<CameraScreen>
 
   Widget _body(AppLocalizations l) {
     switch (_error) {
-      case _CameraError.denied:
+      case RecorderError.denied:
         return _message(Icons.no_photography_outlined, l.cameraPermissionDenied);
-      case _CameraError.unavailable:
+      case RecorderError.unavailable:
         return _message(Icons.videocam_off_outlined, l.cameraUnavailable);
-      case _CameraError.failed:
+      case RecorderError.failed:
         return _message(Icons.error_outline, l.errorGeneric);
       case null:
     }
-    final c = _controller;
-    if (c == null || !c.value.isInitialized) {
+    if (!_open || !_recorder.isOpen) {
       return const Center(child: CircularProgressIndicator());
     }
     final planned = widget.setup.plannedSwingCount;
@@ -273,7 +257,7 @@ class _CameraScreenState extends ConsumerState<CameraScreen>
     return Column(children: [
       Expanded(
         child: Stack(alignment: Alignment.center, children: [
-          Center(child: CameraPreview(c)),
+          Center(child: _recorder.preview()),
           if (_phase == _Phase.countdown)
             Text('$_countdown',
                 style: const TextStyle(fontSize: 120, color: Colors.white,
@@ -295,7 +279,7 @@ class _CameraScreenState extends ConsumerState<CameraScreen>
           Expanded(
             child: Align(
               alignment: Alignment.centerRight,
-              child: _cameras.length > 1
+              child: _lenses.length > 1
                   ? IconButton(
                       tooltip: l.flipCamera,
                       color: Colors.white,

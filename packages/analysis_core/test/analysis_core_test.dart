@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:analysis_core/analysis_core.dart';
@@ -110,6 +111,33 @@ void main() {
       expect(r[SwingPhase.address], isNull);
       expect(r.tempo, isNull);
       expect(r[SwingPhase.impact], isNotNull);
+    });
+
+    test('walking up to the phone before the swing is not taken for it', () {
+      // The golfer starts close to the phone (body 2.5x larger) with arms
+      // swinging sideways while walking, then steps back and swings.
+      final swing = syntheticSwing(
+          takeaway: 3000, top: 3900, topEnd: 4000, impact: 4270, finish: 4770, end: 5800);
+      for (final arms in [0.3, 0.5]) {
+        final frames = [
+          for (final f in swing.frames)
+            f.timestampMs >= 1500
+                ? f
+                : PoseFrame(f.timestampMs, [
+                    for (final (i, p) in f.points!.indexed)
+                      () {
+                        final wrist = i == Lm.leftWrist || i == Lm.rightWrist;
+                        final x = 0.5 + (p.x - 0.5) * 2.5 +
+                            (wrist ? arms * math.sin(f.timestampMs / 30) : 0);
+                        return Landmark(x, 0.5 + (p.y - 0.5) * 2.5, p.visibility);
+                      }(),
+                  ]),
+        ];
+        final r = detector.detect(KeypointSequence(
+            fps: 60, width: 720, height: 1280, model: 'm', frames: frames))!;
+        expectNear(r, SwingPhase.top, 3950, tol: 60);
+        expectNear(r, SwingPhase.impact, 4270);
+      }
     });
 
     test('no swing in a still clip', () {

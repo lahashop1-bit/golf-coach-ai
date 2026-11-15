@@ -4,10 +4,10 @@ import 'keypoints.dart';
 
 /// Smoothed per-frame hand signal used by phase and tempo detection.
 ///
-/// Hands = midpoint of both wrists, scaled by the median torso length so the
-/// signal does not depend on how far the golfer stands from the camera.
+/// Hands = midpoint of both wrists. Speed is in torso lengths (per frame) so
+/// it does not depend on how far the golfer stands from the camera.
 class HandSignal {
-  HandSignal._(this.t, this.x, this.y, this.speed, this.visibility, this.torso);
+  HandSignal._(this.t, this.x, this.y, this.speed, this.visibility, this.torso, this.scale);
 
   /// Frame timestamps (ms).
   final List<int> t;
@@ -21,6 +21,9 @@ class HandSignal {
   /// Mean wrist visibility per frame (0 where interpolated).
   final List<double> visibility;
   final double torso;
+
+  /// Smoothed torso length per frame (normalized image units).
+  final List<double> scale;
 
   int get length => t.length;
 
@@ -39,6 +42,7 @@ class HandSignal {
     final n = frames.length;
     final xs = List<double?>.filled(n, null), ys = List<double?>.filled(n, null);
     final vis = List<double>.filled(n, 0);
+    final torsoAt = List<double?>.filled(n, null);
     final torsos = <double>[];
     for (var i = 0; i < n; i++) {
       final p = frames[i].points;
@@ -54,7 +58,9 @@ class HandSignal {
       vis[i] = v;
       final sh = _mid(p[Lm.leftShoulder], p[Lm.rightShoulder]);
       final hp = _mid(p[Lm.leftHip], p[Lm.rightHip]);
-      torsos.add(_dist(sh, hp, seq.width / math.max(seq.height, 1)));
+      final len = _dist(sh, hp, seq.width / math.max(seq.height, 1));
+      torsos.add(len);
+      if (len > 0) torsoAt[i] = len;
     }
     if (torsos.length < n * 0.6) return null;
     torsos.sort();
@@ -62,10 +68,15 @@ class HandSignal {
     if (torso <= 0) return null;
 
     final t = [for (final f in frames) f.timestampMs];
-    final fx = _fillGaps(xs, t), fy = _fillGaps(ys, t);
-    if (fx == null || fy == null) return null;
+    final fx = _fillGaps(xs, t), fy = _fillGaps(ys, t), ft = _fillGaps(torsoAt, t);
+    if (fx == null || fy == null || ft == null) return null;
     final win = math.max(1, (seq.fps * 0.05).round());
     final sx = _smooth(fx, win), sy = _smooth(fy, win);
+    // Speed is scaled by each frame's own torso length: golfers often walk
+    // up to the phone before and after the swing, and a body twice as large
+    // in the frame would otherwise look twice as fast. Torso length changes
+    // slowly, so a wide window keeps pose jitter out of the scale.
+    final scale = _smooth(ft, math.max(1, (seq.fps * 0.25).round()));
 
     final aspect = seq.width / math.max(seq.height, 1);
     final speed = List<double>.filled(n, 0);
@@ -73,11 +84,11 @@ class HandSignal {
       final dt = (t[i + 1] - t[i - 1]) / 1000;
       if (dt <= 0) continue;
       final dx = (sx[i + 1] - sx[i - 1]) * aspect, dy = sy[i + 1] - sy[i - 1];
-      speed[i] = math.sqrt(dx * dx + dy * dy) / dt / torso;
+      speed[i] = math.sqrt(dx * dx + dy * dy) / dt / scale[i];
     }
     speed[0] = speed[1];
     speed[n - 1] = speed[n - 2];
-    return HandSignal._(t, sx, sy, speed, vis, torso);
+    return HandSignal._(t, sx, sy, speed, vis, torso, scale);
   }
 
   /// Linear interpolation over short gaps; leading/trailing gaps are

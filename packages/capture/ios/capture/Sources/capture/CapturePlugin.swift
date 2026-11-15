@@ -5,6 +5,8 @@ import UIKit
 public class CapturePlugin: NSObject, FlutterPlugin, CaptureHostApi {
   public static func register(with registrar: FlutterPluginRegistrar) {
     CaptureHostApiSetup.setUp(binaryMessenger: registrar.messenger(), api: CapturePlugin())
+    CameraHostApiSetup.setUp(
+      binaryMessenger: registrar.messenger(), api: CameraApi(textures: registrar.textures()))
   }
 
   func probeVideo(videoPath: String, thumbnailPath: String?) async throws -> VideoInfo {

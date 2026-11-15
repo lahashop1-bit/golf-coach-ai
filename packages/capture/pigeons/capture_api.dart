@@ -37,6 +37,60 @@ class VideoInfo {
   String? thumbnailPath;
 }
 
+enum CameraLens { back, front }
+
+/// What Flutter needs to draw the live preview texture upright.
+class CameraPreviewInfo {
+  CameraPreviewInfo({
+    required this.textureId,
+    required this.width,
+    required this.height,
+    required this.rotationDegrees,
+    required this.mirrored,
+    required this.fps,
+  });
+
+  int textureId;
+
+  /// Size of the frames in the texture (sensor orientation, not rotated).
+  int width;
+  int height;
+
+  /// Clockwise rotation that makes the frames upright in portrait.
+  int rotationDegrees;
+
+  /// Front camera: the preview is shown mirrored (recordings are not).
+  bool mirrored;
+
+  /// Frame rate the device was configured for.
+  double fps;
+}
+
+/// Live camera for recording swings (iOS: AVFoundation). Recordings are
+/// written in sensor orientation with the rotation stored as file metadata,
+/// never mirrored, without audio.
+@HostApi()
+abstract class CameraHostApi {
+  List<CameraLens> availableLenses();
+
+  /// Opens [lens] (closing any open camera), asking for [targetFps] and
+  /// falling back to the best rate the device supports.
+  @async
+  CameraPreviewInfo open(CameraLens lens, int targetFps);
+
+  @async
+  void startRecording(String path);
+
+  /// Finishes the file started by [startRecording].
+  @async
+  void stopRecording();
+
+  /// Stops the camera and releases the preview texture. A recording in
+  /// progress is discarded.
+  @async
+  void close();
+}
+
 @HostApi()
 abstract class CaptureHostApi {
   /// Reads [VideoInfo] from [videoPath]. When [thumbnailPath] is given, writes a

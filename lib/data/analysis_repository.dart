@@ -85,7 +85,7 @@ class AnalysisRepository {
   final GuideRepository _guides;
 
   static const schemaVersion = '1.0';
-  static const modelVersion = 'mediapipe_pose_landmarker_full+phases_v1+issues_a_v0';
+  static const modelVersion = 'mediapipe_pose_landmarker_full+phases_v2+issues_a_v0';
 
   /// Latest analysis of a swing (completed, failed or running).
   Stream<SwingAnalysis?> watchLatest(String swingId) => (_db.select(_db.swingAnalyses)

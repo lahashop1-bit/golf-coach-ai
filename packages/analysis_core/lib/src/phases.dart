@@ -24,7 +24,9 @@ class SwingTiming {
 /// §12). Works on face-on and down-the-line clips of a right-handed golfer
 /// (mirror left-handers first). Hand height is the main signal:
 ///
-/// - impact region = fastest hand movement in the clip;
+/// - impact region = a hand-speed peak; peaks are tried fastest first and
+///   the first one that looks like a swing (hands rise, then drop, within
+///   the timing bounds) wins, so walking to and from the phone is skipped;
 /// - top = highest hands before that;
 /// - impact = lowest hands between top and shortly after peak speed;
 /// - takeaway = end of the still address period before the top;
@@ -44,20 +46,47 @@ class PhaseDetector {
   static const backswingRangeMs = (300, 2500);
   static const downswingRangeMs = (100, 900);
 
+  /// The hands must drop at least this many torso lengths from the top to
+  /// impact; a swing drops them well over one torso length.
+  static const minHandDrop = 0.6;
+
+  /// Speed peaks slower than this fraction of the fastest are not tried.
+  static const candidateFraction = 0.4;
+  static const peakSpacingMs = 600;
+
   SwingTiming? detect(KeypointSequence seq) {
     final s = HandSignal.from(seq);
     if (s == null) return null;
-    final n = s.length;
+    for (final peak in _speedPeaks(s)) {
+      final timing = _detectAt(s, seq.fps, peak);
+      if (timing != null) return timing;
+    }
+    return null;
+  }
 
-    final peak = _argMax(s.speed, 0, n - 1);
-    final peakSpeed = s.speed[peak];
-    if (peakSpeed <= 0) return null;
-    final still = peakSpeed * stillFraction;
+  /// Local hand-speed maxima, fastest first, at least [peakSpacingMs] apart.
+  List<int> _speedPeaks(HandSignal s) {
+    final fastest = s.speed.reduce(math.max);
+    if (fastest <= 0) return const [];
+    final order = [
+      for (var i = 0; i < s.length; i++)
+        if (s.speed[i] >= fastest * candidateFraction) i,
+    ]..sort((a, b) => s.speed[b].compareTo(s.speed[a]));
+    final peaks = <int>[];
+    for (final i in order) {
+      if (peaks.every((p) => (s.t[p] - s.t[i]).abs() >= peakSpacingMs)) peaks.add(i);
+    }
+    return peaks;
+  }
+
+  SwingTiming? _detectAt(HandSignal s, double fps, int peak) {
+    final still = s.speed[peak] * stillFraction;
 
     final top = _argMin(s.y, s.indexAt(s.t[peak] - searchBeforeTopMs), peak);
     final impactEnd = s.indexAt(s.t[peak] + 250);
     final impact = _argMax(s.y, top, impactEnd);
     if (impact <= top) return null;
+    if ((s.y[impact] - s.y[top]) / s.scale[top] < minHandDrop) return null;
 
     final backStill = _stillRunBefore(s, top, still);
     final takeaway = backStill == null ? null : backStill.end + 1;
@@ -73,7 +102,7 @@ class PhaseDetector {
     final marks = <PhaseMark>[];
     void mark(SwingPhase p, int? i, {bool timingCritical = true}) {
       if (i == null) return;
-      marks.add(PhaseMark(p, s.t[i], _confidence(s, seq.fps, i, timingCritical)));
+      marks.add(PhaseMark(p, s.t[i], _confidence(s, fps, i, timingCritical)));
     }
 
     if (takeaway != null) {
@@ -93,7 +122,7 @@ class PhaseDetector {
     }
     marks.sort((a, b) => a.phase.index.compareTo(b.phase.index));
 
-    return SwingTiming(marks, _tempo(s, seq.fps, takeaway, top, impact, still));
+    return SwingTiming(marks, _tempo(s, fps, takeaway, top, impact, still));
   }
 
   Tempo? _tempo(HandSignal s, double fps, int? takeaway, int top, int impact, double still) {

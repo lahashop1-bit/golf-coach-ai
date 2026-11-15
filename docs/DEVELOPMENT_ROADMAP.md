@@ -24,7 +24,7 @@ Trạng thái lát 1 (2026-11-15). Mọi phần đánh dấu [x] là thật, kh�
 - [x] Onboarding: ngôn ngữ, tay thuận, trình độ. [ ] Mục tiêu, gậy thường tập.
 - [x] Home: nút quay, buổi tập gần đây, vào Cài đặt.
 - [~] Hướng dẫn Face-on / DTL: hiện bằng chữ, có cảnh báo an toàn và lưu ý cho người thuận tay trái. [ ] Sơ đồ.
-- [x] Camera: xem trước và quay từng cú (Bắt đầu → Dừng, tự dừng sau 15 giây), hẹn giờ, đổi camera, không xin micro, gián đoạn thì bỏ cú đang quay. Xin 60 fps; nếu máy không hỗ trợ thì dùng mặc định. FPS thật đọc từ file. [ ] Chọn FPS theo danh sách thiết bị hỗ trợ (plugin `camera` không liệt kê được, cần thêm vào `capture`). [ ] Chưa thử trên iPhone thật.
+- [x] Camera: xem trước và quay từng cú (Bắt đầu → Dừng, tự dừng sau 15 giây), hẹn giờ, đổi camera trước/sau, không xin micro, gián đoạn thì bỏ cú đang quay. iOS ghi bằng module native `capture` (AVCaptureSession + AVAssetWriter): khung hình giữ hướng cảm biến, hướng dọc ghi vào metadata; góc xoay camera trước đo bằng RotationCoordinator so với camera sau (camera trước iPhone 17 trả khung dọc 768×1024 dù format báo 1024×768); video không lật gương (xem trước thì lật như gương). Xin 60 fps; nếu không đạt thì dùng định dạng nhanh nhất. FPS thật đọc từ file. [x] Đã thử trên iPhone 17 thật (iOS 26.3): camera sau và trước đứng thẳng, 60 fps, phân tích chạy được. [ ] Android vẫn dùng plugin `camera`, chỉ camera sau (chờ CameraX). [ ] Chọn FPS theo danh sách thiết bị hỗ trợ.
 - [x] Chế độ Phân tích / Tự quay; số cú; xem lại sau mỗi cú hoặc cuối buổi (sau mỗi cú: xem lại / giữ / quay lại).
 - [x] Nhập video từ thư viện (PHPicker qua `image_picker`).
 - [x] Playback 0.25x/0.5x/1x, tắt tiếng, tua, từng khung hình. **Spike iOS đạt:** 6 bước ở 60 fps = đúng 100 ms. [ ] Android chưa kiểm.

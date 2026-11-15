@@ -184,6 +184,11 @@ private func nilOrValue<T>(_ value: Any?) -> T? {
 }
 
 
+enum CameraLens: Int, CaseIterable {
+  case back = 0
+  case front = 1
+}
+
 /// Metadata read from the video file itself (never from the requested settings).
 ///
 /// Generated class from Pigeon that represents data sent in messages.
@@ -254,11 +259,85 @@ struct VideoInfo: Hashable, CustomStringConvertible {
   }
 }
 
+/// What Flutter needs to draw the live preview texture upright.
+///
+/// Generated class from Pigeon that represents data sent in messages.
+struct CameraPreviewInfo: Hashable, CustomStringConvertible {
+  var textureId: Int64
+  /// Size of the frames in the texture (sensor orientation, not rotated).
+  var width: Int64
+  var height: Int64
+  /// Clockwise rotation that makes the frames upright in portrait.
+  var rotationDegrees: Int64
+  /// Front camera: the preview is shown mirrored (recordings are not).
+  var mirrored: Bool
+  /// Frame rate the device was configured for.
+  var fps: Double
+
+
+  // swift-format-ignore: AlwaysUseLowerCamelCase
+  static func fromList(_ pigeonVar_list: [Any?]) -> CameraPreviewInfo? {
+    let textureId = pigeonVar_list[0] as! Int64
+    let width = pigeonVar_list[1] as! Int64
+    let height = pigeonVar_list[2] as! Int64
+    let rotationDegrees = pigeonVar_list[3] as! Int64
+    let mirrored = pigeonVar_list[4] as! Bool
+    let fps = pigeonVar_list[5] as! Double
+
+    return CameraPreviewInfo(
+      textureId: textureId,
+      width: width,
+      height: height,
+      rotationDegrees: rotationDegrees,
+      mirrored: mirrored,
+      fps: fps
+    )
+  }
+  func toList() -> [Any?] {
+    return [
+      textureId,
+      width,
+      height,
+      rotationDegrees,
+      mirrored,
+      fps,
+    ]
+  }
+  static func == (lhs: CameraPreviewInfo, rhs: CameraPreviewInfo) -> Bool {
+    if Swift.type(of: lhs) != Swift.type(of: rhs) {
+      return false
+    }
+    return MessagesPigeonInternal.deepEquals(lhs.textureId, rhs.textureId) && MessagesPigeonInternal.deepEquals(lhs.width, rhs.width) && MessagesPigeonInternal.deepEquals(lhs.height, rhs.height) && MessagesPigeonInternal.deepEquals(lhs.rotationDegrees, rhs.rotationDegrees) && MessagesPigeonInternal.deepEquals(lhs.mirrored, rhs.mirrored) && MessagesPigeonInternal.deepEquals(lhs.fps, rhs.fps)
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine("CameraPreviewInfo")
+    MessagesPigeonInternal.deepHash(value: textureId, hasher: &hasher)
+    MessagesPigeonInternal.deepHash(value: width, hasher: &hasher)
+    MessagesPigeonInternal.deepHash(value: height, hasher: &hasher)
+    MessagesPigeonInternal.deepHash(value: rotationDegrees, hasher: &hasher)
+    MessagesPigeonInternal.deepHash(value: mirrored, hasher: &hasher)
+    MessagesPigeonInternal.deepHash(value: fps, hasher: &hasher)
+  }
+
+  public var description: String {
+    return "CameraPreviewInfo(textureId: \(String(describing: textureId)), width: \(String(describing: width)), height: \(String(describing: height)), rotationDegrees: \(String(describing: rotationDegrees)), mirrored: \(String(describing: mirrored)), fps: \(String(describing: fps)))"
+  }
+}
+
 private class MessagesPigeonCodecReader: FlutterStandardReader {
   override func readValue(ofType type: UInt8) -> Any? {
     switch type {
     case 129:
+      let enumResultAsInt: Int? = nilOrValue(self.readValue() as! Int?)
+      if let enumResultAsInt = enumResultAsInt {
+        return CameraLens(rawValue: enumResultAsInt)
+      }
+      return nil
+    case 130:
       return VideoInfo.fromList(self.readValue() as! [Any?])
+    case 131:
+      return CameraPreviewInfo.fromList(self.readValue() as! [Any?])
     default:
       return super.readValue(ofType: type)
     }
@@ -267,8 +346,14 @@ private class MessagesPigeonCodecReader: FlutterStandardReader {
 
 private class MessagesPigeonCodecWriter: FlutterStandardWriter {
   override func writeValue(_ value: Any) {
-    if let value = value as? VideoInfo {
+    if let value = value as? CameraLens {
       super.writeByte(129)
+      super.writeValue(value.rawValue)
+    } else if let value = value as? VideoInfo {
+      super.writeByte(130)
+      super.writeValue(value.toList())
+    } else if let value = value as? CameraPreviewInfo {
+      super.writeByte(131)
       super.writeValue(value.toList())
     } else {
       super.writeValue(value)
@@ -291,6 +376,115 @@ class MessagesPigeonCodec: FlutterStandardMessageCodec, @unchecked Sendable {
 }
 
 
+/// Live camera for recording swings (iOS: AVFoundation). Recordings are
+/// written in sensor orientation with the rotation stored as file metadata,
+/// never mirrored, without audio.
+///
+/// Generated protocol from Pigeon that represents a handler of messages from Flutter.
+protocol CameraHostApi {
+  func availableLenses() throws -> [CameraLens]
+  /// Opens [lens] (closing any open camera), asking for [targetFps] and
+  /// falling back to the best rate the device supports.
+  func open(lens: CameraLens, targetFps: Int64) async throws -> CameraPreviewInfo
+  func startRecording(path: String) async throws
+  /// Finishes the file started by [startRecording].
+  func stopRecording() async throws
+  /// Stops the camera and releases the preview texture. A recording in
+  /// progress is discarded.
+  func close() async throws
+}
+
+/// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
+class CameraHostApiSetup {
+  static var codec: FlutterStandardMessageCodec { MessagesPigeonCodec.shared }
+  /// Sets up an instance of `CameraHostApi` to handle messages through the `binaryMessenger`.
+  static func setUp(binaryMessenger: FlutterBinaryMessenger, api: CameraHostApi?, messageChannelSuffix: String = "") {
+    let channelSuffix = messageChannelSuffix.count > 0 ? ".\(messageChannelSuffix)" : ""
+    let availableLensesChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.capture.CameraHostApi.availableLenses\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      availableLensesChannel.setMessageHandler { _, reply in
+        do {
+          let result = try api.availableLenses()
+          reply(wrapResult(result))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      availableLensesChannel.setMessageHandler(nil)
+    }
+    /// Opens [lens] (closing any open camera), asking for [targetFps] and
+    /// falling back to the best rate the device supports.
+    let openChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.capture.CameraHostApi.open\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      openChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let lensArg = args[0] as! CameraLens
+        let targetFpsArg = args[1] as! Int64
+        Task { @MainActor in
+          do {
+            let result = try await api.open(lens: lensArg, targetFps: targetFpsArg)
+            reply(wrapResult(result))
+          } catch {
+            reply(wrapError(error))
+          }
+        }
+      }
+    } else {
+      openChannel.setMessageHandler(nil)
+    }
+    let startRecordingChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.capture.CameraHostApi.startRecording\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      startRecordingChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let pathArg = args[0] as! String
+        Task { @MainActor in
+          do {
+            try await api.startRecording(path: pathArg)
+            reply(wrapResult(nil))
+          } catch {
+            reply(wrapError(error))
+          }
+        }
+      }
+    } else {
+      startRecordingChannel.setMessageHandler(nil)
+    }
+    /// Finishes the file started by [startRecording].
+    let stopRecordingChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.capture.CameraHostApi.stopRecording\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      stopRecordingChannel.setMessageHandler { _, reply in
+        Task { @MainActor in
+          do {
+            try await api.stopRecording()
+            reply(wrapResult(nil))
+          } catch {
+            reply(wrapError(error))
+          }
+        }
+      }
+    } else {
+      stopRecordingChannel.setMessageHandler(nil)
+    }
+    /// Stops the camera and releases the preview texture. A recording in
+    /// progress is discarded.
+    let closeChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.capture.CameraHostApi.close\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      closeChannel.setMessageHandler { _, reply in
+        Task { @MainActor in
+          do {
+            try await api.close()
+            reply(wrapResult(nil))
+          } catch {
+            reply(wrapError(error))
+          }
+        }
+      }
+    } else {
+      closeChannel.setMessageHandler(nil)
+    }
+  }
+}
 /// Generated protocol from Pigeon that represents a handler of messages from Flutter.
 protocol CaptureHostApi {
   /// Reads [VideoInfo] from [videoPath]. When [thumbnailPath] is given, writes a
